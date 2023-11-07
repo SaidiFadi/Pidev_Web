@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier index{% endblock %}
+
+{% block body %}
+    <h1>Panier index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Idpanier</th>
+                <th>Total</th>
+                <th>Datepanier</th>
+                <th>Iduser</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for panier in paniers %}
+            <tr>
+                <td>{{ panier.idpanier }}</td>
+                <td>{{ panier.total }}</td>
+                <td>{{ panier.datepanier ? panier.datepanier|date('Y-m-d') : '' }}</td>
+                <td>{{ panier.iduser }}</td>
+                <td>
+                    <a href="{{ path('app_panier_show', {'idpanier': panier.idpanier}) }}">show</a>
+                    <a href="{{ path('app_panier_edit', {'idpanier': panier.idpanier}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_panier_new') }}">Create new</a>
+{% endblock %}
