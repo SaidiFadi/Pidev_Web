@@ -8,8 +8,8 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Idlogement</th>
-                <th>Adrl</th>
+                <th>Id delogement</th>
+                <th>Adresse de logement</th>
                 <th>Superfice</th>
                 <th>Loyer</th>
                 <th>Type</th>
@@ -27,7 +27,7 @@
                 <td>{{ logement.loyer }}</td>
                 <td>{{ logement.type }}</td>
                 <td>{{ logement.region }}</td>
-                <td>{{ logement.image }}</td>
+                <td><img src="{{ asset(logement.image) }}" alt="Image"></td>
                 <td>
                     <a href="{{ path('app_logement_show', {'idlogement': logement.idlogement}) }}">show</a>
                     <a href="{{ path('app_logement_edit', {'idlogement': logement.idlogement}) }}">edit</a>
