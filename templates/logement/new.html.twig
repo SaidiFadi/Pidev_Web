@@ -2,10 +2,113 @@
 
 {% block title %}New Logement{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 50px;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        h1 {
+            color: #007bff;
+        }
+
+        .back-to-list {
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .form-field {
+            width: 100%;
+            margin-bottom: 10px;
+        }
+    </style>
+    
+{% endblock %}
+
 {% block body %}
-    <h1>Create new Logement</h1>
+ <a href="{{ path('app_logement_index') }}" class="btn btn-secondary back-to-list">Back to List</a>
+    <div class="container">
+        <h1>Create New Logement</h1>
 
-    {{ include('logement/_form.html.twig') }}
+        <form action="{{ path('app_logement_new') }}" method="post" enctype="multipart/form-data">
+            {{ form_start(form) }}
+            
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th>{{ form_label(form.adrl) }}</th>
+                        <td>
+                            {{ form_widget(form.adrl, { 'attr': {'class': 'form-field'} }) }}
+                            {{ form_errors(form.adrl) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label(form.superfice) }}</th>
+                        <td>
+                            {{ form_widget(form.superfice, { 'attr': {'class': 'form-field'} }) }}
+                            {{ form_errors(form.superfice) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label(form.loyer) }}</th>
+                        <td>
+                            {{ form_widget(form.loyer, { 'attr': {'class': 'form-field'} }) }}
+                            {{ form_errors(form.loyer) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label(form.type) }}</th>
+                        <td>
+                            {{ form_widget(form.type, { 'attr': {'class': 'form-field'} }) }}
+                            {{ form_errors(form.type) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label(form.region) }}</th>
+                        <td>
+                            {{ form_widget(form.region, { 'attr': {'class': 'form-field'} }) }}
+                            {{ form_errors(form.region) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{ form_label(form.image) }}</th>
+                        <td>
+                            {{ form_widget(form.image, { 'attr': {'class': 'form-field'} }) }}
+                            {{ form_errors(form.image) }}
+                        </td>
+                    </tr>
+                    <!-- Add more rows for other form fields as needed -->
+                </tbody>
+            </table>
 
-    <a href="{{ path('app_logement_index') }}">back to list</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            {{ form_end(form) }}
+
+           
+        </form>
+    </div>
 {% endblock %}

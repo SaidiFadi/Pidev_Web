@@ -46,11 +46,22 @@ class LogementType extends AbstractType
                 ],
                 'placeholder' => 'Select a type', // Optional placeholder text
             ])
-            ->add('region', null, [
+            ->add('region', ChoiceType::class, [
+                'choices' => [
+                    'Ariana' => 'Ariana',
+                    'Beja' => 'Beja',
+                    ' Ben Arous' => ' Ben Arous',
+                    'Bizerte' => 'Bizerte',
+                    'Tunis' => 'Tunis',
+                    'Monastir' => 'Monastir',
+                    'Sfax' => 'Sfax',
+                    'Sousse' => 'Sousse',
+                    'Touzer' => 'Touzer'
+                ],
                 'constraints' => [
                     new NotBlank(), // Corrected the namespace
-                    // new Assert\Choice(['choices' => ['north', 'south', 'east', 'west']]),
                 ],
+                'placeholder' => 'Select a region', // Optional placeholder text
             ])
             ->add('image', FileType::class, [
                 'required' => false, // Set to false to allow null values
@@ -68,6 +79,7 @@ class LogementType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Logement::class,
+            'images_directory' => null, // Add this line
         ]);
     }
 }

@@ -63,6 +63,8 @@ class Logement
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
+    
+    
 
     public function getIdlogement(): ?int
     {

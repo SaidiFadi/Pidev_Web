@@ -8,11 +8,11 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Idlogement</th>
+                <th>Reference delogement</th>
                 <td>{{ logement.idlogement }}</td>
             </tr>
             <tr>
-                <th>Adrl</th>
+                <th>Adresse de logement</th>
                 <td>{{ logement.adrl }}</td>
             </tr>
             <tr>
@@ -38,7 +38,7 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_logement_index') }}">back to list</a>
+    <a href="{{ path('app_logement_index') }}"class="btn btn-secondary back-to-list>back to list</a>
 
     <a href="{{ path('app_logement_edit', {'idlogement': logement.idlogement}) }}">edit</a>
 

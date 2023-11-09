@@ -1,11 +1,27 @@
+
+
 {% extends 'base.html.twig' %}
 
-{% block title %}New Location{% endblock %}
-
 {% block body %}
-    <h1>Create new Location</h1>
+    <h1>Create a new location</h1>
 
-    {{ include('location/_form.html.twig') }}
+    {{ form_start(form) }}
 
-    <a href="{{ path('app_location_index') }}">back to list</a>
+    {{ form_row(form.datedebut) }}
+    {{ form_row(form.datefin) }}
+    {{ form_row(form.tarif) }}
+
+    {# Personne field #}
+    <div class="form-group">
+        <label for="{{ form.personne.vars.id }}">Personne:</label>
+        {{ form_widget(form.personne) }}
+    </div>
+
+    {# Logement field #}
+    <div class="form-group">
+        <label for="{{ form.logement.vars.id }}">Logement:</label>
+        {{ form_widget(form.logement) }}
+    </div>
+
+    {{ form_end(form) }}
 {% endblock %}

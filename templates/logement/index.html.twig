@@ -1,45 +1,47 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Logement index{% endblock %}
+{% block title %}Hebergement{% endblock %}
 
 {% block body %}
-    <h1>Logement index</h1>
+    <h1>Hebergement</h1>
+  <a href="{{ path('app_logement_new') }}"  class="btn btn-primary">Ajouter Hebergement</a>
 
     <table class="table">
         <thead>
             <tr>
-                <th>Id delogement</th>
+                <th>Id de logement</th>
                 <th>Adresse de logement</th>
-                <th>Superfice</th>
+                <th>Superficie</th>
                 <th>Loyer</th>
                 <th>Type</th>
-                <th>Region</th>
+                <th>Région</th>
                 <th>Image</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for logement in logements %}
-            <tr>
-                <td>{{ logement.idlogement }}</td>
-                <td>{{ logement.adrl }}</td>
-                <td>{{ logement.superfice }}</td>
-                <td>{{ logement.loyer }}</td>
-                <td>{{ logement.type }}</td>
-                <td>{{ logement.region }}</td>
-                <td><img src="{{ asset(logement.image) }}" alt="Image"></td>
-                <td>
-                    <a href="{{ path('app_logement_show', {'idlogement': logement.idlogement}) }}">show</a>
-                    <a href="{{ path('app_logement_edit', {'idlogement': logement.idlogement}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
+            {% for logement in logements %}
+                <tr>
+                    <td>{{ logement.idlogement }}</td>
+                    <td>{{ logement.adrl }}</td>
+                    <td>{{ logement.superfice }}</td>
+                    <td>{{ logement.loyer }}</td>
+                    <td>{{ logement.type }}</td>
+                    <td>{{ logement.region }}</td>
+                    <td><img src="{{ asset(logement.image) }}" alt="Image"></td>
+                    <td>
+                       
+                        <a href="{{ path('app_logement_show', {'idlogement': logement.idlogement}) }}"  class="btn btn-primary">Show</a>
+                        <a href="{{ path('app_logement_edit', {'idlogement': logement.idlogement}) }}"  class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">No records found</td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_logement_new') }}">Create new</a>
+
 {% endblock %}

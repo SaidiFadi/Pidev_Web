@@ -26,24 +26,41 @@ class LogementController extends AbstractController
     }
 
     #[Route('/new', name: 'app_logement_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $logement = new Logement();
-        $form = $this->createForm(LogementType::class, $logement);
-        $form->handleRequest($request);
+public function new(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $logement = new Logement();
+    $form = $this->createForm(LogementType::class, $logement);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($logement);
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Handle file upload
+        $imageFile = $form->get('image')->getData();
 
-            return $this->redirectToRoute('app_logement_index', [], Response::HTTP_SEE_OTHER);
+        if ($imageFile) {
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+            // Move the file to the directory where images are stored
+            $imageFile->move(
+                $this->getParameter('images_directory'), // This should point to a directory within your public directory
+                $newFilename
+            );
+
+            // Save the file name in the entity
+            $logement->setImage($newFilename);
         }
 
-        return $this->renderForm('logement/new.html.twig', [
-            'logement' => $logement,
-            'form' => $form,
-        ]);
+        $entityManager->persist($logement);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_logement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('logement/new.html.twig', [
+        'logement' => $logement,
+        'form' => $form,
+    ]);
+}
 
     #[Route('/{idlogement}', name: 'app_logement_show', methods: ['GET'])]
     public function show(Logement $logement): Response

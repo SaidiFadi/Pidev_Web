@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'client.html.twig' %}
 
 {% block title %}Location{% endblock %}
 
@@ -10,6 +10,14 @@
             <tr>
                 <th>Idlocation</th>
                 <td>{{ location.idlocation }}</td>
+            </tr>
+             <tr>
+                <th>Personne</th>
+                <td>{{ location.personne.email }}</td>
+            </tr>
+             <tr>
+                <th>logement</th>
+                <td>{{ location.logement.adrl }}</td>
             </tr>
             <tr>
                 <th>Datedebut</th>

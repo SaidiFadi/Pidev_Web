@@ -3,8 +3,8 @@
 {% block title %}Location index{% endblock %}
 
 {% block body %}
-    <h1>Location index</h1>
-
+    <h1>Location </h1>
+ <a href="{{ path('app_location_new') }}" class="primary-btn"">Create new</a>
     <table class="table">
         <thead>
             <tr>
@@ -12,6 +12,8 @@
                 <th>Datedebut</th>
                 <th>Datefin</th>
                 <th>Tarif</th>
+                <th>Personne</th>
+                <th>Logement</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -22,9 +24,13 @@
                 <td>{{ location.datedebut ? location.datedebut|date('Y-m-d') : '' }}</td>
                 <td>{{ location.datefin ? location.datefin|date('Y-m-d') : '' }}</td>
                 <td>{{ location.tarif }}</td>
+                
+                <td>{{ location.personne.email }}</td> {# assuming "email" is a property of Personne #}
+                <td>{{ location.logement.adrl }}</td> {# assuming "adrl" is a property of Logement #}
+                
                 <td>
-                    <a href="{{ path('app_location_show', {'idlocation': location.idlocation}) }}">show</a>
-                    <a href="{{ path('app_location_edit', {'idlocation': location.idlocation}) }}">edit</a>
+                    <a href="{{ path('app_location_show', {'idlocation': location.idlocation}) }}" class="primary-btn">show</a>
+                    <a href="{{ path('app_location_edit', {'idlocation': location.idlocation}) }}" class="primary-btn">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -35,5 +41,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_location_new') }}">Create new</a>
+   
 {% endblock %}
