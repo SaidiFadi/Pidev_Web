@@ -4,6 +4,10 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /** 
  * Personne
@@ -11,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="personne", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
  * @ORM\Entity
  */ 
-class Personne 
+class Personne implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @var int
@@ -292,6 +296,24 @@ class Personne
 
         return $this;
     }
+        public function getSalt(): ?string
+    {
+        // Return the user's salt. If the user doesn't have a salt, return null.
+        return null;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Erase the user's credentials. This could involve removing the password from memory or resetting it to a temporary value.
+        $this->password = null;
+    }
+
+    public function getUsername(): string
+    {
+        // Return the user's username. This should be a unique identifier for the user.
+        return $this->email;
+    }
+
 
 
 }

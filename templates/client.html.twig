@@ -45,17 +45,17 @@
                     <ul>
                         <li class="active"><a href="/assets/client/index.html">Home</a></li>
                         <li><a href="/assets/client/about-us.html">About</a></li>
-                        <li><a href="/assets/client/speaker.html">Speakers</a>
-                            <ul class="dropdown">
-                                <li><a href="#">Jayden</a></li>
-                                <li><a href="#">Sara</a></li>
-                                <li><a href="#">Emma</a></li>
-                                <li><a href="#">Harriet</a></li>
-                            </ul>
-                        </li>
+                        
                         <li><a href="/assets/client/schedule.html">Schedule</a></li>
                         <li><a href="/assets/client/blog.html">Blog</a></li>
                         <li><a href="/assets/client/contact.html">Contacts</a></li>
+                        <li><a>Account</a>
+                            <ul class="dropdown">
+                                <li><a href="{{ path('register')}}">Register</a></li>
+                                <li><a href="{{ path('login')}}">Login</a></li>
+                            
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
                 <a href="#" class="primary-btn top-btn"><i class="fa fa-ticket"></i> Ticket</a>
@@ -1167,6 +1167,8 @@
     <!-- Footer Section End -->
 
     <!-- Js Plugins -->
+      <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+  <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/assets/client/js/jquery-3.3.1.min.js"></script>
     <script src="/assets/client/js/bootstrap.min.js"></script>
     <script src="/assets/client/js/jquery.magnific-popup.min.js"></script>

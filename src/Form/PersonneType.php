@@ -6,7 +6,7 @@ use App\Entity\Personne;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 class PersonneType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -24,7 +24,11 @@ class PersonneType extends AbstractType
             ->add('ign')
             ->add('isBanned')
             ->add('isVerified')
-            ->add('pprofile')
+            ->add('pprofile' , FileType::class, [
+                'label' => 'Photo de profil',
+                'mapped' => false,
+                'required' => false,
+            ])
             ->add('rolejavaClientId')
         ;
     }
