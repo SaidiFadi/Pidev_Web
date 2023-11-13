@@ -63,7 +63,50 @@ class Logement
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
      */
     private $image;
+    #[ORM\Entity(repositoryClass: LogementRepository::class)]
+/* class Logement
+{
+   
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $idlogement = null;
+   
+
+   
+    #[ORM\Column(length: 255)]
+    private ?string $adrl = null;
+
+   
+    #[ORM\Column]
+    private ?int $superfice = null;
+   
+
+
+    #[ORM\Column]
+    private ?int $loyer = null;
+  
+
     
+    #[ORM\Column(length: 255)]
+    private ?string $type= null;
+   
+
+    
+    #[ORM\Column(length: 20)]
+    private ?string $region = null;
+  
+
+    
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
+   
+    #[ORM\OneToMany(mappedBy: 'logement', targetEntity: Location::class)]
+    private Collection $location;
+    public function __construct()
+{
+    $this->location = new ArrayCollection();
+} */
     
 
     public function getIdlogement(): ?int

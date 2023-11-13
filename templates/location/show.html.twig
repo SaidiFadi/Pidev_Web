@@ -20,7 +20,7 @@
                 <td>{{ location.logement.adrl }}</td>
             </tr>
             <tr>
-                <th>Datedebut</th>
+                <th>Start Date</th>
                 <td>{{ location.datedebut ? location.datedebut|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
@@ -34,9 +34,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_location_index') }}">back to list</a>
+    <a href="{{ path('app_location_index') }}"class="primary-btn">Return</a>
 
-    <a href="{{ path('app_location_edit', {'idlocation': location.idlocation}) }}">edit</a>
+    <a href="{{ path('app_location_edit', {'idlocation': location.idlocation}) }}"class="primary-btn">Modifier</a>
 
     {{ include('location/_delete_form.html.twig') }}
 {% endblock %}

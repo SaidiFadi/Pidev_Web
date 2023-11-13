@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Form\Extension\Core\Type\EntityType;
+
 
 /**
  * Location
@@ -62,6 +64,33 @@ class Location
      * })
      */
     private $logement;
+//     use Doctrine\DBAL\Types\Types;
+// use Doctrine\ORM\Mapping as ORM;
+// use App\Repository\LocationRepository;
+// #[ORM\Entity(repositoryClass: BookRepository::class)]
+// class Location
+
+// {
+//     #[ORM\Id]
+//     #[ORM\GeneratedValue]
+//     #[ORM\Column]
+//     private ?int $idlocation = null;
+
+//     #[ORM\Column(length: 255)]
+//     private ?string $datedebut = null;
+
+//     #[ORM\Column(length: 255)]
+//     private ?string $datefin = null;
+
+    
+//     #[ORM\Column]
+//     private ?int $tarif = null;
+//     #[ORM\ManyToOne(inversedBy: 'location')]
+//     private ?Logement $logement = null;
+   
+//     #[ORM\ManyToOne(inversedBy: 'location')]
+//     private ?Personne $personne = null;
+
 
     public function getIdlocation(): ?int
     {

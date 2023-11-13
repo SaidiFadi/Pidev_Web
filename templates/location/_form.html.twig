@@ -1,4 +1,12 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+   {#<button class="primary-btn">{{ button_label|default('Save') }}</button>#} 
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">{{ button_label }}</button>
+        <a href="{{ path('app_location_index') }}" class="btn btn-secondary">Cancel</a>
+        
+        {% if is_granted('DELETE', location) %}
+            {{ include('location/_delete_form.html.twig') }}
+        {% endif %}
+    </div>
 {{ form_end(form) }}

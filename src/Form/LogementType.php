@@ -7,9 +7,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank; // Correct the use statement here
+use Symfony\Component\Validator\Constraints\NotBlank; 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Form\Extension\Core\Type\FileType; // Import the FileType
+use Symfony\Component\Form\Extension\Core\Type\FileType; 
 
 class LogementType extends AbstractType
 {
@@ -17,20 +17,24 @@ class LogementType extends AbstractType
     {
         $builder
             ->add('adrl', null, [
+                'label' => 'Adresse',
                 'constraints' => [
-                    new NotBlank(), // Corrected the namespace
+                
+                    new NotBlank(), 
                     new Assert\Length(['min' => 5, 'max' => 255]),
                 ],
             ])
             ->add('superfice', null, [
+                'label' => 'Superficie',
                 'constraints' => [
-                    new NotBlank(), // Corrected the namespace
+                    new NotBlank(), 
                     new Assert\Range(['min' => 0]),
                 ],
             ])
             ->add('loyer', null, [
+                'label' => 'Loyer',
                 'constraints' => [
-                    new NotBlank(), // Corrected the namespace
+                    new NotBlank(), 
                     new Assert\Range(['min' => 0]),
                 ],
             ])
@@ -42,11 +46,12 @@ class LogementType extends AbstractType
                     'Studio' => 'studio'
                 ],
                 'constraints' => [
-                    new NotBlank(), // Corrected the namespace
+                    new NotBlank(), 
                 ],
-                'placeholder' => 'Select a type', // Optional placeholder text
+                'placeholder' => 'Select a type', 
             ])
             ->add('region', ChoiceType::class, [
+                'label' => 'Region',
                 'choices' => [
                     'Ariana' => 'Ariana',
                     'Beja' => 'Beja',
@@ -59,18 +64,18 @@ class LogementType extends AbstractType
                     'Touzer' => 'Touzer'
                 ],
                 'constraints' => [
-                    new NotBlank(), // Corrected the namespace
+                    new NotBlank(), 
                 ],
-                'placeholder' => 'Select a region', // Optional placeholder text
+                'placeholder' => 'Select a region', 
             ])
             ->add('image', FileType::class, [
-                'required' => false, // Set to false to allow null values
-                'data_class' => null, // Set the data_class option to null
+                'required' => false, 
+                'data_class' => null, 
                 'constraints' => [
-                    new NotBlank(), // You can add NotBlank constraint if file is required
+                    new NotBlank(), 
                     new Assert\File([
-                        'maxSize' => '1024k', // Adjust as needed
-                        'mimeTypes' => ['image/*'], // Allow only image file types
+                        'maxSize' => '1024k', 
+                        'mimeTypes' => ['image/*'],
                     ]),
                 ],
             ]);
@@ -79,7 +84,7 @@ class LogementType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Logement::class,
-            'images_directory' => null, // Add this line
+            'images_directory' => null, 
         ]);
     }
 }
