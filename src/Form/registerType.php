@@ -44,7 +44,7 @@ class registerType extends AbstractType
                 'format' => 'yyyy-MM-dd',
                 'attr' => ['class' => 'js-datepicker'],
             ])
-     
+            ->add('adresse')
             ->add('tele')
             ->add('cin')
             ->add('ign')

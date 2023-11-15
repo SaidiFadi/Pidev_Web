@@ -12,7 +12,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use App\Form\registerType;
+// use Swift_Mailer;
+// use Swift_Message;
+// use Swift_SmtpTransport;
 
 #[Route('/personne')]
 class PersonneController extends AbstractController
@@ -102,6 +106,38 @@ class PersonneController extends AbstractController
         ]);
         
     }
+
+    // #[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET', 'POST'])]
+    // public function forgotPassword(Request $request, \Swift_Mailer $mailer): Response
+    // {
+    // // Handle the form submission and send a password reset email
+    // // Example: Send a password reset email
+    // if ($request->isMethod('POST')) {
+    //     $email = $request->request->get('email');
+    //     // Logic to generate a reset token and send an email
+
+    //     // Example using Swift Mailer
+    //     $message = (new \Swift_Message('Password Reset'))
+    //         ->setFrom('noreply@example.com')
+    //         ->setTo($email)
+    //         ->setBody(
+    //             $this->renderView(
+    //                 'emails/reset_password.html.twig',
+    //                 ['token' => $resetToken]
+    //             ),
+    //             'text/html'
+    //         );
+
+    //     $mailer->send($message);
+
+    //     // Flash message or redirect as needed
+    //     $this->addFlash('success', 'Check your email for the password reset link.');
+    //     return $this->redirectToRoute('app_login');
+    // }
+
+    // return $this->render('personne/forgotPassword.html.twig');
+    // }
+
 
     #[Route('/new', name: 'app_personne_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager , UserPasswordEncoderInterface $passwordEncoder): Response

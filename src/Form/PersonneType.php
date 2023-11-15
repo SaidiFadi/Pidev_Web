@@ -7,6 +7,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+
 class PersonneType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -17,7 +19,11 @@ class PersonneType extends AbstractType
             ->add('email')
             ->add('roles')
             ->add('password')
-            ->add('datenaise')
+            ->add('datenaise', DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'attr' => ['class' => 'js-datepicker'],
+            ])            
             ->add('adresse')
             ->add('tele')
             ->add('cin')
