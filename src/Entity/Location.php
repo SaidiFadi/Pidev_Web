@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -44,16 +43,6 @@ class Location
     private $tarif;
 
     /**
-     * @var \Personne
-     *
-     * @ORM\ManyToOne(targetEntity="Personne")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="personne", referencedColumnName="id")
-     * })
-     */
-    private $personne;
-
-    /**
      * @var \Logement
      *
      * @ORM\ManyToOne(targetEntity="Logement")
@@ -63,70 +52,15 @@ class Location
      */
     private $logement;
 
-    public function getIdlocation(): ?int
-    {
-        return $this->idlocation;
-    }
-
-    public function getDatedebut(): ?\DateTimeInterface
-    {
-        return $this->datedebut;
-    }
-
-    public function setDatedebut(\DateTimeInterface $datedebut): static
-    {
-        $this->datedebut = $datedebut;
-
-        return $this;
-    }
-
-    public function getDatefin(): ?\DateTimeInterface
-    {
-        return $this->datefin;
-    }
-
-    public function setDatefin(\DateTimeInterface $datefin): static
-    {
-        $this->datefin = $datefin;
-
-        return $this;
-    }
-
-    public function getTarif(): ?int
-    {
-        return $this->tarif;
-    }
-
-    public function setTarif(?int $tarif): static
-    {
-        $this->tarif = $tarif;
-
-        return $this;
-    }
-
-    public function getPersonne(): ?Personne
-    {
-        return $this->personne;
-    }
-
-    public function setPersonne(?Personne $personne): static
-    {
-        $this->personne = $personne;
-
-        return $this;
-    }
-
-    public function getLogement(): ?Logement
-    {
-        return $this->logement;
-    }
-
-    public function setLogement(?Logement $logement): static
-    {
-        $this->logement = $logement;
-
-        return $this;
-    }
+    /**
+     * @var \Personne
+     *
+     * @ORM\ManyToOne(targetEntity="Personne")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="personne", referencedColumnName="id")
+     * })
+     */
+    private $personne;
 
 
 }

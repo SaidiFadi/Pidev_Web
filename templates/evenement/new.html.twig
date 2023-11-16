@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}New Evenement{% endblock %}
+{% block stylesheets %}
+<link rel="stylesheet" href="../assets/client/css/bouton.css">
+{% endblock %}
+{% block title %}Nouveau Evenement{% endblock %}
 
 {% block body %}
-    <h1>Create new Evenement</h1>
+    <h1> Creér un nouveau évènement </h1>
 
     {{ include('evenement/_form.html.twig') }}
-
-    <a href="{{ path('app_evenement_index') }}">back to list</a>
+    <a href="{{ path('app_evenement_index') }}" class="btn btn-secondary custom-btn"> Retour à la liste </a>
 {% endblock %}

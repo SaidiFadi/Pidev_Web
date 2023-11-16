@@ -15,7 +15,7 @@ class PersonneType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('email')
-            ->add('roles')
+            ->add('role')
             ->add('password')
             ->add('datenaise')
             ->add('adresse')

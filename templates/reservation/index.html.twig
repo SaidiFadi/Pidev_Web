@@ -8,8 +8,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Idbillet</th>
-                <th>Idevt</th>
+                <th>IdBillet</th>
                 <th>Titreevt</th>
                 <th>Prixbillet</th>
                 <th>actions</th>
@@ -18,18 +17,17 @@
         <tbody>
         {% for reservation in reservations %}
             <tr>
-                <td>{{ reservation.idbillet }}</td>
-                <td>{{ reservation.idevt }}</td>
+                <td>{{ reservation.idBillet }}</td>
                 <td>{{ reservation.titreevt }}</td>
                 <td>{{ reservation.prixbillet }}</td>
                 <td>
-                    <a href="{{ path('app_reservation_show', {'idbillet': reservation.idbillet}) }}">show</a>
-                    <a href="{{ path('app_reservation_edit', {'idbillet': reservation.idbillet}) }}">edit</a>
+                    <a href="{{ path('app_reservation_show', {'idBillet': reservation.idBillet}) }}">show</a>
+                    <a href="{{ path('app_reservation_edit', {'idBillet': reservation.idBillet}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="5">no records found</td>
+                <td colspan="4">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

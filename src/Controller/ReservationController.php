@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Reservation;
+use App\Entity\ReservationRepository;
 use App\Form\ReservationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -10,18 +11,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 #[Route('/reservation')]
 class ReservationController extends AbstractController
 {
     #[Route('/', name: 'app_reservation_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(ReservationRepository $reservationRepository): Response
     {
-        $reservations = $entityManager
-            ->getRepository(Reservation::class)
-            ->findAll();
-
         return $this->render('reservation/index.html.twig', [
-            'reservations' => $reservations,
+            'reservations' => $reservationRepository->findAll(),
         ]);
     }
 
@@ -45,7 +43,7 @@ class ReservationController extends AbstractController
         ]);
     }
 
-    #[Route('/{idbillet}', name: 'app_reservation_show', methods: ['GET'])]
+    #[Route('/{idBillet}', name: 'app_reservation_show', methods: ['GET'])]
     public function show(Reservation $reservation): Response
     {
         return $this->render('reservation/show.html.twig', [
@@ -53,7 +51,7 @@ class ReservationController extends AbstractController
         ]);
     }
 
-    #[Route('/{idbillet}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
+    #[Route('/{idBillet}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ReservationType::class, $reservation);
@@ -71,10 +69,10 @@ class ReservationController extends AbstractController
         ]);
     }
 
-    #[Route('/{idbillet}', name: 'app_reservation_delete', methods: ['POST'])]
+    #[Route('/{idBillet}', name: 'app_reservation_delete', methods: ['POST'])]
     public function delete(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$reservation->getIdbillet(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$reservation->getIdBillet(), $request->request->get('_token'))) {
             $entityManager->remove($reservation);
             $entityManager->flush();
         }

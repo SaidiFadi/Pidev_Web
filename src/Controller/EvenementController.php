@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Evenement;
 use App\Form\EvenementType;
+use App\Repository\EvenementRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class EvenementController extends AbstractController
 {
     #[Route('/', name: 'app_evenement_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(EvenementRepository $evenementRepository): Response
     {
-        $evenements = $entityManager
-            ->getRepository(Evenement::class)
-            ->findAll();
-
         return $this->render('evenement/index.html.twig', [
-            'evenements' => $evenements,
+            'evenements' => $evenementRepository->findAll(),
         ]);
     }
 
@@ -80,5 +77,14 @@ class EvenementController extends AbstractController
         }
 
         return $this->redirectToRoute('app_evenement_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/front/{dEvt}', name: 'app_evenement_front', methods: ['GET'])]
+    public function front(EvenementRepository $evenementRepository): Response
+    {
+        return $this->render('evenement/front.html.twig', [
+            'evenements' => $evenementRepository->findAll(),
+        ]);
+        return $this->redirectToRoute('app_reservation_new');
     }
 }

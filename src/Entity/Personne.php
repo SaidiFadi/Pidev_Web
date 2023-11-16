@@ -1,124 +1,60 @@
 <?php
 
 namespace App\Entity;
-
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Boolean;
+use Symfony\Component\Validator\Constraints\Date;
 
-/**
- * Personne
- *
- * @ORM\Table(name="personne", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: PersonneRepository::class)]
 class Personne
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nom", type="string", length=55, nullable=true)
-     */
-    private $nom;
+    private ?int $id = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="prenom", type="string", length=55, nullable=true)
-     */
-    private $prenom;
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
-     */
-    private $email;
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="roles", type="string", length=255, nullable=true)
-     */
-    private $roles;
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
-     */
-    private $password;
+    #[ORM\Column(length: 255)]
+    private ?string $role = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="dateNaise", type="date", nullable=true)
-     */
-    private $datenaise;
+    #[ORM\Column(length: 255)]
+    private ?string $password = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
-     */
-    private $adresse;
+    #[ORM\Column]
+    private ?Date $datenaise = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tele", type="string", length=15, nullable=true)
-     */
-    private $tele;
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="cin", type="string", length=20, nullable=true)
-     */
-    private $cin;
+    #[ORM\Column(length: 255)]
+    private ?string $tele = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ign", type="string", length=255, nullable=true)
-     */
-    private $ign;
+    #[ORM\Column(length: 255)]
+    private ?string $cin = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_banned", type="boolean", nullable=true)
-     */
-    private $isBanned;
+    #[ORM\Column(length: 255)]
+    private ?string $ign = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=true)
-     */
-    private $isVerified;
+    #[ORM\Column(length: 255)]
+    private ?Boolean $isBanned;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Pprofile", type="string", length=255, nullable=true)
-     */
-    private $pprofile;
+    #[ORM\Column(length: 255)]
+    private ?boolean $isVerified = null;
+    
+    #[ORM\Column(length: 255)]
+    private ?string $pprofile = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="roleJava_client_id", type="integer", nullable=true, options={"default"="1"})
-     */
-    private $rolejavaClientId = 1;
+    #[ORM\Column]
+    private int $rolejavaClientId = 1;
 
     public function getId(): ?int
     {
@@ -130,7 +66,7 @@ class Personne
         return $this->nom;
     }
 
-    public function setNom(?string $nom): static
+    public function setNom(string $nom): static
     {
         $this->nom = $nom;
 
@@ -142,7 +78,7 @@ class Personne
         return $this->prenom;
     }
 
-    public function setPrenom(?string $prenom): static
+    public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
 
@@ -154,21 +90,21 @@ class Personne
         return $this->email;
     }
 
-    public function setEmail(?string $email): static
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getRoles(): ?string
+    public function getRole(): ?string
     {
-        return $this->roles;
+        return $this->role;
     }
 
-    public function setRoles(?string $roles): static
+    public function setRole(string $role): static
     {
-        $this->roles = $roles;
+        $this->role = $role;
 
         return $this;
     }
@@ -178,19 +114,19 @@ class Personne
         return $this->password;
     }
 
-    public function setPassword(?string $password): static
+    public function setPassword(string $password): static
     {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getDatenaise(): ?\DateTimeInterface
+    public function getDatenaise(): ?string
     {
         return $this->datenaise;
     }
 
-    public function setDatenaise(?\DateTimeInterface $datenaise): static
+    public function setDatenaise(string $datenaise): static
     {
         $this->datenaise = $datenaise;
 
@@ -202,7 +138,7 @@ class Personne
         return $this->adresse;
     }
 
-    public function setAdresse(?string $adresse): static
+    public function setAdresse(string $adresse): static
     {
         $this->adresse = $adresse;
 
@@ -214,7 +150,7 @@ class Personne
         return $this->tele;
     }
 
-    public function setTele(?string $tele): static
+    public function setTele(string $tele): static
     {
         $this->tele = $tele;
 
@@ -226,7 +162,7 @@ class Personne
         return $this->cin;
     }
 
-    public function setCin(?string $cin): static
+    public function setCin(string $cin): static
     {
         $this->cin = $cin;
 
@@ -238,31 +174,31 @@ class Personne
         return $this->ign;
     }
 
-    public function setIgn(?string $ign): static
+    public function setIgn(string $ign): static
     {
         $this->ign = $ign;
 
         return $this;
     }
 
-    public function isIsBanned(): ?bool
+    public function getIsBanned(): ?string
     {
         return $this->isBanned;
     }
 
-    public function setIsBanned(?bool $isBanned): static
+    public function setIsBanned(string $isBanned): static
     {
         $this->isBanned = $isBanned;
 
         return $this;
     }
 
-    public function isIsVerified(): ?bool
+    public function getIsVerified(): ?string
     {
         return $this->isVerified;
     }
 
-    public function setIsVerified(?bool $isVerified): static
+    public function setIsVerified(string $isVerified): static
     {
         $this->isVerified = $isVerified;
 
@@ -274,7 +210,7 @@ class Personne
         return $this->pprofile;
     }
 
-    public function setPprofile(?string $pprofile): static
+    public function setPprofile(string $pprofile): static
     {
         $this->pprofile = $pprofile;
 
@@ -286,12 +222,10 @@ class Personne
         return $this->rolejavaClientId;
     }
 
-    public function setRolejavaClientId(?int $rolejavaClientId): static
+    public function setRolejavaClientId(int $rolejavaClientId): static
     {
         $this->rolejavaClientId = $rolejavaClientId;
 
         return $this;
     }
-
-
 }

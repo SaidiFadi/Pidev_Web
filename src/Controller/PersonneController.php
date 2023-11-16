@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Personne;
+use App\Entity\PersonneRepository;
 use App\Form\PersonneType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,14 +15,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class PersonneController extends AbstractController
 {
     #[Route('/', name: 'app_personne_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(PersonneRepository $personneRepository): Response
     {
-        $personnes = $entityManager
-            ->getRepository(Personne::class)
-            ->findAll();
-
         return $this->render('personne/index.html.twig', [
-            'personnes' => $personnes,
+            'personnes' => $personneRepository->findAll(),
         ]);
     }
 

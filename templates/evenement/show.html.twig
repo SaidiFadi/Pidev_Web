@@ -8,39 +8,39 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Idevt</th>
+                <th>Id</th>
                 <td>{{ evenement.idevt }}</td>
             </tr>
             <tr>
-                <th>Titreevt</th>
+                <th>Titre </th>
                 <td>{{ evenement.titreevt }}</td>
             </tr>
             <tr>
-                <th>Nomorg</th>
+                <th>Nom de l'organisateur</th>
                 <td>{{ evenement.nomorg }}</td>
             </tr>
             <tr>
-                <th>Descevt</th>
+                <th>Description </th>
                 <td>{{ evenement.descevt }}</td>
             </tr>
             <tr>
-                <th>Hdevt</th>
-                <td>{{ evenement.hdevt ? evenement.hdevt|date('H:i:s') : '' }}</td>
+                <th> Heure de début </th>
+                <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Hfevt</th>
-                <td>{{ evenement.hfevt ? evenement.hfevt|date('H:i:s') : '' }}</td>
+                <th>Heure de la fin </th>
+                <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : '' }}</td>
             </tr>
             <tr>
-                <th>Adresseevt</th>
+                <th>Adresse </th>
                 <td>{{ evenement.adresseevt }}</td>
             </tr>
             <tr>
-                <th>Typeevt</th>
+                <th>Type </th>
                 <td>{{ evenement.typeevt }}</td>
             </tr>
             <tr>
-                <th>Dateevt</th>
+                <th>Date</th>
                 <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
@@ -50,9 +50,9 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_evenement_index') }}">back to list</a>
+    <a href="{{ path('app_evenement_index') }}"> Retour à l'accueil </a>
 
-    <a href="{{ path('app_evenement_edit', {'idevt': evenement.idevt}) }}">edit</a>
+    <a href="{{ path('app_evenement_edit', {'idevt': evenement.idevt}) }}"> Modifier </a>
 
     {{ include('evenement/_delete_form.html.twig') }}
 {% endblock %}

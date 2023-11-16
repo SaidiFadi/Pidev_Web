@@ -6,6 +6,12 @@ use App\Entity\Evenement;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TimeType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\DataTransformerInterface;
+
 
 class EvenementType extends AbstractType
 {
@@ -15,11 +21,19 @@ class EvenementType extends AbstractType
             ->add('titreevt')
             ->add('nomorg')
             ->add('descevt')
-            ->add('hdevt')
-            ->add('hfevt')
+            ->add('hdEvt', TimeType::class, [
+                'widget' => 'single_text',
+            ])
+            ->add('hfEvt', TimeType::class, [
+                'widget' => 'single_text',
+            ])
             ->add('adresseevt')
             ->add('typeevt')
-            ->add('dateevt')
+            ->add('dateEvt', DateType::class, [
+                'widget' => 'single_text',
+                'format' => 'yyyy-MM-dd',
+                'attr' => ['class' => 'js-datepicker'],
+            ])
             ->add('vote')
         ;
     }

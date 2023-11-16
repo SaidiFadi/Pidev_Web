@@ -2,201 +2,177 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EvenementRepository;
+use Doctrine\DBAL\Types\Types;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Evenement
- *
- * @ORM\Table(name="evenement")
- * @ORM\Entity
- */
+
+
+#[ORM\Entity(repositoryClass: EvenementRepository::class)]
 class Evenement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idEvt", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idevt;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titreEvt", type="string", length=255, nullable=false)
-     */
-    private $titreevt;
+    private ?int $idevt = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nomOrg", type="string", length=255, nullable=false)
-     */
-    private $nomorg;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 5, minMessage: "Le titre doit être composé au minimum de 5 caractères")]
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descEvt", type="string", length=255, nullable=false)
-     */
-    private $descevt;
+    private ?string $titreevt = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="hdEvt", type="time", nullable=false)
-     */
-    private $hdevt;
+    #[ORM\Column(length: 255)]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+$/',
+        message: 'Le nom de l"organisateur ne doit contenir que des lettres'
+    )]
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="hfEvt", type="time", nullable=false)
-     */
-    private $hfevt;
+    private ?string $nomorg = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresseEvt", type="string", length=255, nullable=false)
-     */
-    private $adresseevt;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10,minMessage: "La description doit etre composé au minimum de 10 carateres")]
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="typeEvt", type="string", length=255, nullable=false)
-     */
-    private $typeevt;
+    private ?string $descevt = null; 
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateEvt", type="date", nullable=false)
-     */
-    private $dateevt;
+    #[ORM\Column(name: "hdEvt", type: "time", nullable: false)]
+     private ?\DateTime $hdEvt;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="vote", type="integer", nullable=false)
-     */
-    private $vote;
+    #[ORM\Column(name: "hfEvt", type: "time", nullable: false)]
+    #[Assert\GreaterThan(propertyPath: "hdEvt", message: "L'heure de fin doit être supérieure à l'heure de début .")]
 
-    public function getIdevt(): ?int
-    {
-        return $this->idevt;
-    }
+    private ?\DateTime $hfEvt;
 
-    public function getTitreevt(): ?string
-    {
-        return $this->titreevt;
-    }
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:' L"adresse est obligatoire')]
+     private ?string $adresseevt;
 
-    public function setTitreevt(string $titreevt): static
-    {
-        $this->titreevt = $titreevt;
+     #[ORM\Column(type: 'string', length: 255, nullable: false, options: ['default' => 'Evènement Public'])]
 
-        return $this;
-    }
+     private ?string $typeevt = null; 
 
-    public function getNomorg(): ?string
-    {
-        return $this->nomorg;
-    }
+     #[ORM\Column(type: Types::DATE_MUTABLE)]
+     #[Assert\GreaterThanOrEqual("today", message: "Veuillez saisir une date égale ou ultérieure à celle d'aujourd'hui .")]
 
-    public function setNomorg(string $nomorg): static
-    {
-        $this->nomorg = $nomorg;
+     private ?\DateTimeInterface $dateevt = null;
 
-        return $this;
-    }
+     #[ORM\Column]
 
-    public function getDescevt(): ?string
-    {
-        return $this->descevt;
-    }
+     private ?int $vote = null;
 
-    public function setDescevt(string $descevt): static
-    {
-        $this->descevt = $descevt;
+     public function getIdevt(): ?int
+     {
+         return $this->idevt;
+     }
 
-        return $this;
-    }
+     public function getTitreevt(): ?string
+     {
+         return $this->titreevt;
+     }
 
-    public function getHdevt(): ?\DateTimeInterface
-    {
-        return $this->hdevt;
-    }
+     public function setTitreevt(string $titreevt): static
+     {
+         $this->titreevt = $titreevt;
 
-    public function setHdevt(\DateTimeInterface $hdevt): static
-    {
-        $this->hdevt = $hdevt;
+         return $this;
+     }
 
-        return $this;
-    }
+     public function getNomorg(): ?string
+     {
+         return $this->nomorg;
+     }
 
-    public function getHfevt(): ?\DateTimeInterface
-    {
-        return $this->hfevt;
-    }
+     public function setNomorg(string $nomorg): static
+     {
+         $this->nomorg = $nomorg;
 
-    public function setHfevt(\DateTimeInterface $hfevt): static
-    {
-        $this->hfevt = $hfevt;
+         return $this;
+     }
 
-        return $this;
-    }
+     public function getDescevt(): ?string
+     {
+         return $this->descevt;
+     }
 
-    public function getAdresseevt(): ?string
-    {
-        return $this->adresseevt;
-    }
+     public function setDescevt(string $descevt): static
+     {
+         $this->descevt = $descevt;
 
-    public function setAdresseevt(string $adresseevt): static
-    {
-        $this->adresseevt = $adresseevt;
+         return $this;
+     }
 
-        return $this;
-    }
+     public function getHdEvt(): ?\DateTimeInterface
+     {
+         return $this->hdEvt;
+     }
 
-    public function getTypeevt(): ?string
-    {
-        return $this->typeevt;
-    }
+     public function setHdEvt(\DateTimeInterface $hdEvt): static
+     {
+         $this->hdEvt = $hdEvt;
 
-    public function setTypeevt(string $typeevt): static
-    {
-        $this->typeevt = $typeevt;
+         return $this;
+     }
 
-        return $this;
-    }
+     public function getHfEvt(): ?\DateTimeInterface
+     {
+         return $this->hfEvt;
+     }
 
-    public function getDateevt(): ?\DateTimeInterface
-    {
-        return $this->dateevt;
-    }
+     public function setHfEvt(\DateTimeInterface $hfEvt): static
+     {
+         $this->hfEvt = $hfEvt;
 
-    public function setDateevt(\DateTimeInterface $dateevt): static
-    {
-        $this->dateevt = $dateevt;
+         return $this;
+     }
 
-        return $this;
-    }
+     public function getAdresseevt(): ?string
+     {
+         return $this->adresseevt;
+     }
 
-    public function getVote(): ?int
-    {
-        return $this->vote;
-    }
+     public function setAdresseevt(string $adresseevt): static
+     {
+         $this->adresseevt = $adresseevt;
 
-    public function setVote(int $vote): static
-    {
-        $this->vote = $vote;
+         return $this;
+     }
 
-        return $this;
-    }
+     public function getTypeevt(): ?string
+     {
+         return $this->typeevt;
+     }
 
+     public function setTypeevt(string $typeevt): static
+     {
+         $this->typeevt = $typeevt;
+
+         return $this;
+     }
+
+     public function getDateevt(): ?\DateTimeInterface
+     {
+         return $this->dateevt;
+     }
+
+     public function setDateevt(\DateTimeInterface $dateevt): static
+     {
+         $this->dateevt = $dateevt;
+
+         return $this;
+     }
+
+     public function getVote(): ?int
+     {
+         return $this->vote;
+     }
+
+     public function setVote(int $vote): static
+     {
+         $this->vote = $vote;
+
+         return $this;
+     }
 
 }
