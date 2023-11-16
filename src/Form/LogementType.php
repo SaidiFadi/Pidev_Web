@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\FileType; 
 
+
 class LogementType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

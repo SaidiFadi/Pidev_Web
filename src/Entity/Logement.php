@@ -1,113 +1,51 @@
 <?php
 
 namespace App\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\LogementRepository;
-// #[ORM\Entity(repositoryClass: LogementRepository::class)]
-/**
- * Logement
- *
- * @ORM\Table(name="logement")
- * @ORM\Entity
- */
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+
+
+#[ORM\Entity(repositoryClass: LogementRepository::class)]
+
 class Logement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idLogement", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "idLogement", type: "integer", nullable: false)]
     private $idlogement;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adrL", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "adrL", type: "string", length: 255, nullable: false)]
+    #[Assert\NotBlank(message: "Adresse de logement is required")]
     private $adrl;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="superfice", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "superfice", type: "integer", nullable: false)]
+    #[Assert\NotBlank(message: "Superfice is required")]
+    #[Assert\GreaterThan(value: 0, message: "Superfice should be greater than 0")]
+
     private $superfice;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="loyer", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "loyer", type: "integer", nullable: false)]
+    #[Assert\NotBlank(message: "Loyer is required")]
+    #[Assert\GreaterThan(value: 0, message: "Loyer should be greater than 0")]
+
     private $loyer;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", length=0, nullable=false)
-     */
+    #[ORM\Column(name: "type", type: "string", length: 0, nullable: false)]
+   #[Assert\NotBlank(message: "Type is required")]
     private $type;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="region", type="string", length=20, nullable=false)
-     */
+    #[ORM\Column(name: "region", type: "string", length: 20, nullable: false)]
+    #[Assert\NotBlank(message: "Region is required")]
     private $region;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="image", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "image", type: "string", length: 255, nullable: true)]
+    #[Assert\NotBlank(message: "Image is required")]
+    #[Assert\File(maxSize: "5M", mimeTypes: ["image/jpeg", "image/png"], mimeTypesMessage: "Please upload a valid image (JPEG or PNG)")]
+
     private $image;
-    #[ORM\Entity(repositoryClass: LogementRepository::class)]
-/* class Logement
-{
-   
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $idlogement = null;
-   
-
-   
-    #[ORM\Column(length: 255)]
-    private ?string $adrl = null;
-
-   
-    #[ORM\Column]
-    private ?int $superfice = null;
-   
-
-
-    #[ORM\Column]
-    private ?int $loyer = null;
-  
-
-    
-    #[ORM\Column(length: 255)]
-    private ?string $type= null;
-   
-
-    
-    #[ORM\Column(length: 20)]
-    private ?string $region = null;
-  
-
-    
-    #[ORM\Column(length: 255)]
-    private ?string $image = null;
-   
-    #[ORM\OneToMany(mappedBy: 'logement', targetEntity: Location::class)]
-    private Collection $location;
-    public function __construct()
-{
-    $this->location = new ArrayCollection();
-} */
-    
 
     public function getIdlogement(): ?int
     {
@@ -185,6 +123,4 @@ class Logement
 
         return $this;
     }
-
-
 }

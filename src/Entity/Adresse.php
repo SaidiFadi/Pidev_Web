@@ -4,59 +4,29 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Adresse
- *
- * @ORM\Table(name="adresse", indexes={@ORM\Index(name="personne_id", columns={"personneId"})})
- * @ORM\Entity
- */
+use App\Repository\AdresseRepository;
+#[ORM\Entity(repositoryClass: AdresseRepository::class)]
 class Adresse
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
     private $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="street", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "street", type: "string", length: 255, nullable: true)]
     private $street;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="city", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "city", type: "string", length: 255, nullable: true)]
     private $city;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="postalCode", type="string", length=10, nullable=true)
-     */
+    #[ORM\Column(name: "postalCode", type: "string", length: 10, nullable: true)]
     private $postalcode;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="country", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "country", type: "string", length: 255, nullable: true)]
     private $country;
 
-    /**
-     * @var \Personne
-     *
-     * @ORM\ManyToOne(targetEntity="Personne")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="personneId", referencedColumnName="id")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: Personne::class)]
+    #[ORM\JoinColumn(name: "personneId", referencedColumnName: "id")]
     private $personneid;
 
     public function getId(): ?int
@@ -123,6 +93,5 @@ class Adresse
 
         return $this;
     }
-
 
 }

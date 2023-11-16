@@ -4,85 +4,41 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\EvenementRepository;
+#[ORM\Entity(repositoryClass: EvenementRepository::class)]
 
-/**
- * Evenement
- *
- * @ORM\Table(name="evenement")
- * @ORM\Entity
- */
 class Evenement
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idEvt", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "idEvt", type: "integer", nullable: false)]
     private $idevt;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titreEvt", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "titreEvt", type: "string", length: 255, nullable: false)]
     private $titreevt;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nomOrg", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "nomOrg", type: "string", length: 255, nullable: false)]
     private $nomorg;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descEvt", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "descEvt", type: "string", length: 255, nullable: false)]
     private $descevt;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="hdEvt", type="time", nullable=false)
-     */
+    #[ORM\Column(name: "hdEvt", type: "time", nullable: false)]
     private $hdevt;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="hfEvt", type="time", nullable=false)
-     */
+    #[ORM\Column(name: "hfEvt", type: "time", nullable: false)]
     private $hfevt;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="adresseEvt", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "adresseEvt", type: "string", length: 255, nullable: false)]
     private $adresseevt;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="typeEvt", type="string", length=255, nullable=false)
-     */
+    #[ORM\Column(name: "typeEvt", type: "string", length: 255, nullable: false)]
     private $typeevt;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateEvt", type="date", nullable=false)
-     */
+    #[ORM\Column(name: "dateEvt", type: "date", nullable: false)]
     private $dateevt;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="vote", type="integer", nullable=false)
-     */
+    #[ORM\Column(name: "vote", type: "integer", nullable: false)]
     private $vote;
 
     public function getIdevt(): ?int
@@ -197,6 +153,4 @@ class Evenement
 
         return $this;
     }
-
-
 }

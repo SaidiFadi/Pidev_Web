@@ -23,7 +23,7 @@ class LocationType extends AbstractType
     {
         $builder
         ->add('datedebut', DateType::class, [
-            'label' => 'Start Date', // Customize the label here
+            'label' => 'Start Date', 
             'constraints' => [
                 new NotBlank(),
               
@@ -50,7 +50,9 @@ class LocationType extends AbstractType
             'label' => 'Locataire',
             'constraints' => [
                 new NotBlank(),
+               
             ],
+            'placeholder' => 'Select a locataire', 
         ])
         ->add('logement', EntityType::class, [
             'class' => Logement::class,
@@ -58,7 +60,9 @@ class LocationType extends AbstractType
             'label' => 'Hebergement',
             'constraints' => [
                 new NotBlank(),
+                
             ],
+            'placeholder' => 'Select a Hebergement', 
         ]);
     }
 }

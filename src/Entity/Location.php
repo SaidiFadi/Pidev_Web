@@ -1,12 +1,10 @@
 <?php
 
 namespace App\Entity;
+use App\Repository\LocationRepository;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Form\Extension\Core\Type\EntityType;
-
-
+#[ORM\Entity(repositoryClass: LocationRepository::class)]
 /**
  * Location
  *
@@ -15,82 +13,34 @@ use Symfony\Component\Form\Extension\Core\Type\EntityType;
  */
 class Location
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idLocation", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "idLocation", type: "integer", nullable: false)]
     private $idlocation;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateDebut", type="date", nullable=false)
-     */
-    private $datedebut;
+    #[ORM\Column(type: "datetime")]
+    #[Assert\NotBlank(message: "Start date is required")]
+    private ?\DateTimeInterface $datedebut = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateFin", type="date", nullable=false)
-     */
-    private $datefin;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="tarif", type="integer", nullable=true)
-     */
-    private $tarif;
-
-    /**
-     * @var \Personne
-     *
-     * @ORM\ManyToOne(targetEntity="Personne")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="personne", referencedColumnName="id")
-     * })
-     */
-    private $personne;
-
-    /**
-     * @var \Logement
-     *
-     * @ORM\ManyToOne(targetEntity="Logement")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="logement", referencedColumnName="idLogement")
-     * })
-     */
-    private $logement;
-//     use Doctrine\DBAL\Types\Types;
-// use Doctrine\ORM\Mapping as ORM;
-// use App\Repository\LocationRepository;
-// #[ORM\Entity(repositoryClass: BookRepository::class)]
-// class Location
-
-// {
-//     #[ORM\Id]
-//     #[ORM\GeneratedValue]
-//     #[ORM\Column]
-//     private ?int $idlocation = null;
-
-//     #[ORM\Column(length: 255)]
-//     private ?string $datedebut = null;
-
-//     #[ORM\Column(length: 255)]
-//     private ?string $datefin = null;
+    #[ORM\Column(type: "datetime")]
+    #[Assert\NotBlank(message: "End date is required")]
+    private ?\DateTimeInterface $datefin = null;
 
     
-//     #[ORM\Column]
-//     private ?int $tarif = null;
-//     #[ORM\ManyToOne(inversedBy: 'location')]
-//     private ?Logement $logement = null;
-   
-//     #[ORM\ManyToOne(inversedBy: 'location')]
-//     private ?Personne $personne = null;
+    #[ORM\Column]
+    #[Assert\NotBlank(message: "Adresse de logement is required")]
+    private ?int $tarif = null;
 
+    #[ORM\ManyToOne(targetEntity: Personne::class)]
+    
+        #[ORM\JoinColumn(name: "personne", referencedColumnName: "id")]
+    
+    private $personne;
+
+    #[ORM\ManyToOne(targetEntity: Logement::class)]
+    #[ORM\JoinColumn(name: "logement", referencedColumnName: "idLogement")]
+    
+    private $logement;
 
     public function getIdlocation(): ?int
     {
@@ -105,10 +55,10 @@ class Location
     public function setDatedebut(\DateTimeInterface $datedebut): static
     {
         $this->datedebut = $datedebut;
-
         return $this;
     }
 
+    // Getter and setter for datefin
     public function getDatefin(): ?\DateTimeInterface
     {
         return $this->datefin;
@@ -117,16 +67,14 @@ class Location
     public function setDatefin(\DateTimeInterface $datefin): static
     {
         $this->datefin = $datefin;
-
         return $this;
     }
-
     public function getTarif(): ?int
     {
         return $this->tarif;
     }
 
-    public function setTarif(?int $tarif): static
+    public function setTarif(int $tarif): static
     {
         $this->tarif = $tarif;
 
@@ -156,6 +104,4 @@ class Location
 
         return $this;
     }
-
-
 }

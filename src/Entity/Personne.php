@@ -5,119 +5,55 @@ namespace App\Entity;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Personne
- *
- * @ORM\Table(name="personne", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
- * @ORM\Entity
- */
+use App\Repository\PersonneRepository;
+#[ORM\Entity(repositoryClass: PersonneRepository::class)]
 class Personne
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
     private $id;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nom", type="string", length=55, nullable=true)
-     */
+    #[ORM\Column(name: "nom", type: "string", length: 55, nullable: true)]
     private $nom;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="prenom", type="string", length=55, nullable=true)
-     */
+    #[ORM\Column(name: "prenom", type: "string", length: 55, nullable: true)]
     private $prenom;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "email", type: "string", length: 255, nullable: true)]
     private $email;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="roles", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "roles", type: "string", length: 255, nullable: true)]
     private $roles;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "password", type: "string", length: 255, nullable: true)]
     private $password;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="dateNaise", type="date", nullable=true)
-     */
+    #[ORM\Column(name: "dateNaise", type: "date", nullable: true)]
     private $datenaise;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "adresse", type: "string", length: 255, nullable: true)]
     private $adresse;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tele", type="string", length=15, nullable=true)
-     */
+    #[ORM\Column(name: "tele", type: "string", length: 15, nullable: true)]
     private $tele;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="cin", type="string", length=20, nullable=true)
-     */
+    #[ORM\Column(name: "cin", type: "string", length: 20, nullable: true)]
     private $cin;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ign", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "ign", type: "string", length: 255, nullable: true)]
     private $ign;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_banned", type="boolean", nullable=true)
-     */
+    #[ORM\Column(name: "is_banned", type: "boolean", nullable: true)]
     private $isBanned;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=true)
-     */
+    #[ORM\Column(name: "is_verified", type: "boolean", nullable: true)]
     private $isVerified;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Pprofile", type="string", length=255, nullable=true)
-     */
+    #[ORM\Column(name: "Pprofile", type: "string", length: 255, nullable: true)]
     private $pprofile;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="roleJava_client_id", type="integer", nullable=true, options={"default"="1"})
-     */
+    #[ORM\Column(name: "roleJava_client_id", type: "integer", nullable: true, options: ["default" => 1])]
     private $rolejavaClientId = 1;
 
     public function getId(): ?int
@@ -292,6 +228,5 @@ class Personne
 
         return $this;
     }
-
-
 }
+
