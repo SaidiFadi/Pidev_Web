@@ -1,0 +1,47 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}Evenement{% endblock %}
+
+{% block body %}
+    <h1>Evenement</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Titre </th>
+                <td>{{ evenement.titreevt|upper }}</td>
+            </tr>
+            <tr>
+                <th> Nom de l'organisateur</th>
+                <td>{{ evenement.nomorg }}</td>
+            </tr>
+            <tr>
+                <th>Description </th>
+                <td>{{ evenement.descevt }}</td>
+            </tr>
+            <tr>
+                <th> Heure de début </th>
+                <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Heure de la fin </th>
+                <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Adresse </th>
+                <td>{{ evenement.adresseevt }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Vote</th>
+                <td>{{ evenement.vote }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_evenement_front') }}"> Retour à l'accueil </a>
+
+{% endblock %}
