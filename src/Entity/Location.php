@@ -32,8 +32,7 @@ class Location
     private ?int $tarif = null;
 
     #[ORM\ManyToOne(targetEntity: Personne::class)]
-    
-        #[ORM\JoinColumn(name: "personne", referencedColumnName: "id")]
+     #[ORM\JoinColumn(name: "personne", referencedColumnName: "id")]
     
     private $personne;
 
@@ -58,7 +57,6 @@ class Location
         return $this;
     }
 
-    // Getter and setter for datefin
     public function getDatefin(): ?\DateTimeInterface
     {
         return $this->datefin;

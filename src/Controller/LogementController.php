@@ -31,22 +31,16 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
     $logement = new Logement();
     $form = $this->createForm(LogementType::class, $logement);
     $form->handleRequest($request);
+    $imagedirectory=$this->getParameter('kernel.project_dir').'/public/uploads';
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Handle file upload
         $imageFile = $form->get('image')->getData();
 
         if ($imageFile) {
             $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
             $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
 
-            // Move the file to the directory where images are stored
-            $imageFile->move(
-                $this->getParameter('images_directory'), // This should point to a directory within your public directory
-                $newFilename
-            );
-
-            // Save the file name in the entity
+            $imageFile->move($imagedirectory, $newFilename  );
             $logement->setImage($newFilename);
         }
 
@@ -70,23 +64,44 @@ public function new(Request $request, EntityManagerInterface $entityManager): Re
         ]);
     }
 
-    #[Route('/{idlogement}/edit', name: 'app_logement_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Logement $logement, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(LogementType::class, $logement);
-        $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+#[Route('/{idlogement}/edit', name: 'app_logement_edit', methods: ['GET', 'POST'])]
+public function edit(Request $request, Logement $logement, EntityManagerInterface $entityManager): Response
+{
+    $form = $this->createForm(LogementType::class, $logement);
+    $form->handleRequest($request);
+    $imagedirectory = $this->getParameter('kernel.project_dir') . '/public/uploads';
 
-            return $this->redirectToRoute('app_logement_index', [], Response::HTTP_SEE_OTHER);
+    if ($form->isSubmitted() && $form->isValid()) {
+        $imageFile = $form->get('image')->getData();
+
+        if ($imageFile) {
+            
+            $oldImage = $logement->getImage();
+            if ($oldImage) {
+                $oldImagePath = $imagedirectory . '/' . $oldImage;
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+
+            $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+            $imageFile->move($imagedirectory, $newFilename);
+            $logement->setImage($newFilename);
         }
 
-        return $this->renderForm('logement/edit.html.twig', [
-            'logement' => $logement,
-            'form' => $form,
-        ]);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_logement_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    return $this->renderForm('logement/edit.html.twig', [
+        'logement' => $logement,
+        'form' => $form,
+    ]);
+}
+
 
     #[Route('/{idlogement}', name: 'app_logement_delete', methods: ['POST'])]
     public function delete(Request $request, Logement $logement, EntityManagerInterface $entityManager): Response

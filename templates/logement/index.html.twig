@@ -28,7 +28,7 @@
                     <td>{{ logement.loyer }}</td>
                     <td>{{ logement.type }}</td>
                     <td>{{ logement.region }}</td>
-                    <td><img src="{{ asset(logement.image) }}" alt="Image"></td>
+                    <td><img src="{{ asset('uploads/' ~ logement.image) }}" alt="Logement Image" style="max-width: 100px; max-height: 100px;" class="img-fluid"></td>
                     <td>
                        
                         <a href="{{ path('app_logement_show', {'idlogement': logement.idlogement}) }}"  class="btn btn-primary">Show</a>

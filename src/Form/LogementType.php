@@ -19,25 +19,15 @@ class LogementType extends AbstractType
         $builder
             ->add('adrl', null, [
                 'label' => 'Adresse',
-                'constraints' => [
                 
-                    new NotBlank(), 
-                    new Assert\Length(['min' => 5, 'max' => 255]),
-                ],
             ])
             ->add('superfice', null, [
                 'label' => 'Superficie',
-                'constraints' => [
-                    new NotBlank(), 
-                    new Assert\Range(['min' => 0]),
-                ],
+               
             ])
             ->add('loyer', null, [
                 'label' => 'Loyer',
-                'constraints' => [
-                    new NotBlank(), 
-                    new Assert\Range(['min' => 0]),
-                ],
+             
             ])
             ->add('type', ChoiceType::class, [
                 'choices' => [

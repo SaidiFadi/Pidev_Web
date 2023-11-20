@@ -24,25 +24,15 @@ class LocationType extends AbstractType
         $builder
         ->add('datedebut', DateType::class, [
             'label' => 'Start Date', 
-            'constraints' => [
-                new NotBlank(),
-              
-            ],
+           
         ])
         ->add('datefin', DateType::class, [
             'label' => 'End Date',
-            'constraints' => [
-                new NotBlank(),
-                
-            ],
+           
         ])
         ->add('tarif', IntegerType::class, [
             'label' => 'Tarif',
-            'constraints' => [
-                new NotBlank(),
-                new Type(['type' => 'numeric']),
-                new Range(['min' => 0]),
-            ],
+          
         ])
         ->add('personne', EntityType::class, [
             'class' => Personne::class,
