@@ -28,7 +28,6 @@ class Location
 
     
     #[ORM\Column]
-    #[Assert\NotBlank(message: "Adresse de logement is required")]
     private ?int $tarif = null;
 
     #[ORM\ManyToOne(targetEntity: Personne::class)]
@@ -102,4 +101,16 @@ class Location
 
         return $this;
     }
+    public function validateDates(ExecutionContextInterface $context, $payload)
+    {
+        // Check for conflicting reservations
+        $conflictingReservations = $this->logement->getConflictingReservations($this->datedebut, $this->datefin, $this->idlocation);
+
+        if ($conflictingReservations) {
+            $context->buildViolation('This accommodation is already booked during the selected dates.')
+                ->atPath('datedebut')
+                ->addViolation();
+        }
+    }
+
 }

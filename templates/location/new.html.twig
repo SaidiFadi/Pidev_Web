@@ -21,10 +21,7 @@
                             {{ form_row(form.datefin, {'attr': {'class': 'form-control'}}) }}
                         </div>
 
-                        <div class="form-group">
-                            
-                            {{ form_row(form.tarif, {'attr': {'class': 'form-control'}}) }}
-                        </div>
+                     
 
                         <div class="form-group">
                            
@@ -38,7 +35,7 @@
 
                         <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="{{ path('app_location_index') }}" class="btn btn-secondary">Back to List</a>
+                            <a href="{{ path('app_logement_client_index') }}" class="btn btn-secondary">Back to List</a>
                         </div>
 
                         {{ form_end(form) }}

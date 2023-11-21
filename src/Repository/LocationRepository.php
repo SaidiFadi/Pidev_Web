@@ -45,4 +45,21 @@ class LocationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findConflictingReservations($logement, $datedebut, $datefin, $currentLocationId = null)
+{
+    $queryBuilder = $this->createQueryBuilder('l')
+        ->andWhere('l.logement = :logement')
+        ->andWhere('l.datefin > :datedebut')
+        ->andWhere('l.datedebut < :datefin')
+        ->setParameter('logement', $logement)
+        ->setParameter('datedebut', $datedebut)
+        ->setParameter('datefin', $datefin);
+
+    if ($currentLocationId) {
+        $queryBuilder->andWhere('l.idlocation != :currentLocationId')
+            ->setParameter('currentLocationId', $currentLocationId);
+    }
+
+    return $queryBuilder->getQuery()->getResult();
+}
 }

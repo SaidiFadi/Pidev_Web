@@ -4,11 +4,60 @@
 
 {% block body %}
     <h1>Hebergement</h1>
-  <a href="{{ path('app_logement_new') }}"  class="btn btn-primary">Ajouter Hebergement</a>
 
+  {# Search Form #}
+<form method="GET" action="{{ path('app_logement_index') }}">
+    <input type="text" name="adrl" placeholder="Search by Adresse">
+    <input type="text" name="superfice" placeholder="Search by Superfice">
+    <input type="text" name="loyer" placeholder="Search by Loyer">
+
+    {# Add ChoiceType for Region #}
+    <select name="region">
+        <option value="" selected disabled>Choose Region</option>
+         <option value="Ariana">Ariana</option>
+    <option value="Beja">Beja</option>
+    <option value="Ben Arous">Ben Arous</option>
+    <option value="Bizerte">Bizerte</option>
+    <option value="Gabes">Gabes</option>
+    <option value="Gafsa">Gafsa</option>
+    <option value="Jendouba">Jendouba</option>
+    <option value="Kairouan">Kairouan</option>
+    <option value="Kasserine">Kasserine</option>
+    <option value="Kebili">Kebili</option>
+    <option value="Manouba">Manouba</option>
+    <option value="Medenine">Medenine</option>
+    <option value="Monastir">Monastir</option>
+    <option value="Nabeul">Nabeul</option>
+    <option value="Sfax">Sfax</option>
+    <option value="Sidi Bouzid">Sidi Bouzid</option>
+    <option value="Siliana">Siliana</option>
+    <option value="Sousse">Sousse</option>
+    <option value="Tataouine">Tataouine</option>
+    <option value="Tozeur">Tozeur</option>
+    <option value="Tunis">Tunis</option>
+    <option value="Zaghouan">Zaghouan</option>
+    </select>
+
+    {# Add ChoiceType for Type #}
+    <select name="type">
+        <option value="" selected disabled>Choose Type</option>
+        <option value="appartement">Appartement</option>
+        <option value="maison">Maison</option>
+        <option value="hotel">Hotel</option>
+        <option value="studio">Studio</option>
+        <!-- Add more options for other types -->
+    </select>
+
+    <button type="submit">Search</button>
+</form>
+
+    <a href="{{ path('app_logement_new') }}" class="btn btn-primary">Ajouter Hebergement</a>
+
+    {# Results Table #}
     <table class="table">
         <thead>
             <tr>
+                <!-- Add table headers for other fields as needed -->
                 <th>Id de logement</th>
                 <th>Adresse de logement</th>
                 <th>Superficie</th>
@@ -20,28 +69,29 @@
             </tr>
         </thead>
         <tbody>
-            {% for logement in logements %}
-                <tr>
-                    <td>{{ logement.idlogement }}</td>
-                    <td>{{ logement.adrl }}</td>
-                    <td>{{ logement.superfice }}</td>
-                    <td>{{ logement.loyer }}</td>
-                    <td>{{ logement.type }}</td>
-                    <td>{{ logement.region }}</td>
-                    <td><img src="{{ asset('uploads/' ~ logement.image) }}" alt="Logement Image" style="max-width: 100px; max-height: 100px;" class="img-fluid"></td>
-                    <td>
-                       
-                        <a href="{{ path('app_logement_show', {'idlogement': logement.idlogement}) }}"  class="btn btn-primary">Show</a>
-                        <a href="{{ path('app_logement_edit', {'idlogement': logement.idlogement}) }}"  class="btn btn-primary">Edit</a>
-                    </td>
-                </tr>
+            {% if logements is defined and logements|length > 0 %}
+                {% for logement in logements %}
+                    <tr>
+                        <td>{{ logement.idlogement }}</td>
+                        <td>{{ logement.adrl }}</td>
+                        <td>{{ logement.superfice }}</td>
+                        <td>{{ logement.loyer }}</td>
+                        <td>{{ logement.type }}</td>
+                        <td>{{ logement.region }}</td>
+                        <td>
+                            <img src="{{ asset('uploads/' ~ logement.image) }}" alt="Logement Image" style="max-width: 100px; max-height: 100px;" class="img-fluid">
+                        </td>
+                        <td>
+                            <a href="{{ path('app_logement_show', {'idlogement': logement.idlogement}) }}" class="btn btn-primary">Show</a>
+                            <a href="{{ path('app_logement_edit', {'idlogement': logement.idlogement}) }}" class="btn btn-primary">Edit</a>
+                        </td>
+                    </tr>
+                {% endfor %}
             {% else %}
                 <tr>
                     <td colspan="8">No records found</td>
                 </tr>
-            {% endfor %}
+            {% endif %}
         </tbody>
     </table>
-
-
 {% endblock %}

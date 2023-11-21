@@ -1,0 +1,26 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}Reservation Conflict{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="mt-5">Reservation Conflict</h1>
+        <div class="alert alert-danger mt-3">
+            <p>
+                This accommodation is already booked during the selected dates.
+                Please choose another accommodation or change the dates.
+            </p>
+        </div>
+
+        <div class="mt-3">
+        <p><strong>Adresse:</strong> {{ logement.adrl }}</p>
+            <p>Selected Dates:</p>
+            
+            <p><strong>Start Date:</strong> {{ datedebut }}</p>
+            <p><strong>End Date:</strong> {{ datefin }}</p>
+        </div>
+
+        <a href="{{ path('app_logement_client_index') }}" class="btn btn-primary mt-3">Return to List of Accommodations</a>
+        {# You can add another button or link for changing the dates or choosing another accommodation #}
+    </div>
+{% endblock %}

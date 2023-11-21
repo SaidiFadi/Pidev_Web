@@ -17,6 +17,7 @@ class LogementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+        
             ->add('adrl', null, [
                 'label' => 'Adresse',
                 
@@ -46,19 +47,32 @@ class LogementType extends AbstractType
                 'choices' => [
                     'Ariana' => 'Ariana',
                     'Beja' => 'Beja',
-                    ' Ben Arous' => ' Ben Arous',
+                    'Ben Arous' => 'Ben Arous',
                     'Bizerte' => 'Bizerte',
                     'Tunis' => 'Tunis',
                     'Monastir' => 'Monastir',
                     'Sfax' => 'Sfax',
                     'Sousse' => 'Sousse',
-                    'Touzer' => 'Touzer'
+                    'Tozeur' => 'Tozeur',
+                    'Gabes' => 'Gabes',
+                    'Gafsa' => 'Gafsa',
+                    'Jendouba' => 'Jendouba',
+                    'Kairouan' => 'Kairouan',
+                    'Kasserine' => 'Kasserine',
+                    'Kebili' => 'Kebili',
+                    'Manouba' => 'Manouba',
+                    'Medenine' => 'Medenine',
+                    'Nabeul' => 'Nabeul',
+                    'Siliana' => 'Siliana',
+                    'Tataouine' => 'Tataouine',
+                    'Zaghouan' => 'Zaghouan',
                 ],
                 'constraints' => [
                     new NotBlank(), 
                 ],
                 'placeholder' => 'Select a region', 
             ])
+            
             ->add('image', FileType::class, [
                 'required' => false, 
                 'data_class' => null, 
@@ -68,8 +82,10 @@ class LogementType extends AbstractType
                         'maxSize' => '1024k', 
                         'mimeTypes' => ['image/*'],
                     ]),
+                    
                 ],
             ]);
+            
     }
     public function configureOptions(OptionsResolver $resolver): void
     {

@@ -19,21 +19,41 @@ use App\Entity\Logement;
 
 class LocationType extends AbstractType
 {
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Location::class,
+            'logement_placeholder' => null,
+        ]);
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $logementPlaceholder = $options['logement_placeholder'];
+
         $builder
-        ->add('datedebut', DateType::class, [
+      /*  ->add('datedebut', DateType::class, [
             'label' => 'Start Date', 
            
         ])
         ->add('datefin', DateType::class, [
             'label' => 'End Date',
            
+        ])*/
+         ->add('datedebut', DateType::class, [
+            'label' => 'Start Date',
+            'widget' => 'single_text',
+            'attr' => [
+               // 'min' => (new \DateTime())->format('Y-m-d'),
+            ],
         ])
-        ->add('tarif', IntegerType::class, [
-            'label' => 'Tarif',
-          
-        ])
+        ->add('datefin', DateType::class, [
+            'label' => 'End Date',
+            'widget' => 'single_text',
+            'attr' => [
+              //  'min' => (new \DateTime())->format('Y-m-d'),
+            ],
+        ]) 
+       
         ->add('personne', EntityType::class, [
             'class' => Personne::class,
             'choice_label' => 'email',
@@ -50,9 +70,8 @@ class LocationType extends AbstractType
             'label' => 'Hebergement',
             'constraints' => [
                 new NotBlank(),
-                
             ],
-            'placeholder' => 'Select a Hebergement', 
+            
         ]);
     }
 }

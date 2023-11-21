@@ -28,7 +28,6 @@ class Logement
     private $superfice;
 
     #[ORM\Column(name: "loyer", type: "integer", nullable: false)]
-    #[Assert\NotBlank(message: "Loyer is required")]
     #[Assert\GreaterThan(value: 0, message: "Loyer should be greater than 0")]
 
     private $loyer;

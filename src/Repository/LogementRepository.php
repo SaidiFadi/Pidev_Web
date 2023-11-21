@@ -45,4 +45,38 @@ class LogementRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+  // LogementRepository.php
+  public function findBySearchCriteria($searchCriteria)
+  {
+      $queryBuilder = $this->createQueryBuilder('l');
+  
+      foreach ($searchCriteria as $field => $value) {
+          if ($value !== null) {
+              $queryBuilder
+                  ->andWhere("l.$field LIKE :$field")
+                  ->setParameter($field, '%' . $value . '%');
+          }
+      }
+  
+      return $queryBuilder->getQuery()->getResult();
+  }
+
+public function search(array $criteria): array
+{
+    $queryBuilder = $this->createQueryBuilder('l');
+
+    foreach ($criteria as $field => $value) {
+        if ($value !== null) {
+            $condition = is_string($value) ? 'LIKE' : '=';
+            $queryBuilder
+                ->andWhere("l.$field $condition :$field")
+                ->setParameter($field, is_string($value) ? "%$value%" : $value);
+        }
+    }
+
+    return $queryBuilder
+        ->getQuery()
+        ->getResult();
+}
 }
