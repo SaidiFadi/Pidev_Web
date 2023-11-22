@@ -2,123 +2,102 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\PersonneRepository;
 
-/**
- * Personne
- *
- * @ORM\Table(name="personne", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
- * @ORM\Entity
- */
-class Personne
+
+#[ORM\Entity(repositoryClass: PersonneRepository::class)]
+#[UniqueEntity(fields: ["email"], message: "Il y a déjà un compte avec cette adresse e-mail")]
+#[ORM\UniqueConstraint(name:'personne' ,columns:["email"])]
+
+class Personne implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
+    private ?int $id = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nom", type="string", length=55, nullable=true)
-     */
-    private $nom;
+    #[ORM\Column(name: "nom", type: "string", length: 55, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 55,
+        maxMessage: "Le nom de Client ne peut pas dépasser {{ limit }} lettres."
+        )]
+    #[Assert\Regex(
+            pattern: "/^[a-zA-Z ]+$/",
+            message: "Le nom de Client ne peut être qu'alphabétique."
+        )]
+    private ?string $nom = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="prenom", type="string", length=55, nullable=true)
-     */
-    private $prenom;
+    #[ORM\Column(name: "prenom", type: "string", length: 55, nullable: true)]
+    #[Assert\Length(max: 55,
+    maxMessage: "Le prenom de Client ne peut pas dépasser {{ limit }} lettres."
+        )]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z ]+$/",
+        message: "Le prenom de Client ne peut être qu'alphabétique."
+        )]
+    private ?string $prenom = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
-     */
-    private $email;
+    #[ORM\Column(name: "email", type: "string", length: 255, nullable: true)]
+    #[Assert\Email]
+    private ?string $email = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="roles", type="string", length=255, nullable=true)
-     */
-    private $roles;
+    #[ORM\Column(name: "roles", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $roles = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
-     */
-    private $password;
+    #[ORM\Column(name: "password", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $password = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="dateNaise", type="date", nullable=true)
-     */
-    private $datenaise;
+    #[ORM\Column(name: "dateNaise", type: "date", nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\LessThan(
+        '-16 years',
+        message: "Vous devez avoir au moins 16 ans pour vous inscrire."
+    )]
+    private ?\DateTimeInterface $datenaise = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
-     */
-    private $adresse;
+    #[ORM\Column(name: "adresse", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $adresse = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tele", type="string", length=15, nullable=true)
-     */
-    private $tele;
+    #[ORM\Column(name: "tele", type: "string", length: 15, nullable: true)]
+    #[Assert\Length(max: 15)]
+    private ?string $tele = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="cin", type="string", length=20, nullable=true)
-     */
-    private $cin;
+    #[ORM\Column(name: "cin", type: "string", length: 20, nullable: true)]
+    #[Assert\Length(max: 14)]
+    private ?string $cin = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ign", type="string", length=255, nullable=true)
-     */
-    private $ign;
+    #[ORM\Column(name: "ign", type: "string", length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 12,
+        maxMessage: "L'IGN ne peut pas dépasser {{ limit }} lettres."
+    )]
+        private ?string $ign = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_banned", type="boolean", nullable=true)
-     */
-    private $isBanned;
+    #[ORM\Column(name: "is_banned", type: "boolean", nullable: true)]
+        private ?bool $isBanned = false;
+    
+    #[ORM\Column(name: "is_verified", type: "boolean", nullable: true)]
+        private ?bool $isVerified = false;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=true)
-     */
-    private $isVerified;
+    #[ORM\Column(name: "Pprofile", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+        private ?string $pprofile = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Pprofile", type="string", length=255, nullable=true)
-     */
-    private $pprofile;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="roleJava_client_id", type="integer", nullable=true, options={"default"="1"})
-     */
-    private $rolejavaClientId = 1;
+    #[ORM\Column(name: "roleJava_client_id", type: "integer", nullable: true, options: ["default" => "1"])]
+        private ?int $rolejavaClientId = null;
 
     public function getId(): ?int
     {
@@ -292,6 +271,24 @@ class Personne
 
         return $this;
     }
+        public function getSalt(): ?string
+    {
+        // Return the user's salt. If the user doesn't have a salt, return null.
+        return null;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Erase the user's credentials. This could involve removing the password from memory or resetting it to a temporary value.
+        $this->password = null;
+    }
+
+    public function getUsername(): string
+    {
+        // Return the user's username. This should be a unique identifier for the user.
+        return $this->email;
+    }
+
 
 
 }
