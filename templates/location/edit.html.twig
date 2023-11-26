@@ -1,18 +1,41 @@
-{% extends 'client.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Edit Location{% endblock %}
 
 {% block body %}
+    <style>
+        /* Add your CSS styles here */
+        .card {
+            margin-top: 5rem;
+        }
+
+        .card-header {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-secondary {
+            margin-top: 1rem;
+        }
+
+        /* Add more styles as needed */
+    </style>
+
+    <script>
+        // Add your JavaScript code here if needed
+        // For example, you can add client-side validation or other functionality
+    </script>
+
     <div class="container mt-5">
         <div class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="card">
-                    <div class="card-header bg-warning text-dark">
+                    <div class="card-header">
                         <h1 class="text-center mb-0">Edit Location</h1>
                     </div>
                     <div class="card-body">
                         {{ include('location/_form.html.twig', {'button_label': 'Update'}) }}
-
+                        
                         <div class="text-center mt-3">
                             <a href="{{ path('app_location_index') }}" class="btn btn-secondary">Back to List</a>
                             {% if is_granted('DELETE', location) %}

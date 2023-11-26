@@ -3,10 +3,25 @@
 {% block title %}Hebergement{% endblock %}
 
 {% block body %}
+ {# Display success messages #}
+    {% for flashMessage in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    {# Display danger messages #}
+    {% for flashMessage in app.flashes('danger') %}
+        <div class="alert alert-danger">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
     <h1>Hebergement</h1>
 
     {# Search Form #}
-    <form method="GET" action="{{ path('app_logement_client_index') }}">
+   <div id="search-form">
+    <form method="GET" action="{{ path('app_logement_client_index') }}" onsubmit="return submitForm(event)">
+        {# Your existing form content #}
         <div class="row">
             <div class="col-md-3">
                 <input type="text" name="adrl" placeholder="Search by Adresse" class="form-control">
@@ -63,7 +78,7 @@
             </div>
         </div>
     </form>
-
+     </div>
 
     {# Logements Cards #}
     <div class="row mt-3">
@@ -89,4 +104,64 @@
             </div>
         {% endif %}
     </div>
+     {# Include jQuery library #}
+    <script src="{{ asset('assets/admin/src/assets/libs/jquery/dist/jquery.min.js') }}"></script>
+    <script>
+    $(document).ready(function () {
+        // Function to handle form submission via AJAX
+        function submitForm() {
+            // Get the form data
+            var formData = $('#search-form form').serialize();
+
+            // Make an AJAX request
+            $.ajax({
+                type: 'GET',
+                url: '{{ path('app_logement_client_index') }}',
+                data: formData,
+                dataType: 'json', // Specify that the expected response is JSON
+                success: function (response) {
+                    // Update logements in the template
+                    console.log(response.logements); // Use the received data as needed
+
+                    // Update the content dynamically
+                    $('#logements-container').html(response.html);
+                },
+                error: function (error) {
+                    console.error('AJAX request failed:', error);
+                }
+            });
+        }
+
+        // Attach the submitForm function to the input event of the search input field
+        $('#search-form input').on('input', function () {
+            submitForm();
+        });
+    });
+</script>
 {% endblock %}
+{#
+<script>
+    function submitForm(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get the form data
+        var formData = $('#search-form form').serialize();
+
+        // Make an AJAX request
+        $.ajax({
+            type: 'GET',
+            url: '{{ path('app_logement_client_index') }}',
+            data: formData,
+            success: function(response) {
+                // Update logements in the template
+                console.log(response.logements); // Use the received data as needed
+            },
+            error: function(error) {
+                console.error('AJAX request failed:', error);
+            }
+        });
+
+        return false; // Prevent further bubbling of the event
+    }
+</script>
+#}

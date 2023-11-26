@@ -1,0 +1,64 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}Location index{% endblock %}
+
+{% block body %}
+    {# Display success messages #}
+    {% for flashMessage in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    {# Display danger messages #}
+    {% for flashMessage in app.flashes('danger') %}
+        <div class="alert alert-danger">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <h1>Location</h1>
+
+    {# Add a form to filter locations by email #}
+    <form method="get" action="{{ path('app_location_client_index') }}">
+        <label for="email">Filter by Email:</label>
+        <input type="text" id="email" name="email">
+        <button type="submit">Filter</button>
+    </form>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>Datefin</th>
+                <th>Tarif</th>
+                <th>Personne</th>
+                <th>Logement</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in locations %}
+                {# Add a conditional to filter locations by email if the email is provided in the query parameters #}
+                {% if app.request.query.get('email') is not null and location.personne.email != app.request.query.get('email') %}
+                    
+                {% endif %}
+                <tr>
+                    <td>{{ location.datedebut ? location.datedebut|date('Y-m-d') : '' }}</td>
+                    <td>{{ location.datefin ? location.datefin|date('Y-m-d') : '' }}</td>
+                    <td>{{ location.tarif }}</td>
+                    <td>{{ location.personne.email }}</td>
+                    <td>{{ location.logement.adrl }}</td>
+                    <td>
+                        <a href="{{ path('app_location_client_show', {'idlocation': location.idlocation}) }}" class="primary-btn">show</a>
+                        <a href="{{ path('app_location_client_edit', {'idlocation': location.idlocation}) }}" class="primary-btn">edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,10 +1,24 @@
-{% extends 'client.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Location index{% endblock %}
 
 {% block body %}
+    {# Display success messages #}
+    {% for flashMessage in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    {# Display danger messages #}
+    {% for flashMessage in app.flashes('danger') %}
+        <div class="alert alert-danger">
+            {{ flashMessage }}
+        </div>
+    {% endfor %}
+
     <h1>Location </h1>
- <a href="{{ path('app_location_new') }}" class="primary-btn"">Create new</a>
+    <a href="{{ path('app_location_new') }}" class="btn btn-primary">Create new</a>
     <table class="table">
         <thead>
             <tr>
@@ -29,10 +43,9 @@
                 <td>{{ location.logement.adrl }}</td> {# assuming "adrl" is a property of Logement #}
                 
                 <td>
-                    <a href="{{ path('app_location_show', {'idlocation': location.idlocation}) }}" class="primary-btn">show</a>
-                    <a href="{{ path('app_location_edit', {'idlocation': location.idlocation}) }}" class="primary-btn">edit</a>
+                    <a href="{{ path('app_location_show', {'idlocation': location.idlocation}) }}"class="btn btn-primary">show</a>
+                    <a href="{{ path('app_location_edit', {'idlocation': location.idlocation}) }}" class="btn btn-primary">edit</a>
                         {{ include('location/_delete_form.html.twig') }}
-
                 </td>
             </tr>
         {% else %}
@@ -42,6 +55,4 @@
         {% endfor %}
         </tbody>
     </table>
-
-   
 {% endblock %}

@@ -33,7 +33,7 @@ class LogementController extends AbstractController
             'logements' => $logements,
         ]);
     }
-    #[Route('/client', name: 'app_logement_client_index', methods: ['GET'])]
+  /*   #[Route('/client', name: 'app_logement_client_index', methods: ['GET'])]
     public function indexl(Request $request, LogementRepository $logementRepository): Response
     {
         $searchCriteria = [
@@ -49,7 +49,30 @@ class LogementController extends AbstractController
         return $this->render('logement/index_client.html.twig', [
             'logements' => $logements,
         ]);
+    } */
+    #[Route('/client', name: 'app_logement_client_index', methods: ['GET'])]
+public function indexl(Request $request, LogementRepository $logementRepository): Response
+{
+    $searchCriteria = [
+        'adrl' => $request->query->get('adrl'),
+        'superfice' => $request->query->get('superfice'),
+        'loyer' => $request->query->get('loyer'),
+        'type' => $request->query->get('type'),
+        'region' => $request->query->get('region'),
+    ];
+
+    $logements = $logementRepository->findBySearchCriteria($searchCriteria);
+
+    if ($request->isXmlHttpRequest()) {
+        // If it's an AJAX request, return a JSON response
+        return $this->json(['logements' => $logements]);
+    } else {
+        // If it's a regular request, render the template
+        return $this->render('logement/index_client.html.twig', [
+            'logements' => $logements,
+        ]);
     }
+}
     #[Route('/new', name: 'app_logement_new', methods: ['GET', 'POST'])]
 public function new(Request $request, EntityManagerInterface $entityManager): Response
 {

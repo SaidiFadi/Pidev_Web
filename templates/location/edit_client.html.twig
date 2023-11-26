@@ -1,0 +1,27 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}Edit Location{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header bg-warning text-dark">
+                        <h1 class="text-center mb-0">Edit Location</h1>
+                    </div>
+                    <div class="card-body">
+                        {{ include('location/_form.html.twig', {'button_label': 'Update'}) }}
+
+                        <div class="text-center mt-3">
+                            <a href="{{ path('app_location_client_index') }}" class="btn btn-secondary">Back to List</a>
+                            {% if is_granted('DELETE', location) %}
+                                {{ include('location/_delete_form.html.twig') }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

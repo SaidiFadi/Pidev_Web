@@ -1,39 +1,49 @@
-{% extends 'client.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}Location{% endblock %}
 
+{% block stylesheets %}
+    {# Include your custom CSS file #}
+    <link rel="stylesheet" href="{{ asset('css/location.css') }}">
+{% endblock %}
+
 {% block body %}
-    <h1>Location</h1>
+    <div class="location-card">
+        <h1>Location</h1>
 
-    <table class="table">
-        <tbody>
-           
-             <tr>
-                <th>Personne</th>
-                <td>{{ location.personne.email }}</td>
-            </tr>
-             <tr>
-                <th>logement</th>
-                <td>{{ location.logement.adrl }}</td>
-            </tr>
-            <tr>
-                <th>Start Date</th>
-                <td>{{ location.datedebut ? location.datedebut|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Datefin</th>
-                <td>{{ location.datefin ? location.datefin|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Tarif</th>
-                <td>{{ location.tarif }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="card">
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Personne</th>
+                            <td>{{ location.personne.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Logement</th>
+                            <td>{{ location.logement.adrl }}</td>
+                        </tr>
+                        <tr>
+                            <th>Start Date</th>
+                            <td>{{ location.datedebut ? location.datedebut|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Datefin</th>
+                            <td>{{ location.datefin ? location.datefin|date('Y-m-d') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Tarif</th>
+                            <td>{{ location.tarif }}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
-    <a href="{{ path('app_location_index') }}"class="primary-btn">Return</a>
+                <a href="{{ path('app_location_index') }}" class="btn btn-secondary">Return</a>
+                <a href="{{ path('app_location_edit', {'idlocation': location.idlocation}) }}" class="btn btn-primary">Modifier</a>
+                <a href="{{ path('app_location_pdf', {'idlocation': location.idlocation}) }}" class="btn btn-success">Generate PDF</a>
 
-    <a href="{{ path('app_location_edit', {'idlocation': location.idlocation}) }}"class="primary-btn">Modifier</a>
-
-    {{ include('location/_delete_form.html.twig') }}
+                {{ include('location/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

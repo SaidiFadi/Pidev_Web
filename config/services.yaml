@@ -22,3 +22,12 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    App\Service\TwilioSMSService:
+        arguments:
+            $accountSid: '%env(TWILIO_ACCOUNT_SID)%'
+            $authToken: '%env(TWILIO_AUTH_TOKEN)%'
+            $fromNumber: '%env(TWILIO_PHONE_NUMBER)%'
+
+    App\Controller\TestSmsController:
+        autowire: true
+        autoconfigure: true

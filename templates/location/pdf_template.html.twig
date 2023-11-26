@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Agreement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: black; /* Change color to black */
+            font-size: 28px; /* Adjust the font size to your preference */
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .header img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .contract-details {
+            margin-top: 30px;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+
+        .section {
+            margin-top: 20px;
+        }
+
+        .signature {
+            margin-top: 30px;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #555;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <!-- Add any header content or logo here -->
+    </div>
+
+    <h1>Rental Agreement</h1>
+
+    <div class="contract-details">
+        <p>This Rental Agreement is made and entered into on {{ location.datedebut ? location.datedebut|date('F j, Y') : '' }} by and between:</p>
+
+        <p><strong>Landlord:</strong> Eventini </p>
+        <p><strong>Tenant:</strong> {{ location.personne.email }}</p>
+        <p><strong>Property:</strong> {{ location.logement.adrl }}</p>
+
+        <div class="section">
+            <p><strong>Lease Term:</strong> The lease term is from {{ location.datedebut ? location.datedebut|date('F j, Y') : '' }} to {{ location.datefin ? location.datefin|date('F j, Y') : '' }}.</p>
+        </div>
+
+        <div class="section">
+            <p><strong>Rental Terms:</strong> The tenant agrees to rent the property for the specified term and abide by all terms and conditions set forth in this agreement.</p>
+        </div>
+
+        <div class="section">
+            <p><strong>Payment Details:</strong> The total rental amount is {{ location.tarif }}. Payment is due on or before the start date of the lease.</p>
+        </div>
+
+        <div class="section">
+            <p><strong>Security Deposit:</strong> A security deposit of 50 $ is required and will be refunded within 7 days after the end of the lease term, less any deductions for damages.</p>
+        </div>
+
+        <div class="section">
+            <p><strong>Utilities and Maintenance:</strong> The tenant is responsible for all utilities and agrees to keep the property clean and well-maintained.</p>
+        </div>
+    </div>
+
+    <div class="signature">
+        <p><strong>Landlord's Signature:</strong></p>
+        <img src="https://png.pngtree.com/png-clipart/20221010/original/pngtree-original-approved-stamp-and-badget-design-red-grunge-png-image_8669616.png" alt="Approved Stamp" style="max-width: 100px; max-height: 100px;">
+        <p><strong>Tenant's Signature: _______________________</strong></p>
+    </div>
+
+    <div class="footer">
+        <p>Thank you for choosing our accommodation. If you have any questions, please contact us at <a href="mailto:fadi.saidi@esperit.com">support@example.com</a>.</p>
+    </div>
+
+</body>
+</html>

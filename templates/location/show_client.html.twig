@@ -1,0 +1,41 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}Location{% endblock %}
+
+{% block body %}
+    <h1>Location</h1>
+
+    <table class="table">
+        <tbody>
+           
+             <tr>
+                <th>Personne</th>
+                <td>{{ location.personne.email }}</td>
+            </tr>
+             <tr>
+                <th>logement</th>
+                <td>{{ location.logement.adrl }}</td>
+            </tr>
+            <tr>
+                <th>Start Date</th>
+                <td>{{ location.datedebut ? location.datedebut|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Datefin</th>
+                <td>{{ location.datefin ? location.datefin|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Tarif</th>
+                <td>{{ location.tarif }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_location_client_index') }}"class="primary-btn">Return</a>
+
+    <a href="{{ path('app_location_client_edit', {'idlocation': location.idlocation}) }}"class="primary-btn">Modifier</a>
+    <a href="{{ path('app_location_pdf', {'idlocation': location.idlocation}) }}" class="btn btn-primary">Generate PDF</a>
+
+
+    {# {{ include('location/_delete_form.html.twig') }} #} 
+{% endblock %}

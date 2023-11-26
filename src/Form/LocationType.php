@@ -24,6 +24,7 @@ class LocationType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Location::class,
             'logement_placeholder' => null,
+            'image_placeholder' => null,
         ]);
     }
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -31,7 +32,7 @@ class LocationType extends AbstractType
         $logementPlaceholder = $options['logement_placeholder'];
 
         $builder
-      /*  ->add('datedebut', DateType::class, [
+       /* ->add('datedebut', DateType::class, [
             'label' => 'Start Date', 
            
         ])
@@ -43,14 +44,14 @@ class LocationType extends AbstractType
             'label' => 'Start Date',
             'widget' => 'single_text',
             'attr' => [
-               // 'min' => (new \DateTime())->format('Y-m-d'),
+               'min' => (new \DateTime())->format('Y-m-d'),
             ],
         ])
         ->add('datefin', DateType::class, [
             'label' => 'End Date',
             'widget' => 'single_text',
             'attr' => [
-              //  'min' => (new \DateTime())->format('Y-m-d'),
+               'min' => (new \DateTime())->format('Y-m-d'),
             ],
         ]) 
        
@@ -73,5 +74,6 @@ class LocationType extends AbstractType
             ],
             
         ]);
+        
     }
 }

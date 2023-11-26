@@ -13,6 +13,8 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Location|null findOneBy(array $criteria, array $orderBy = null)
  * @method Location[]    findAll()
  * @method Location[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Location[] findByEmail(?string $email)
+
  */
 class LocationRepository extends ServiceEntityRepository
 {
@@ -61,5 +63,17 @@ public function findConflictingReservations($logement, $datedebut, $datefin, $cu
     }
 
     return $queryBuilder->getQuery()->getResult();
+}
+public function findByEmail(?string $email): array
+{
+    $qb = $this->createQueryBuilder('l')
+        ->join('l.personne', 'personne'); // Use a more specific alias, like 'personne'
+
+    if ($email !== null) {
+        $qb->where('personne.email = :email')
+           ->setParameter('email', $email);
+    }
+
+    return $qb->getQuery()->getResult();
 }
 }

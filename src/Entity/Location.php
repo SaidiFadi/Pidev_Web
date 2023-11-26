@@ -101,16 +101,6 @@ class Location
 
         return $this;
     }
-    public function validateDates(ExecutionContextInterface $context, $payload)
-    {
-        // Check for conflicting reservations
-        $conflictingReservations = $this->logement->getConflictingReservations($this->datedebut, $this->datefin, $this->idlocation);
-
-        if ($conflictingReservations) {
-            $context->buildViolation('This accommodation is already booked during the selected dates.')
-                ->atPath('datedebut')
-                ->addViolation();
-        }
-    }
+  
 
 }
