@@ -1,0 +1,52 @@
+{% extends 'client.html.twig' %}
+
+{% block titlefront %}Filtrage d'événements{% endblock %}
+
+{% block body %}
+    <h1>Filtrage d'événements</h1>
+
+   {% for evt in evenement %}
+    {% if evt.hdEvt and evt.hfEvt %}
+        <p>Événements du {{ evenement.hdEvt|date('d/m/Y H:i') }} au {{ evenement.hfEvt|date('d/m/Y H:i') }}</p>
+    {% endif %}
+    {% endfor %}
+
+    {% if evenement is empty %}
+        <p>Aucun événement trouvé.</p>
+    {% else %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Nom Organisateur</th>
+                <th>Description</th>
+                <th>Heure de début</th>
+                <th>Heure de la fin </th>
+                <th>Adresse</th>
+                <th>Date</th>
+                <th>Vote</th>
+            </tr>
+        </thead>
+        <ul>
+            {% for evt in evenement %}
+                <tr>
+                    <td><a href="{{ path('app_evenement_showCl', {'idevt': evt.idevt}) }}">{{ evenement.titreevt }}</a></td>
+                    
+                    <td>{{ evt.dateDebut is defined ? evt.dateDebut|date('d/m/Y') : '' }}</td>
+                    <td>{{ evt.dateFin is defined ? evt.dateFin|date('d/m/Y') : '' }}</td>                    
+                    <td>{{ evt.descevt }}</td>
+                    <td>{{ evt.nomorg }}</td>
+                    <td>{{ evt.adresseevt}}</td>
+                <td>
+                    <a href="{{ path('app_evenement_showCl', {'idevt': evt.idevt}) }}">show</a>
+                </td>
+                <td> 
+                    <a href="{{ path('app_reservation_new', {'idevt': evt.idevt}) }}">Participer</a>
+                    {{ include('reservation/_cancel_form.html.twig') }}
+                </td>
+                </tr>
+            {% endfor %}
+        </ul>
+    {% endif %}
+     <a href="{{ path('app_evenement_indexCl') }}">back to list</a>
+{% endblock %}

@@ -1,60 +1,103 @@
 <?php
 
 namespace App\Entity;
+
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Boolean;
-use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use App\Repository\PersonneRepository;
+
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
-class Personne
-{
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+#[UniqueEntity(fields: ["email"], message: "Il y a déjà un compte avec cette adresse e-mail")]
+#[ORM\UniqueConstraint(name:'personne' ,columns:["email"])]
 
+class Personne implements UserInterface, PasswordAuthenticatedUserInterface
+{
+    
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    #[ORM\Column(name: "id", type: "integer", nullable: false)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "nom", type: "string", length: 55, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 55,
+        maxMessage: "Le nom de Client ne peut pas dépasser {{ limit }} lettres."
+        )]
+    #[Assert\Regex(
+            pattern: "/^[a-zA-Z ]+$/",
+            message: "Le nom de Client ne peut être qu'alphabétique."
+        )]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "prenom", type: "string", length: 55, nullable: true)]
+    #[Assert\Length(max: 55,
+    maxMessage: "Le prenom de Client ne peut pas dépasser {{ limit }} lettres."
+        )]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z ]+$/",
+        message: "Le prenom de Client ne peut être qu'alphabétique."
+        )]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "email", type: "string", length: 255, nullable: true)]
+    #[Assert\Email]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $role = null;
+    #[ORM\Column(name: "roles", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $roles = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "password", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $password = null;
 
-    #[ORM\Column]
-    private ?Date $datenaise = null;
+    #[ORM\Column(name: "dateNaise", type: "date", nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\LessThan(
+        '-16 years',
+        message: "Vous devez avoir au moins 16 ans pour vous inscrire."
+    )]
+    private ?\DateTimeInterface $datenaise = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "adresse", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
     private ?string $adresse = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "tele", type: "string", length: 15, nullable: true)]
+    #[Assert\Length(max: 15)]
     private ?string $tele = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(name: "cin", type: "string", length: 20, nullable: true)]
+    #[Assert\Length(max: 14)]
     private ?string $cin = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $ign = null;
+    #[ORM\Column(name: "ign", type: "string", length: 255, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 12,
+        maxMessage: "L'IGN ne peut pas dépasser {{ limit }} lettres."
+    )]
+        private ?string $ign = null;
 
-    #[ORM\Column(length: 255)]
-    private ?Boolean $isBanned;
-
-    #[ORM\Column(length: 255)]
-    private ?boolean $isVerified = null;
+    #[ORM\Column(name: "is_banned", type: "boolean", nullable: true)]
+        private ?bool $isBanned = false;
     
-    #[ORM\Column(length: 255)]
-    private ?string $pprofile = null;
+    #[ORM\Column(name: "is_verified", type: "boolean", nullable: true)]
+        private ?bool $isVerified = false;
 
-    #[ORM\Column]
-    private int $rolejavaClientId = 1;
+    #[ORM\Column(name: "Pprofile", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+        private ?string $pprofile = null;
+
+    #[ORM\Column(name: "roleJava_client_id", type: "integer", nullable: true, options: ["default" => "1"])]
+        private ?int $rolejavaClientId = null;
 
     public function getId(): ?int
     {
@@ -66,7 +109,7 @@ class Personne
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(?string $nom): static
     {
         $this->nom = $nom;
 
@@ -78,7 +121,7 @@ class Personne
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): static
+    public function setPrenom(?string $prenom): static
     {
         $this->prenom = $prenom;
 
@@ -90,21 +133,21 @@ class Personne
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(?string $email): static
     {
         $this->email = $email;
 
         return $this;
     }
 
-    public function getRole(): ?string
+    public function getRoles(): ?string
     {
-        return $this->role;
+        return $this->roles;
     }
 
-    public function setRole(string $role): static
+    public function setRoles(?string $roles): static
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
@@ -114,19 +157,19 @@ class Personne
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(?string $password): static
     {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getDatenaise(): ?string
+    public function getDatenaise(): ?\DateTimeInterface
     {
         return $this->datenaise;
     }
 
-    public function setDatenaise(string $datenaise): static
+    public function setDatenaise(?\DateTimeInterface $datenaise): static
     {
         $this->datenaise = $datenaise;
 
@@ -138,7 +181,7 @@ class Personne
         return $this->adresse;
     }
 
-    public function setAdresse(string $adresse): static
+    public function setAdresse(?string $adresse): static
     {
         $this->adresse = $adresse;
 
@@ -150,7 +193,7 @@ class Personne
         return $this->tele;
     }
 
-    public function setTele(string $tele): static
+    public function setTele(?string $tele): static
     {
         $this->tele = $tele;
 
@@ -162,7 +205,7 @@ class Personne
         return $this->cin;
     }
 
-    public function setCin(string $cin): static
+    public function setCin(?string $cin): static
     {
         $this->cin = $cin;
 
@@ -174,31 +217,31 @@ class Personne
         return $this->ign;
     }
 
-    public function setIgn(string $ign): static
+    public function setIgn(?string $ign): static
     {
         $this->ign = $ign;
 
         return $this;
     }
 
-    public function getIsBanned(): ?string
+    public function isIsBanned(): ?bool
     {
         return $this->isBanned;
     }
 
-    public function setIsBanned(string $isBanned): static
+    public function setIsBanned(?bool $isBanned): static
     {
         $this->isBanned = $isBanned;
 
         return $this;
     }
 
-    public function getIsVerified(): ?string
+    public function isIsVerified(): ?bool
     {
         return $this->isVerified;
     }
 
-    public function setIsVerified(string $isVerified): static
+    public function setIsVerified(?bool $isVerified): static
     {
         $this->isVerified = $isVerified;
 
@@ -210,7 +253,7 @@ class Personne
         return $this->pprofile;
     }
 
-    public function setPprofile(string $pprofile): static
+    public function setPprofile(?string $pprofile): static
     {
         $this->pprofile = $pprofile;
 
@@ -222,10 +265,30 @@ class Personne
         return $this->rolejavaClientId;
     }
 
-    public function setRolejavaClientId(int $rolejavaClientId): static
+    public function setRolejavaClientId(?int $rolejavaClientId): static
     {
         $this->rolejavaClientId = $rolejavaClientId;
 
         return $this;
     }
+        public function getSalt(): ?string
+    {
+        // Return the user's salt. If the user doesn't have a salt, return null.
+        return null;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Erase the user's credentials. This could involve removing the password from memory or resetting it to a temporary value.
+        $this->password = null;
+    }
+
+    public function getUsername(): string
+    {
+        // Return the user's username. This should be a unique identifier for the user.
+        return $this->email;
+    }
+
+
+
 }

@@ -11,6 +11,8 @@
                 <th>IdBillet</th>
                 <th>Titreevt</th>
                 <th>Prixbillet</th>
+                <th>Id User</th>
+                <th>Imageres</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +22,7 @@
                 <td>{{ reservation.idBillet }}</td>
                 <td>{{ reservation.titreevt }}</td>
                 <td>{{ reservation.prixbillet }}</td>
+                <td>{{ reservation.imageres }}</td>
                 <td>
                     <a href="{{ path('app_reservation_show', {'idBillet': reservation.idBillet}) }}">show</a>
                     <a href="{{ path('app_reservation_edit', {'idBillet': reservation.idBillet}) }}">edit</a>
@@ -27,7 +30,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="4">no records found</td>
+                <td colspan="5">no records found</td>
             </tr>
         {% endfor %}
         </tbody>

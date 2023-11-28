@@ -24,8 +24,8 @@
                 <td>{{ personne.email }}</td>
             </tr>
             <tr>
-                <th>Role</th>
-                <td>{{ personne.role }}</td>
+                <th>Roles</th>
+                <td>{{ personne.roles }}</td>
             </tr>
             <tr>
                 <th>Password</th>
@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <th>Datenaise</th>
-                <td>{{ personne.datenaise }}</td>
+                <td>{{ personne.datenaise ? personne.datenaise|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
                 <th>Adresse</th>
@@ -53,11 +53,11 @@
             </tr>
             <tr>
                 <th>IsBanned</th>
-                <td>{{ personne.isBanned }}</td>
+                <td>{{ personne.isBanned ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>IsVerified</th>
-                <td>{{ personne.isVerified }}</td>
+                <td>{{ personne.isVerified ? 'Yes' : 'No' }}</td>
             </tr>
             <tr>
                 <th>Pprofile</th>

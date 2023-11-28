@@ -1,0 +1,68 @@
+{% block pageTitle %}
+    <h1>Les Statistiques</h1>
+{% endblock %}
+
+{% block event2 %}
+    <center>
+        <h5><span style="color: #ff69b4; font-weight: bold;">Les Top 3 Evenements selon le nombre de participants :</span></h5>
+    </center>
+
+    <div style="display:flex; width: 100%; margin: 0 auto;">
+        <div style="width: 50%;">
+            <canvas id="myChart1" style="width: 100%; height: auto;"></canvas>
+
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <script>
+                var ctx1 = document.getElementById('myChart1').getContext('2d');
+                var myChart1 = new Chart(ctx1, {
+                    type: 'bar',
+                    data: {
+                        labels: [
+                            {% for event in topEventsByParticipants %}
+                                "{{ event.titreevt }}",
+                            {% endfor %}
+                        ],
+                        datasets: [{
+                            label: 'Nombre de participants',
+                            data: [
+                                {% for event in topEventsByParticipants %}
+                                    {{ event.nbParticipants }},
+                                {% endfor %}
+                            ],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            </script>
+        </div>
+
+        <div style="width: 100%;">
+            <!-- Add any content for the right side as needed -->
+        </div>
+    </div>
+</center>
+{% endblock %}

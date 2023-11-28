@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Personne;
-use App\Entity\PersonneRepository;
 use App\Form\PersonneType;
+use App\Repository\PersonneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -1,0 +1,86 @@
+{% extends 'client.html.twig' %}
+
+{% block titlefront %}Evenement{% endblock %}
+
+{% block body %}
+    <div class="container mt-5" style="background-color: #ffe1e6; padding: 20px; border-radius: 10px;">
+        <h1 class="text-primary mb-4">{{ evenement.titreevt }}</h1>
+
+        <div class="row">
+            <div class="col-md-6">
+                <table class="table table-striped">
+                    <tbody>
+                        <tr>
+                        <tr>
+                            <th scope="row" class="text-info">Titre</th>
+                            <td>{{ evenement.titreevt }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-info">Nom de l'organisateur</th>
+                            <td>{{ evenement.nomorg }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-info">Description</th>
+                            <td>{{ evenement.descevt }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-info">Heure de début</th>
+                            <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-info">Heure de la fin</th>
+                            <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-info">Adresse de l'évènement</th>
+                            <td>{{ evenement.adresseevt }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-info">Type</th>
+                            <td>{{ evenement.typeevt }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-info">Date</th>
+                            <td>{{ evenement.dateevt ? evenement.dateevt|date('d-m-Y') : '' }}</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text-info">Vote</th>
+                            <td>{{ evenement.vote }}</td>
+                        </tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Adjusted video display with a larger size -->
+                {% if evenement.videoevt %}
+                    <div class="video-container">
+                        <video width="100%" height="auto" controls>
+                            <source src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.videoevt) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                {% else %}
+                    <p>No Video Available</p>
+                {% endif %}
+
+                <!-- Cards for Likes and Dislikes remain unchanged -->
+                <div class="card bg-success mt-4">
+                  {# Like button #}
+                <form method="get" action="{{ path('event_like', {'idevt': evenement.idevt, 'id': 23}) }}">
+                    <button type="submit" class="btn btn-success">Like</button>
+                </form>
+                <form method="get" action="{{ path('event_dislike', {'idevt': evenement.idevt, 'id': 23}) }}">
+                    <button type="submit" class="btn btn-success">Dislike</button>
+                </form>
+
+            
+                </div>
+
+            </div>
+        </div>
+
+        <a href="{{ path('app_evenement_indexCl') }}" class="btn btn-secondary mt-4">Back to list</a>
+    </div>
+{% endblock %}

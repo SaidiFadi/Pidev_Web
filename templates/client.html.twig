@@ -14,7 +14,7 @@
         rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap" rel="stylesheet">
 
-
+     {% block css %}
     <!-- Css Styles -->
     <link rel="stylesheet" href="/assets/client/css/bootstrap.min.css" type="text/css">
     <link rel="stylesheet" href="/assets/client/css/font-awesome.min.css" type="text/css">
@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="/assets/client/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="/assets/client/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="/assets/client/css/style.css" type="text/css">
+    {% endblock %}
 </head>
 
 <body>
@@ -45,13 +46,15 @@
                     <ul>
                         <li class="active"><a href="/assets/client/index.html">Events</a></li>
                         <li><a href="/assets/client/about-us.html">About</a></li>
-                        <li><a href="/assets/client/speaker.html">Speakers</a>
+                        <li><a href="/evenement/allCl"> Evenements</a>
+                        
+
                             <ul class="dropdown">
-                                <li><a href="#">Jayden</a></li>
-                                <li><a href="#">Sara</a></li>
-                                <li><a href="#">Emma</a></li>
-                                <li><a href="#">Harriet</a></li>
-                            </ul>
+    <li><a href="{{ path('app_mesparticipations', {'id': 23}) }}">Mes réservations</a></li>
+    <li><a href="/dashboard">Statistiques</a></li>
+    <li><a href="#">Mon Code QR</a></li>
+
+</ul>
                         </li>
                         <li><a href="/assets/client/schedule.html">Schedule</a></li>
                         <li><a href="/assets/client/blog.html">Blog</a></li>
@@ -66,6 +69,8 @@
     <!-- Header End -->
 {% block body %}
     <!-- Hero Section Begin -->
+
+    
     <section class="hero-section set-bg" data-setbg="img/hero.jpg">
         <div class="container">
             <div class="row">
@@ -316,6 +321,8 @@
                     </div>
                 </div>
             </div>
+
+
             <div class="row">
                 <div class="col-lg-12">
                     <div class="schedule-tab">
@@ -1098,10 +1105,19 @@
                 </div>
             </div>
         </div>
+        
     </section>
     <!-- Contact Section End -->
 {% endblock  %}
     <!-- Footer Section Begin -->
+        {# templates/base.html.twig or your layout template #}
+{% for flashMessage in app.flashes('success') %}
+    <div class="alert alert-success">{{ flashMessage }}</div>
+{% endfor %}
+
+{% for flashMessage in app.flashes('error') %}
+    <div class="alert alert-danger">{{ flashMessage }}</div>
+{% endfor %}
     <footer class="footer-section">
         <div class="container">
             <div class="partner-logo owl-carousel">
@@ -1165,7 +1181,7 @@
         </div>
     </footer>
     <!-- Footer Section End -->
-
+{ % block js %}
     <!-- Js Plugins -->
     <script src="/assets/client/js/jquery-3.3.1.min.js"></script>
     <script src="/assets/client/js/bootstrap.min.js"></script>
@@ -1174,6 +1190,7 @@
     <script src="/assets/client/js/jquery.slicknav.js"></script>
     <script src="/assets/client/js/owl.carousel.min.js"></script>
     <script src="/assets/client/js/main.js"></script>
+{ % endblock %}
 </body>
 
 </html>

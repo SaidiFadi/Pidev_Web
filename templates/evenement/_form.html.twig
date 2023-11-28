@@ -1,4 +1,17 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+{{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+    {{ form_row(form.titreevt) }}
+    {{ form_row(form.nomorg) }}
+    {{ form_row(form.descevt) }}
+    {{ form_row(form.hdEvt) }}
+    {{ form_row(form.hfEvt) }}
+    {{ form_row(form.adresseevt) }}
+    {{ form_row(form.typeevt) }}
+    {{ form_row(form.dateEvt) }}
+    {{ form_row(form.vote) }}
+    
+    {# Add the file upload input for the imageEvt field #}
+    {{ form_row(form.imageevt) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_row(form.videoevt) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

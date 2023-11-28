@@ -1,3 +1,26 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+live_search:
+    path: '/live-search'
+    controller: 'App\Controller\EvenementController::liveSearch'    
+app_reservation_show:
+    path: '/reservation/{idBillet}'
+    controller: 'App\Controller\ReservationController::show'
+    methods: ['GET']
+app_reservation_add:
+    path: '/reservation/add/{idevt}'
+    controller: 'App\Controller\ReservationController::add'
+generate_qr_page:
+    path: '/generate_qr_page/{idevt}/{idBillet}'
+    controller: 'App\Controller\ReservationController::generateQRPage'
+event_like:
+    path: '/{idevt}/{id}/like'
+    controller: 'App\Controller\EvenementController::like'
+    methods: ['GET']
+event_dislike:
+    path: '/{idevt}/{id}/dislike'
+    controller: 'App\Controller\EvenementController::dislike'
+    methods: ['GET']
+
+

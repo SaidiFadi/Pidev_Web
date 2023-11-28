@@ -3,56 +3,86 @@
 {% block title %}Evenement{% endblock %}
 
 {% block body %}
-    <h1>Evenement</h1>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Evenement Details</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ evenement.idevt }}</td>
-            </tr>
-            <tr>
-                <th>Titre </th>
-                <td>{{ evenement.titreevt }}</td>
-            </tr>
-            <tr>
-                <th>Nom de l'organisateur</th>
-                <td>{{ evenement.nomorg }}</td>
-            </tr>
-            <tr>
-                <th>Description </th>
-                <td>{{ evenement.descevt }}</td>
-            </tr>
-            <tr>
-                <th> Heure de début </th>
-                <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Heure de la fin </th>
-                <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Adresse </th>
-                <td>{{ evenement.adresseevt }}</td>
-            </tr>
-            <tr>
-                <th>Type </th>
-                <td>{{ evenement.typeevt }}</td>
-            </tr>
-            <tr>
-                <th>Date</th>
-                <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Vote</th>
-                <td>{{ evenement.vote }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="table table-bordered table-striped">
+            <tbody>
+                <tr>
+                    <th class="text-rose">Identifiant</th>
+                    <td>{{ evenement.idevt }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Titre</th>
+                    <td>{{ evenement.titreevt }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Nom de l'organisateur</th>
+                    <td>{{ evenement.nomorg }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Description</th>
+                    <td>{{ evenement.descevt }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Heure de début</th>
+                    <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Heure de fin</th>
+                    <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Adresse</th>
+                    <td>{{ evenement.adresseevt }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Type</th>
+                    <td>{{ evenement.typeevt }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Date</th>
+                    <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : 'N/A' }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Vote</th>
+                    <td>{{ evenement.vote }}</td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Image</th>
+                    <td>
+                        {% if evenement.imageevt %}
+                            <img src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.imageevt) }}"
+                                alt="{{ evenement.imageevt }} Image"
+                                class="img-fluid rounded shadow"
+                                style="max-width: 350px; max-height: 200px;">
+                        {% else %}
+                            <p class="no-content-message">No Image Available</p>
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th class="text-rose">Video</th>
+                    <td>
+                        {% if evenement.videoevt %}
+    <div class="video-container">
+        <video width="100%" height="auto" controls>
+            <source src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.videoevt) }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+{% else %}
+    <p>No Video Available</p>
+{% endif %}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <a href="{{ path('app_evenement_index') }}"> Retour à l'accueil </a>
-
-    <a href="{{ path('app_evenement_edit', {'idevt': evenement.idevt}) }}"> Modifier </a>
-
-    {{ include('evenement/_delete_form.html.twig') }}
+        <div class="text-center">
+            <a href="{{ path('app_evenement_indexAdmin') }}" class="btn btn-light">Back to List</a>
+            <a href="{{ path('app_evenement_edit', {'idevt': evenement.idevt}) }}" class="btn btn-warning">Edit</a>
+            {{ include('evenement/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

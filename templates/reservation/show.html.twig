@@ -8,19 +8,27 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Titre de l'évènement</th>
+                <th>IdBillet</th>
+                <td>{{ reservation.idBillet }}</td>
+            </tr>
+            <tr>
+                <th>Titreevt</th>
                 <td>{{ reservation.titreevt }}</td>
             </tr>
             <tr>
-                <th>Prix billet</th>
+                <th>Prixbillet</th>
                 <td>{{ reservation.prixbillet }}</td>
+            </tr>
+            <tr>
+                <th>Imageres</th>
+                <td>{{ reservation.imageres }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('app_reservation_index') }}">Retour à la liste </a>
+    <a href="{{ path('app_reservation_index') }}">back to list</a>
 
-    <a href="{{ path('app_reservation_edit', {'idBillet': reservation.idBillet}) }}">Modifier</a>
+    <a href="{{ path('app_reservation_edit', {'idBillet': reservation.idBillet}) }}">edit</a>
 
     {{ include('reservation/_delete_form.html.twig') }}
 {% endblock %}

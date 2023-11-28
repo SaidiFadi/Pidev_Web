@@ -30,6 +30,7 @@
                 <td>{{ evenement.adresseevt }}</td>
                 <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : '' }}</td>
                 <td>{{ evenement.vote }}</td> 
+                <td>{{ evenement.imageevt }}</td>
                 <td>
                     <a href="{{ path('app_evenement_show', {'idevt': evenement.idevt}) }}">Détails</a>
                     <a href="{{ path('app_evenement_edit', {'idevt': evenement.idevt}) }}">Réserver</a>

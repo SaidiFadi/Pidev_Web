@@ -43,16 +43,6 @@ class Location
     private $tarif;
 
     /**
-     * @var \Logement
-     *
-     * @ORM\ManyToOne(targetEntity="Logement")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="logement", referencedColumnName="idLogement")
-     * })
-     */
-    private $logement;
-
-    /**
      * @var \Personne
      *
      * @ORM\ManyToOne(targetEntity="Personne")
@@ -61,6 +51,16 @@ class Location
      * })
      */
     private $personne;
+
+    /**
+     * @var \Logement
+     *
+     * @ORM\ManyToOne(targetEntity="Logement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="logement", referencedColumnName="idLogement")
+     * })
+     */
+    private $logement;
 
 
 }

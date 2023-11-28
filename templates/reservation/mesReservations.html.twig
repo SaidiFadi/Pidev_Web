@@ -1,0 +1,40 @@
+{% extends 'client.html.twig' %}
+
+{% block titlefront %}Mes Participations{% endblock %}
+{% block body %}
+    <h1>Mes réservations</h1>
+
+    {% if evenements|length == 0 %}
+        <p>Vous n'avez réservé aucun événement pour le moment.</p>
+    {% else %}
+         <table class="table">
+            <thead>
+                <tr>
+                    <th>Événement</th>
+                    <th>Date de déroulement</th>
+                    <th>Description</th>
+                    <th>Adresse</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for evenement in evenements %}
+                    <tr>
+                        <td>{{ evenement.titreevt }}</td>
+                        <td>{{ evenement.dateevt|date('d-m-Y')}}</td>
+                        <td>{{ evenement.descevt }}</td>
+                        <td>{{ evenement.adresseevt }}</td>
+                        <td>
+                    <a href="{{ path('app_evenement_showCl', {'idevt': evenement.idevt}) }}">Details</a>
+                    </td>
+                    
+                    </tr>
+                    {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+                
+            </tbody>
+        </table>
+    {% endif %}
+{% endblock %}

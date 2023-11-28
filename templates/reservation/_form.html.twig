@@ -1,4 +1,31 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
+{# {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+{{ form_row(form.idBillet) }}
+{{ form_row(form.idevt) }}
+{{ form_row(form.titreevt) }}
+{{ form_row(form.prixbillet) }}
+{{ form_row(form.id) }}
+{{ form_end(form) }}
+    {# Add the file upload input for the imageEvt field #}
+    {# {{ form_row(form.imageres) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }} #} 
+{# templates/reservation/_form.html.twig #}
+
+{{ form_start(form) }}
+    {{ form_row(form.prixbillet) }}
+    {{ form_row(form.imageres) }}
+
+    {# Ajoutez un champ pour sélectionner manuellement l'événement #}
+    {{ form_label(form.idevt, 'Événement') }}
+    {{ form_widget(form.idevt) }}
+    {{ form_errors(form.idevt) }}
+
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">{{ button_label }}</button>
+        <a href="{{ path('app_reservation_index') }}" class="btn btn-secondary">Cancel</a>
+
+        {% if is_granted('DELETE', reservation) %}
+            {{ include('reservation/_delete_form.html.twig') }}
+        {% endif %}
+    </div>
 {{ form_end(form) }}

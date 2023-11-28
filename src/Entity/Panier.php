@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Panier
  *
- * @ORM\Table(name="panier", indexes={@ORM\Index(name="id", columns={"id"}), @ORM\Index(name="idOffre", columns={"idOffre"})})
+ * @ORM\Table(name="panier", indexes={@ORM\Index(name="idOffre", columns={"idOffre"}), @ORM\Index(name="id", columns={"id"})})
  * @ORM\Entity
  */
 class Panier
@@ -43,16 +43,6 @@ class Panier
     private $iduser;
 
     /**
-     * @var \Offre
-     *
-     * @ORM\ManyToOne(targetEntity="Offre")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idOffre", referencedColumnName="idOffre")
-     * })
-     */
-    private $idoffre;
-
-    /**
      * @var \Personne
      *
      * @ORM\ManyToOne(targetEntity="Personne")
@@ -61,6 +51,16 @@ class Panier
      * })
      */
     private $id;
+
+    /**
+     * @var \Offre
+     *
+     * @ORM\ManyToOne(targetEntity="Offre")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idOffre", referencedColumnName="idOffre")
+     * })
+     */
+    private $idoffre;
 
 
 }

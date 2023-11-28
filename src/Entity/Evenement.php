@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\EvenementRepository;
 use Doctrine\DBAL\Types\Types;
@@ -26,7 +28,7 @@ class Evenement
 
     #[ORM\Column(length: 255)]
     #[Assert\Regex(
-        pattern: '/^[a-zA-Z]+$/',
+        pattern: '/^[a-zA-Z\s]+$/',
         message: 'Le nom de l"organisateur ne doit contenir que des lettres'
     )]
 
@@ -61,6 +63,20 @@ class Evenement
      #[ORM\Column]
 
      private ?int $vote = null;
+     
+     #[ORM\Column(name:"imageEvt", type:"string", length:255, nullable:false)]
+     private ?string $imageevt;
+
+    #[ORM\Column(name:"videoEvt", type:"string", length:255, nullable:false)]
+    #[Assert\File(maxSize:"8024k",mimeTypes:"video/*",mimeTypesMessage:"Please upload a valid video file")]
+     private ?string $videoevt;
+     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: "idEvt")]
+    private $reservations;
+
+     public function __construct()
+     {
+         $this->reservations = new ArrayCollection();
+     }
 
      public function getIdevt(): ?int
      {
@@ -174,5 +190,59 @@ class Evenement
 
          return $this;
      }
+
+     public function getImageevt(): ?string
+     {
+         return $this->imageevt;
+     }
+
+     public function setImageevt(string $imageevt): static
+     {
+         $this->imageevt = $imageevt;
+
+         return $this;
+     }
+
+     public function getVideoevt(): ?string
+     {
+         return $this->videoevt;
+     }
+
+     public function setVideoevt(string $videoevt): static
+     {
+         $this->videoevt = $videoevt;
+
+         return $this;
+     }
+
+     /**
+      * @return Collection<int, Reservation>
+      */
+     public function getReservations(): Collection
+     {
+         return $this->reservations;
+     }
+
+     public function addReservation(Reservation $reservation): static
+     {
+         if (!$this->reservations->contains($reservation)) {
+             $this->reservations->add($reservation);
+             $reservation->setIdEvt($this);
+         }
+
+         return $this;
+     }
+
+     public function removeReservation(Reservation $reservation): static
+     {
+         if ($this->reservations->removeElement($reservation)) {
+             // set the owning side to null (unless already changed)
+             if ($reservation->getIdEvt() === $this) {
+                 $reservation->setIdEvt(null);
+             }
+         }
+
+         return $this;
+     } 
 
 }
