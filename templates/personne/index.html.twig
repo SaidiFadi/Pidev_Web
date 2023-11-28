@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Personne index{% endblock %}
+
+{% block body %}
+    <h1>Personne index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Password</th>
+                <th>Datenaise</th>
+                <th>Adresse</th>
+                <th>Tele</th>
+                <th>Cin</th>
+                <th>Ign</th>
+                <th>IsBanned</th>
+                <th>IsVerified</th>
+                <th>Pprofile</th>
+                <th>RolejavaClientId</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for personne in personnes %}
+            <tr>
+                <td>{{ personne.id }}</td>
+                <td>{{ personne.nom }}</td>
+                <td>{{ personne.prenom }}</td>
+                <td>{{ personne.email }}</td>
+                <td>{{ personne.roles }}</td>
+                <td>{{ personne.password }}</td>
+                <td>{{ personne.datenaise ? personne.datenaise|date('Y-m-d') : '' }}</td>
+                <td>{{ personne.adresse }}</td>
+                <td>{{ personne.tele }}</td>
+                <td>{{ personne.cin }}</td>
+                <td>{{ personne.ign }}</td>
+                <td>{{ personne.isBanned ? 'Yes' : 'No' }}</td>
+                <td>{{ personne.isVerified ? 'Yes' : 'No' }}</td>
+                <td>{{ personne.pprofile }}</td>
+                <td>{{ personne.rolejavaClientId }}</td>
+                <td>
+                    <a href="{{ path('app_personne_show', {'id': personne.id}) }}">show</a>
+                    <a href="{{ path('app_personne_edit', {'id': personne.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="16">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_personne_new') }}">Create new</a>
+{% endblock %}

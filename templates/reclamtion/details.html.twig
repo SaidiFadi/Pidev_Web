@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}   
+
+
+
+
+ {% block body %}
+<br>
+
+
+
+
+<center>
+    <h1 style="color: #C0D2F3;">Gérer Réclamation</h1>
+
+<br><br><br>
+
+
+
+
+<br><br><br>
+
+  <a href="{{ path('app_reclamation_new') }}"><button  class="btn btn-primary">Retouner</button></a> 
+ <a href="{{ path('pdf') }}"><button  class="btn btn-primary">pdf </button></a> 
+  <a href="{{ path('apptest') }}"><button  class="btn btn-primary">Rechercher</button></a> 
+    <a href="{{ path('app_reclamationyy') }}"><button  class="btn btn-primary">Statistique</button></a> 
+<br><br>
+<style>
+    div {
+        text-align: center;
+    }
+</style>
+
+<div>
+<style>
+    table {
+        width: 1%; 
+        margin-left: 0.1%;
+        margin-right: 0.1%;
+        border: 3px solid #B7CCF4;
+    }
+</style>
+     <table class="table text-nowrap mb-0 align-middle">
+        <thead class="table-secondary">
+            <tr>
+        <th scope="col" class="col-2">ID Utilisateur</th> 
+        <th scope="col" class="col-2">Numéro</th>
+        <th scope="col" class="col-2">État</th>
+        <th scope="col" class="col-2">Message</th>
+        <th scope="col" class="col-6">ID Utilisateur</th>
+        <th scope="col" class="col-6">ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for articles in articles %}
+                <tr>
+                   <td>{{ articles.id }}</td>
+                    <td>{{ articles.id }}</td>
+                    <td> {{articles.etat }}</td>
+                    <td>{{ articles.message }}</td>
+                    <td>{{ articles.idUser }}</td>
+                       <td>
+            
+<a href="{{ path('changer_etat_reclamation', {'id': articles.id}) }}"><button  class="btn btn-primary">traite</button></a> 
+ <a href="{{ path('changer_etat_refuser', {'id': articles.id}) }}"><button  class="btn btn-primary">refuse</button></a> 
+
+                </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</center>
+{% endblock %}
+

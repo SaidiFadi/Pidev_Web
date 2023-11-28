@@ -1,0 +1,7 @@
+# app/config/config.yml (Symfony 3.x) ou config/packages/twig.yaml (Symfony 4+)
+
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    strict_variables: true
+    form_themes:
+        - 'bootstrap_4_layout.html.twig'

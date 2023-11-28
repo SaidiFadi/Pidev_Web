@@ -1,0 +1,68 @@
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+{% endblock %}
+
+{% block body %}
+
+
+<center>
+    <h1 style="color: #C0D2F3;">Statistique Réclamation</h1>
+    <br>
+      <a href="{{ path('app_reclamation_index') }}"><button  class="btn btn-primary">Retouner</button></a> 
+<br><br>
+
+
+
+
+
+
+
+
+    <canvas id="reclamation" width="400" height="100"></canvas>
+    <canvas id="courbe" width="200" height="50"></canvas>
+  
+
+
+
+
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let reclamation = document.querySelector("#reclamation");
+
+            let reclGraph = new Chart(reclamation, {
+                type: 'pie',
+                data: {
+                    labels: {{ ReclamationNom | raw }},
+                    datasets: [{
+                        label: "houssem came",
+                        data: {{ ReclamationCount | raw }},
+                        backgroundColor: {{ ReclamationColor | raw }}
+                    }]
+                }
+            });
+
+            let courbe = document.querySelector("#courbe");
+
+            let courbeGraph = new Chart(courbe, {
+                type: 'line',
+                data: {
+                    labels: {{ ReclamationNom | raw }},
+                    datasets: [{
+                        label: "ETAT ",
+                        data: {{ ReclamationCount | raw }},
+                        backgroundColor: {{ ReclamationColor | raw }}
+                    }]
+                }
+            });
+        });
+    </script>
+{% endblock %}
