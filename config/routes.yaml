@@ -1,3 +1,19 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+offre_pdf:
+    path: /offre/{id}/pdf
+    controller: 'App\Controller\OffreController::generatePDF'
+    methods: ['GET']
+afficher_pourcentages_offres:
+    path: /afficher-pourcentages-offres
+    controller: 'App\Controller\PanierController::afficherPourcentagesOffres'
+app_offre_weather:
+    path: '/offre/weather/{city}'
+    controller: 'App\Controller\OffreController::weather'
+supprimer_offre_panier:
+    path: '/supprimer-offre/{nomOffre}'
+    controller: 'App\Controller\PanierController::supprimerOffrePanier'
+search:
+    path: /search
+    controller: App\Controller\OffreController::search

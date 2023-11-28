@@ -1,0 +1,48 @@
+{# templates/emails/confirmation_panier.html.twig #}
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Confirmation de Panier</title>
+
+		<h1>Merci pour votre achat chez nous,
+			{{ panierListe[0].getId().getNom() }}
+			{{ panierListe[0].getId().getPrenom() }}!</h1>
+
+		<p>Votre panier a été confirmé avec succès. Voici un récapitulatif de votre commande :</p>
+	</head>
+	<body>
+		<p>Bonjour
+			{{ panier.getId.getNom() }}
+			{{ panier.getId.getPrenom() }},</p>
+
+		<p>Nous vous confirmons la réception de votre panier :</p>
+		<table class="cart-table" border="1">
+			<thead>
+				<tr>
+					<th>Nom de l'Offre</th>
+					<th>Valeur de l'Offre</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% set total = 0 %}
+				{% for panier in panierListe %}
+					<tr>
+						<td>{{ panier.idOffre.nomOffre }}</td>
+						<td>{{ panier.idOffre.valeurOffre }}</td>
+					</tr>
+					{% set total = total + panier.idOffre.valeurOffre %}
+				{% endfor %}
+				<tr>
+					<td colspan="1" class="total-label" style="font-weight: bold;">Total :</td>
+					<td class="total-value">{{ total }}</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+
+		<p>Merci de faire vos achats chez nous!</p>
+	</body>
+</html>

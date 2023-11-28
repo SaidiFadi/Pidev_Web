@@ -1,39 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Panier index{% endblock %}
+{% block title %}Panier index
+{% endblock %}
 
 {% block body %}
-    <h1>Panier index</h1>
+	<h1>Panier index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idpanier</th>
-                <th>Total</th>
-                <th>Datepanier</th>
-                <th>Iduser</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for panier in paniers %}
-            <tr>
-                <td>{{ panier.idpanier }}</td>
-                <td>{{ panier.total }}</td>
-                <td>{{ panier.datepanier ? panier.datepanier|date('Y-m-d') : '' }}</td>
-                <td>{{ panier.iduser }}</td>
-                <td>
-                    <a href="{{ path('app_panier_show', {'idpanier': panier.idpanier}) }}">show</a>
-                    <a href="{{ path('app_panier_edit', {'idpanier': panier.idpanier}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<input type="text" name="q" id="myInput" placeholder="Search.">
 
-    <a href="{{ path('app_panier_new') }}">Create new</a>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Idpanier</th>
+				<th>Total</th>
+				<th>Datepanier</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody id="myType">
+			{% for panier in paniers %}
+				<tr>
+					<td>{{ panier.idPanier }}</td>
+					<td>{{ panier.total }}</td>
+					<td>{{ panier.datePanier ? panier.datePanier|date('Y-m-d') : '' }}</td>
+					<td>
+						<a href="{{ path('app_panier_show', {'idpanier': panier.idPanier}) }}">show</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function () {
+$("#myInput").on("keyup", function () {
+var value = $(this).val().toLowerCase();
+$("#myType tr").filter(function () {
+$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+});
+});
+});
+	</script>
 {% endblock %}

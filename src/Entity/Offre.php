@@ -2,91 +2,64 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Mime\Message;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\OffreRepository;
 
-/**
- * Offre
- *
- * @ORM\Table(name="offre", indexes={@ORM\Index(name="id", columns={"id"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: OffreRepository::class)]
 class Offre
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="idOffre", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idoffre;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nomOffre", type="string", length=15, nullable=false)
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(name: 'idOffre')]
+    private  ?int $idoffre = null;
+
+
+    #[Assert\NotBlank(message: "Le nom de l'offre  ne peut pas être vide")]
+    #[Assert\Regex(
+        pattern: '/^[a-zA-Z]+$/',
+        message: "Le nom ne peut contenir que des lettres"
+    )]
+    #[ORM\Column(name: 'nomOffre', type: 'string', length: 255, nullable: false)]
     private $nomoffre;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="string", length=300, nullable=false)
-     */
-    private $description;
+    #[Assert\NotBlank(message: "La description ne peut pas être vide")]
+    #[ORM\Column(name: 'description', type: 'string', length: 255, nullable: false)]
+    #[Assert\Length(
+        min: 6,
+        minMessage: 'Le description doit contenir au moins {{ limit }} caractères.'
+    )]
+    private  $description;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateDebut", type="date", nullable=false)
-     */
-    private $datedebut;
+    #[Assert\NotBlank(message: 'La datedebut ne peut pas être vide.')]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThanOrEqual("today", message: "please  saisir une date égale ou suppérieure  à celle d'aujourd'hui .")]
+    private  ?\DateTimeInterface $datedebut = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="dateFin", type="date", nullable=false)
-     */
-    private $datefin;
+    #[Assert\NotBlank(message: 'La datefin  ne peut pas être vide.')]
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private  ?\DateTimeInterface $datefin = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="typeOffre", type="string", length=0, nullable=false)
-     */
-    private $typeoffre;
+    #[Assert\NotBlank(message: "Le type de l'offre  ne peut pas être vide")]
+    #[ORM\Column(length: 255)]
+    private ?string  $typeoffre = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="valeurOffre", type="integer", nullable=false)
-     */
-    private $valeuroffre;
+    #[Assert\NotBlank(message: "Le valeur de l'offre  ne peut pas être vide")]
+    #[ORM\Column]
+    private ?int $valeuroffre = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="imageOffre", type="string", length=255, nullable=true)
-     */
-    private $imageoffre;
+    #[Assert\NotBlank(message: "Le  image de l'offre  ne peut pas être vide")]
+    #[ORM\Column(length: 255)]
+    private ?string $imageoffre = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="status", type="string", length=0, nullable=false)
-     */
-    private $status;
+    #[Assert\NotBlank(message: "Le staus de l'offre  ne peut pas être vide")]
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
 
-    /**
-     * @var \Personne
-     *
-     * @ORM\ManyToOne(targetEntity="Personne")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
-     * })
-     */
-    private $id;
+
 
     public function getIdoffre(): ?int
     {
@@ -188,18 +161,4 @@ class Offre
 
         return $this;
     }
-
-    public function getId(): ?Personne
-    {
-        return $this->id;
-    }
-
-    public function setId(?Personne $id): static
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-
 }

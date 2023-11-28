@@ -1,0 +1,49 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}Pourcentages des Offres
+{% endblock %}
+
+{% block body1 %}
+	<h1>Pourcentage de vente de chaque type d'offre</h1>
+
+	{% if pourcentagesOffres is empty %}
+		<p>Aucun panier disponible.</p>
+	{% else %}
+		<ul>
+			{% for type, pourcentage in pourcentagesOffres %}
+				<li>{{ type }}
+					:
+					{{ pourcentage }}%</li>
+			{% endfor %}
+		</ul>
+
+		<canvas id="pourcentageChart" width="500" height="50"></canvas>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script>
+			var ctx = document.getElementById('pourcentageChart').getContext('2d');
+var labels = [];
+var values = [];{% for type, pourcentage in pourcentagesOffres %}labels.push("{{ type|e('js') }}");
+values.push({{ pourcentage }});{% endfor %}var data = {
+labels: labels,
+datasets: [
+{
+data: values,
+backgroundColor: [
+'rgba(255, 99, 132, 0.7)',
+'rgba(54, 162, 235, 0.7)',
+'rgba(255, 206, 86, 0.7)',
+'rgba(75, 192, 192, 0.7)',
+'rgba(153, 102, 255, 0.7)',
+'rgba(255, 159, 64, 0.7)',
+]
+}
+]
+};
+
+var myPieChart = new Chart(ctx, {
+type: 'pie',
+data: data
+});
+		</script>
+	{% endif %}
+{% endblock %}

@@ -1,4 +1,52 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form,{attr:{novalidate:'novalidate'}}) }}
+<div class="form-group">
+	{{ form_label(form.nomoffre) }}
+	{{ form_widget(form.nomoffre, {'attr': {'class': 'form-control'~ (form.nomoffre.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+	{{ form_errors(form.nomoffre) }}
+</div>
+
+<div class="form-group">
+	{{ form_label(form.description) }}
+	{{ form_widget(form.description, {'attr': {'class': 'form-control'~ (form.description.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+	{{ form_errors(form.description) }}
+</div>
+
+<div class="form-group">
+	{{ form_label(form.datedebut) }}
+	{{ form_widget(form.datedebut, {'attr': {'class': 'form-control'~ (form.datedebut.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+	{{ form_errors(form.datedebut) }}
+</div>
+
+<div class="form-group">
+	{{ form_label(form.datefin) }}
+	{{ form_widget(form.datefin, {'attr': {'class': 'form-control'~ (form.datefin.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+	{{ form_errors(form.datefin) }}
+</div>
+
+<div class="form-group">
+	{{ form_label(form.typeoffre) }}
+	{{ form_widget(form.typeoffre, {'attr': {'class': 'form-control'~ (form.typeoffre.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+	{{ form_errors(form.typeoffre) }}
+</div>
+
+<div class="form-group">
+	{{ form_label(form.valeuroffre) }}
+	{{ form_widget(form.valeuroffre, {'attr': {'class': 'form-control'~ (form.valeuroffre.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+	{{ form_errors(form.valeuroffre) }}
+</div>
+
+<div class="form-group">
+	{{ form_label(form.imageoffre) }}
+	{{ form_widget(form.imageoffre, {'attr': {'class': 'form-control'~ (form.imageoffre.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+	{{ form_errors(form.imageoffre) }}
+</div>
+
+<div class="form-group">
+	{{ form_label(form.status) }}ti
+	{{ form_widget(form.status, {'attr': {'class': 'form-control'~ (form.status.vars.errors|length > 0 ? 'is-invalid' : '')}}) }}
+	{{ form_errors(form.status) }}
+</div>
+
+<button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+
 {{ form_end(form) }}

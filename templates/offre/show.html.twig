@@ -1,54 +1,60 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Offre{% endblock %}
+{% extends 'client.html.twig' %}
+{% block title %}Offre
+{% endblock %}
 
 {% block body %}
-    <h1>Offre</h1>
+	<h1>Offre</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Idoffre</th>
-                <td>{{ offre.idoffre }}</td>
-            </tr>
-            <tr>
-                <th>Nomoffre</th>
-                <td>{{ offre.nomoffre }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ offre.description }}</td>
-            </tr>
-            <tr>
-                <th>Datedebut</th>
-                <td>{{ offre.datedebut ? offre.datedebut|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Datefin</th>
-                <td>{{ offre.datefin ? offre.datefin|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Typeoffre</th>
-                <td>{{ offre.typeoffre }}</td>
-            </tr>
-            <tr>
-                <th>Valeuroffre</th>
-                <td>{{ offre.valeuroffre }}</td>
-            </tr>
-            <tr>
-                <th>Imageoffre</th>
-                <td>{{ offre.imageoffre }}</td>
-            </tr>
-            <tr>
-                <th>Status</th>
-                <td>{{ offre.status }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Idoffre</th>
+				<td>{{ offre.idoffre }}</td>
+			</tr>
+			<tr>
+				<th>Nomoffre</th>
+				<td>{{ offre.nomoffre }}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>{{ offre.description }}</td>
+			</tr>
+			<tr>
+				<th>Datedebut</th>
+				<td>{{ offre.datedebut ? offre.datedebut|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Datefin</th>
+				<td>{{ offre.datefin ? offre.datefin|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Typeoffre</th>
+				<td>{{ offre.typeoffre }}</td>
+			</tr>
+			<tr>
+				<th>Valeuroffre</th>
+				<td>{{ offre.valeuroffre }}</td>
+			</tr>
+			<tr>
+				<th>Imageoffre</th>
+				<td>
+					{% if offre.imageoffre %}
+						<img src="{{ asset('uploads/images/' ~ offre.imageoffre) }}" alt="{{ offre.nomoffre }} Image" style="max-width: 200px; max-height: 100px;">
+					{% else  %}
+						No Imageoffre Available
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>Status</th>
+				<td>{{ offre.status }}</td>
+			</tr>
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_offre_index') }}">back to list</a>
+	<a href="{{ path('app_offre_index') }}">back to list</a>
 
-    <a href="{{ path('app_offre_edit', {'idoffre': offre.idoffre}) }}">edit</a>
+	<a href="{{ path('app_offre_edit', {'idoffre': offre.idoffre}) }}">edit</a>
 
-    {{ include('offre/_delete_form.html.twig') }}
+	{{ include('offre/_delete_form.html.twig') }}
 {% endblock %}

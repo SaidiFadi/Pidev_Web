@@ -1,49 +1,143 @@
 {% extends 'base.html.twig' %}
-
-{% block title %}Offre index{% endblock %}
+{% block title %}Offre index
+{% endblock %}
 
 {% block body %}
-    <h1>Offre index</h1>
+	<h1>Offre index</h1>
+	<div class="input-group mb-3">
+		<input type="text" id="myInput" class="form-control" placeholder="Search...">
+		<div class="input-group-append">
+			<button class="btn btn-outline-secondary" type="button">Search</button>
+		</div>
+	</div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idoffre</th>
-                <th>Nomoffre</th>
-                <th>Description</th>
-                <th>Datedebut</th>
-                <th>Datefin</th>
-                <th>Typeoffre</th>
-                <th>Valeuroffre</th>
-                <th>Imageoffre</th>
-                <th>Status</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for offre in offres %}
-            <tr>
-                <td>{{ offre.idoffre }}</td>
-                <td>{{ offre.nomoffre }}</td>
-                <td>{{ offre.description }}</td>
-                <td>{{ offre.datedebut ? offre.datedebut|date('Y-m-d') : '' }}</td>
-                <td>{{ offre.datefin ? offre.datefin|date('Y-m-d') : '' }}</td>
-                <td>{{ offre.typeoffre }}</td>
-                <td>{{ offre.valeuroffre }}</td>
-                <td>{{ offre.imageoffre }}</td>
-                <td>{{ offre.status }}</td>
-                <td>
-                    <a href="{{ path('app_offre_show', {'idoffre': offre.idoffre}) }}">show</a>
-                    <a href="{{ path('app_offre_edit', {'idoffre': offre.idoffre}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
 
-    <a href="{{ path('app_offre_new') }}">Create new</a>
-{% endblock %}
+	<table class="table table-hover" id="t">
+		<thead class="text-warning">
+			<tr>
+				<th style="">
+					<b>Idoffre</b>
+				</th>
+				<th style="">
+					<b>Nomoffre</b>
+				</th>
+				<th style="">
+					<b>Description</b>
+				</th>
+				<th style="">
+					<b>Datedebut</b>
+				</th>
+				<th style="">
+					<b>Datefin</b>
+				</th>
+				<th style="">
+					<b>Typeoffre</b>
+				</th>
+				<th style="">
+					<b>Valeuroffre</b>
+				</th>
+				<th style="">
+					<b>Imageoffre</b>
+				</th>
+				<th style="">
+					<b>Status</b>
+				</th>
+				<th style="">
+					<b>actions</b>
+				</th>
+			</tr>
+		</thead>
+		<tbody id="myTable">
+			{% for offre in offres %}
+				<tr>
+					<td>{{ offre.idoffre }}</td>
+					<td>{{ offre.nomoffre }}</td>
+					<td>{{ offre.description }}</td>
+					<td>{{ offre.datedebut ? offre.datedebut|date('Y-m-d') : '' }}</td>
+					<td>{{ offre.datefin ? offre.datefin|date('Y-m-d') : '' }}</td>
+					<td>{{ offre.typeoffre }}</td>
+					<td>{{ offre.valeuroffre }}</td>
+					<td>
+						{% if offre.imageoffre %}
+							<img src="{{ asset('uploads/images/' ~ offre.imageoffre) }}" alt="{{ offre.nomoffre }} Image" style="max-width: 200px; max-height: 100px;">
+						{% else %}
+							No Imageoffre Available
+						{% endif %}
+					</td>
+					<td>{{ offre.status }}</td>
+					<td>
+						<a href="{{ path('app_offre_show', {'idoffre': offre.idoffre}) }}">show</a>
+						<a href="{{ path('app_offre_edit', {'idoffre': offre.idoffre}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="10">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</tbodyid="myTable">
+</table>
+
+
+<a href="{{ path('app_offre_new') }}">Create new</a>
+<p>
+	<a href="{{ path('afficher_pourcentages_offres2') }}" class="btn btn-primary">Statistique</a>
+</p>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
+<script>
+	$(document).ready(function () {
+$("#myInput").on("keyup", function () {
+var value = $(this).val().toLowerCase();
+$.ajax({
+type: 'GET',
+url: '{{ path('search') }}',
+data: {
+'search': value
+},
+success: function (response) { 
+$("#myTable").empty();
+
+
+response.results.forEach(function (result) {
+var newRow = "<tr>";
+newRow += "<td>" + result.idoffre + "</td>";
+newRow += "<td>" + result.nomoffre + "</td>";
+newRow += "<td>" + result.description + "</td>";
+newRow += "<td>" + (
+result.datedebut ? result.datedebut : ''
+) + "</td>";
+newRow += "<td>" + (
+result.datefin ? result.datefin : ''
+) + "</td>";
+newRow += "<td>" + result.typeoffre + "</td>";
+newRow += "<td>" + result.valeuroffre + "</td>";
+newRow += "<td>";
+
+
+if (result.imageoffre) {
+newRow += "<img src='" + result.imageoffre + "' alt='Image' style='max-width: 100px; max-height: 100px;'>";
+} else {
+newRow += "No Image Available";
+} newRow += "</td>";
+
+newRow += "<td>" + result.status + "</td>";
+
+
+newRow += "</tr>";
+
+$("#myTable").append(newRow);
+});
+},
+error: function (error) {
+console.log('La requête Ajax a échoué : ' + error);
+}
+});
+});
+});
+</script>{% endblock %}

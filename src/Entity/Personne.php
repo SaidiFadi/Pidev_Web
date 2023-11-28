@@ -4,121 +4,57 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PersonneRepository;
+use phpDocumentor\Reflection\Types\Boolean;
 
-/**
- * Personne
- *
- * @ORM\Table(name="personne", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: PersonneRepository::class)]
 class Personne
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private  ?int $id = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nom", type="string", length=55, nullable=true)
-     */
-    private $nom;
+    #[ORM\Column(length: 55)]
+    private ?string  $nom = null;
+    #[ORM\Column(length: 55)]
+    private ?string  $prenom = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="prenom", type="string", length=55, nullable=true)
-     */
-    private $prenom;
+    #[ORM\Column(length: 55)]
+    private ?string  $email = null;
+    #[ORM\Column(length: 55)]
+    private ?string  $roles = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
-     */
-    private $email;
+    #[ORM\Column(length: 55)]
+    private ?string  $password = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="roles", type="string", length=255, nullable=true)
-     */
-    private $roles;
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private  ?\DateTimeInterface $datenaise = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
-     */
-    private $password;
+    #[ORM\Column(length: 55)]
+    private ?string  $adresse = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="dateNaise", type="date", nullable=true)
-     */
-    private $datenaise;
+    #[ORM\Column(length: 55)]
+    private ?string  $tele = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
-     */
-    private $adresse;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tele", type="string", length=15, nullable=true)
-     */
-    private $tele;
+    #[ORM\Column(length: 55)]
+    private ?string  $cin = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="cin", type="string", length=20, nullable=true)
-     */
-    private $cin;
+    #[ORM\Column(length: 55)]
+    private ?string  $ign = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ign", type="string", length=255, nullable=true)
-     */
-    private $ign;
+    #[ORM\Column]
+    private ?bool  $isBanned = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_banned", type="boolean", nullable=true)
-     */
-    private $isBanned;
+    #[ORM\Column]
+    private ?bool  $isVerified = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=true)
-     */
-    private $isVerified;
+    #[ORM\Column(length: 55)]
+    private ?string  $pprofile = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Pprofile", type="string", length=255, nullable=true)
-     */
-    private $pprofile;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="roleJava_client_id", type="integer", nullable=true, options={"default"="1"})
-     */
-    private $rolejavaClientId = 1;
+    #[ORM\Column]
+    private ?int $rolejavaClientId = null;
 
     public function getId(): ?int
     {
@@ -292,6 +228,6 @@ class Personne
 
         return $this;
     }
-
-
+    
+   
 }

@@ -1,0 +1,35 @@
+{% extends 'client.html.twig' %}
+{% block title %}Panier de
+	{{ email }}
+{% endblock %}
+
+{% block body %}
+	<h1>Panier de
+		{{ email }}</h1>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Nom de l'offre</th>
+				<!-- Ajoutez d'autres colonnes si nécessaire -->
+			</tr>
+		</thead>
+		<tbody>
+			{% for offre in offresDansPanier %}
+				<tr>
+					<td>{{ offre.nomoffre }}</td>
+					<td>{{ offre.valeuroffre }}</td>
+
+
+				</tr>
+				<tr>
+					<td>
+						<a href="{{ path('app_panier_afficher_personne') }}">show</a>
+
+					</td>
+				</tr>
+
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
