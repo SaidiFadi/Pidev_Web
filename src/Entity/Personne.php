@@ -2,127 +2,184 @@
 
 namespace App\Entity;
 
+use App\Repository\PersonneRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * Personne
- *
- * @ORM\Table(name="personne", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"})})
- * @ORM\Entity
- */
-class Personne
+#[ORM\Entity(repositoryClass: PersonneRepository::class)]
+#[UniqueEntity(fields: ["email"], message: "Il y a déjà un compte avec cette adresse e-mail")]
+
+class Personne implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $email = null;
+
+    #[ORM\Column]
+    private array $roles = [];
 
     /**
-     * @var string|null
-     *
-     * @ORM\Column(name="nom", type="string", length=55, nullable=true)
+     * @var string The hashed password
      */
-    private $nom;
+    #[ORM\Column]
+    #[Assert\Length(max: 255)]
+    private ?string $password = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="prenom", type="string", length=55, nullable=true)
-     */
-    private $prenom;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 55,
+        maxMessage: "Le nom de Client ne peut pas dépasser {{ limit }} lettres."
+        )]
+    #[Assert\Regex(
+            pattern: "/^[a-zA-Z ]+$/",
+            message: "Le nom de Client ne peut être qu'alphabétique."
+        )]
+    private ?string $nom = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
-     */
-    private $email;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 55,
+    maxMessage: "Le prenom de Client ne peut pas dépasser {{ limit }} lettres."
+        )]
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z ]+$/",
+        message: "Le prenom de Client ne peut être qu'alphabétique."
+        )]
+    private ?string $prenom = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="roles", type="string", length=255, nullable=true)
-     */
-    private $roles;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\NotBlank]
+    #[Assert\LessThan(
+        '-16 years',
+        message: "Vous devez avoir au moins 16 ans pour vous inscrire."
+    )]
+    private ?\DateTimeInterface $datenaise = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="password", type="string", length=255, nullable=true)
-     */
-    private $password;
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
 
-    /**
-     * @var \DateTime|null
-     *
-     * @ORM\Column(name="dateNaise", type="date", nullable=true)
-     */
-    private $datenaise;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 15)]
+    private ?string $tele = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
-     */
-    private $adresse;
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(max: 14)]
+    private ?string $cin = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="tele", type="string", length=15, nullable=true)
-     */
-    private $tele;
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        max: 12,
+        maxMessage: "L'IGN ne peut pas dépasser {{ limit }} lettres."
+    )]
+    private ?string $ign = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="cin", type="string", length=20, nullable=true)
-     */
-    private $cin;
+    #[ORM\Column(nullable: true)]
+    private ?bool $isBanned = null;
 
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="ign", type="string", length=255, nullable=true)
-     */
-    private $ign;
+    #[ORM\Column(nullable: true)]
+    private ?bool $isVerified = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_banned", type="boolean", nullable=true)
-     */
-    private $isBanned;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $pprofile = null;
 
-    /**
-     * @var bool|null
-     *
-     * @ORM\Column(name="is_verified", type="boolean", nullable=true)
-     */
-    private $isVerified;
-
-    /**
-     * @var string|null
-     *
-     * @ORM\Column(name="Pprofile", type="string", length=255, nullable=true)
-     */
-    private $pprofile;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="roleJava_client_id", type="integer", nullable=true, options={"default"="1"})
-     */
-    private $rolejavaClientId = 1;
-
-    public function getId(): ?int
+    public function getId(): ?string
     {
-        return $this->id;
+        //return $this->id;
+        return (string) $this->id;
+    }
+
+    public function getEmail(): ?string
+    {
+        return (string) $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @deprecated since Symfony 5.3, use getUserIdentifier instead
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): static
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getNom(): ?string
@@ -130,7 +187,7 @@ class Personne
         return $this->nom;
     }
 
-    public function setNom(?string $nom): static
+    public function setNom(string $nom): static
     {
         $this->nom = $nom;
 
@@ -142,45 +199,9 @@ class Personne
         return $this->prenom;
     }
 
-    public function setPrenom(?string $prenom): static
+    public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): static
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    public function getRoles(): ?string
-    {
-        return $this->roles;
-    }
-
-    public function setRoles(?string $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(?string $password): static
-    {
-        $this->password = $password;
 
         return $this;
     }
@@ -202,7 +223,7 @@ class Personne
         return $this->adresse;
     }
 
-    public function setAdresse(?string $adresse): static
+    public function setAdresse(string $adresse): static
     {
         $this->adresse = $adresse;
 
@@ -214,7 +235,7 @@ class Personne
         return $this->tele;
     }
 
-    public function setTele(?string $tele): static
+    public function setTele(string $tele): static
     {
         $this->tele = $tele;
 
@@ -226,7 +247,7 @@ class Personne
         return $this->cin;
     }
 
-    public function setCin(?string $cin): static
+    public function setCin(string $cin): static
     {
         $this->cin = $cin;
 
@@ -238,7 +259,7 @@ class Personne
         return $this->ign;
     }
 
-    public function setIgn(?string $ign): static
+    public function setIgn(string $ign): static
     {
         $this->ign = $ign;
 
@@ -280,18 +301,4 @@ class Personne
 
         return $this;
     }
-
-    public function getRolejavaClientId(): ?int
-    {
-        return $this->rolejavaClientId;
-    }
-
-    public function setRolejavaClientId(?int $rolejavaClientId): static
-    {
-        $this->rolejavaClientId = $rolejavaClientId;
-
-        return $this;
-    }
-
-
 }
