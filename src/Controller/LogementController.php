@@ -64,10 +64,8 @@ public function indexl(Request $request, LogementRepository $logementRepository)
     $logements = $logementRepository->findBySearchCriteria($searchCriteria);
 
     if ($request->isXmlHttpRequest()) {
-        // If it's an AJAX request, return a JSON response
         return $this->json(['logements' => $logements]);
     } else {
-        // If it's a regular request, render the template
         return $this->render('logement/index_client.html.twig', [
             'logements' => $logements,
         ]);

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 use App\Repository\LocationRepository;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
 
 use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: LocationRepository::class)]
@@ -24,6 +26,7 @@ class Location
 
     #[ORM\Column(type: "datetime")]
     #[Assert\NotBlank(message: "End date is required")]
+
     private ?\DateTimeInterface $datefin = null;
 
     

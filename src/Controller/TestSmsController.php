@@ -12,14 +12,14 @@ class TestSmsController extends AbstractController
     public function testSMS(TwilioSMSService $twilioSMSService): Response
     {
         // Replace 'YourPhoneNumber' with the actual phone number you want to send the SMS to
-        $phoneNumber = '+21650227451'; // Example Twilio test number
+        $phoneNumber = '+21650227451'; 
 
         $message = 'Hello from Twilio! This is a test SMS message.';
 
         // Send SMS
         $twilioSMSService->sendSMS($phoneNumber, $message);
 
-        // You can return a response indicating that the SMS has been sent
+        
         return new Response('Test SMS sent successfully!');
     }
 }

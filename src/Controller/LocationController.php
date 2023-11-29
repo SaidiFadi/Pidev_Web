@@ -40,7 +40,7 @@ public function indexl(EntityManagerInterface $entityManager, Request $request):
 {
     $email = $request->query->get('email');
 
-    // Retrieve locations based on the provided email
+    // Retrieve location selon email
     $locations = $entityManager
         ->getRepository(Location::class)
         ->findByEmail($email);
@@ -123,7 +123,7 @@ public function indexl(EntityManagerInterface $entityManager, Request $request):
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Check for conflicting reservations before persisting
+            // Check for confli 9bal el persist
             $conflictingReservations = $entityManager
                 ->getRepository(Location::class)
                 ->findConflictingReservations(
@@ -137,7 +137,7 @@ public function indexl(EntityManagerInterface $entityManager, Request $request):
                 //  flash message
                 $this->addFlash('danger', 'This accommodation is already booked during the selected dates. Please choose another accommodation or change the dates.');
 
-                // Redirect to a specific route with a flash message
+                
                 return $this->redirectToRoute('app_location_conflict', [
                     'logementId' => $location->getLogement()->getIdlogement(), 
                     'datedebut' => $location->getDatedebut()->format('Y-m-d'),
@@ -184,7 +184,7 @@ public function edit(Request $request, Location $location, EntityManagerInterfac
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-        // Check for conflicting reservations before persisting
+        // Check for confli
         $conflictingReservations = $entityManager
             ->getRepository(Location::class)
             ->findConflictingReservations(
@@ -297,7 +297,7 @@ public function editclient(Request $request, Location $location, EntityManagerIn
         // Customize the PDF content
         $html = $this->renderView('location/pdf_template.html.twig', [
             'location' => $location,
-            // Add any other necessary variables for your PDF template
+           
         ]);
 
         // Generate the PDF file

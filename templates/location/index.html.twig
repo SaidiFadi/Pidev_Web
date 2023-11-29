@@ -39,8 +39,8 @@
                 <td>{{ location.datefin ? location.datefin|date('Y-m-d') : '' }}</td>
                 <td>{{ location.tarif }}</td>
                 
-                <td>{{ location.personne.email }}</td> {# assuming "email" is a property of Personne #}
-                <td>{{ location.logement.adrl }}</td> {# assuming "adrl" is a property of Logement #}
+                <td>{{ location.personne.email }}</td> 
+                <td>{{ location.logement.adrl }}</td> 
                 
                 <td>
                     <a href="{{ path('app_location_show', {'idlocation': location.idlocation}) }}"class="btn btn-primary">show</a>

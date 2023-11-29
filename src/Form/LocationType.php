@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\Expression;
+
 
 use App\Entity\Location;
 use App\Entity\Personne;
@@ -40,30 +42,35 @@ class LocationType extends AbstractType
             'label' => 'End Date',
            
         ])*/
-         ->add('datedebut', DateType::class, [
+        ->add('datedebut', DateType::class, [
             'label' => 'Start Date',
             'widget' => 'single_text',
             'attr' => [
-               'min' => (new \DateTime())->format('Y-m-d'),
+                'min' => (new \DateTime())->format('Y-m-d'),
             ],
         ])
         ->add('datefin', DateType::class, [
             'label' => 'End Date',
             'widget' => 'single_text',
             'attr' => [
-               'min' => (new \DateTime())->format('Y-m-d'),
+                'min' => (new \DateTime())->format('Y-m-d'),
             ],
-        ]) 
-       
+            'constraints' => [
+                new NotBlank(),
+                new Expression([
+                    'expression' => 'this.getParent()["datedebut"].getData() <= value',
+                    'message' => 'End date should be greater than or equal to the start date.',
+                ]),
+            ],
+        ])
         ->add('personne', EntityType::class, [
             'class' => Personne::class,
             'choice_label' => 'email',
             'label' => 'Locataire',
             'constraints' => [
                 new NotBlank(),
-               
             ],
-            'placeholder' => 'Select a locataire', 
+            'placeholder' => 'Select a locataire',
         ])
         ->add('logement', EntityType::class, [
             'class' => Logement::class,
@@ -72,8 +79,7 @@ class LocationType extends AbstractType
             'constraints' => [
                 new NotBlank(),
             ],
-            
         ]);
-        
-    }
 }
+}
+      

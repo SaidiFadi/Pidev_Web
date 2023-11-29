@@ -39,7 +39,7 @@
         </thead>
         <tbody>
             {% for location in locations %}
-                {# Add a conditional to filter locations by email if the email is provided in the query parameters #}
+           
                 {% if app.request.query.get('email') is not null and location.personne.email != app.request.query.get('email') %}
                     
                 {% endif %}

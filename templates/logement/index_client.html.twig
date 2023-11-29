@@ -20,7 +20,8 @@
 
     {# Search Form #}
    <div id="search-form">
-    <form method="GET" action="{{ path('app_logement_client_index') }}" onsubmit="return submitForm(event)">
+       <form method="GET" action="{{ path('app_logement_client_index') }}" onsubmit="return submitForm(event)">
+
         {# Your existing form content #}
         <div class="row">
             <div class="col-md-3">
@@ -81,8 +82,13 @@
      </div>
 
     {# Logements Cards #}
-    <div class="row mt-3">
+        <div id="logements-container" class="row mt-3">
+
         {% if logements is defined and logements|length > 0 %}
+        {# Convert the logements array to a JSON object #}
+            <script>
+                var logementsData = {{ logements|json_encode|raw }};
+            </script>
             {% for logement in logements %}
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
@@ -106,8 +112,11 @@
     </div>
      {# Include jQuery library #}
     <script src="{{ asset('assets/admin/src/assets/libs/jquery/dist/jquery.min.js') }}"></script>
-    <script>
+<script>
     $(document).ready(function () {
+        // Access the logementsData variable in JavaScript
+        var logements = {{ logements|json_encode|raw }};
+
         // Function to handle form submission via AJAX
         function submitForm() {
             // Get the form data
@@ -121,23 +130,50 @@
                 dataType: 'json', // Specify that the expected response is JSON
                 success: function (response) {
                     // Update logements in the template
-                    console.log(response.logements); // Use the received data as needed
+                    var logementsContainer = $('#logements-container');
+                    logementsContainer.html(''); // Clear existing content
 
-                    // Update the content dynamically
-                    $('#logements-container').html(response.html);
+                    // Iterate over the logements and append them to the container
+                    $.each(response.logements, function (index, logement) {
+                        var imagePath = '{{ asset('uploads/') }}' + logement.image;
+                        var showUrl = '{{ path('app_logement_client_show', {'idlogement': '__idlogement__'}) }}';
+                        showUrl = showUrl.replace('__idlogement__', logement.idlogement);
+
+                        var card = `
+                            <div class="col-md-4 mb-4">
+                                <div class="card h-100">
+                                    <img src="${imagePath}" class="card-img-top img-fluid" alt="Logement Image" style="height: 300px;">
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title">${logement.adrl}</h5>
+                                        <p class="card-text">Superficie: ${logement.superfice}</p>
+                                        <p class="card-text">Loyer: ${logement.loyer}</p>
+                                        <p class="card-text">Type: ${logement.type}</p>
+                                        <p class="card-text">Région: ${logement.region}</p>
+                                        <a href="${showUrl}" class="btn btn-primary mt-auto">Show</a>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+
+                        // Append the card to the container
+                        logementsContainer.append(card);
+                    });
                 },
                 error: function (error) {
                     console.error('AJAX request failed:', error);
                 }
             });
+
+            return false; // Prevent further bubbling of the event
         }
 
-        // Attach the submitForm function to the input event of the search input field
-        $('#search-form input').on('input', function () {
+        // Attach the submitForm function to the input and change events of the form elements
+        $('#search-form input, #search-form select').on('input change', function () {
             submitForm();
         });
     });
 </script>
+
 {% endblock %}
 {#
 <script>
