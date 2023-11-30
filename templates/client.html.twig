@@ -27,9 +27,6 @@
 
 <body>
     <!-- Page Preloder -->
-    <div id="preloder">
-        <div class="loader"></div>
-    </div>
 
     <!-- Header Section Begin -->
     <header class="header-section">
@@ -61,13 +58,78 @@
                             </ul>
                         </li>
                         <li><a href="#">Contacts</a></li>
+                        <li><a href="/assets/client/schedule.html">Schedule</a></li>
+                        <li><a href="/logement/client/">Booking</a></li>
+                        <li><a href="/assets/client/contact.html">Contacts</a></li>
+                        <li>
+								{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+									<a>{{ app.user.nom }}</a>
+									<ul class="dropdown">
+										{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') %}
+											<li>
+												<a href="{{ path('personne_back') }}">
+													<span>Dashboard</span>
+												</a>
+											</li>
+										{% endif %}
+										<li>
+											<a href="{{ path('app_personne_profile') }}">
+												<span>Profile</span>
+											</a>
+										</li>
+										<li>
+											<a href="{{ path('app_personne_edit', {'id': app.user.id})  }}">
+												<span>Modifier profile</span>
+											</a>
+										</li>
+										<li>
+											<a href="{{ path('app_logout') }}">
+												<span>Deconnexion</span>
+											</a>
+										</li>
+
+
+									</ul>
+								{% else %}
+									<a href="#">
+										<span>Compte</span>
+									</a>
+									<ul class="dropdown">
+
+										<li>
+											<a href="{{ path('app_login') }}">
+												<span>Connectez-vous</span>
+											</a>
+										</li>
+										<li>
+											<a href="{{ path('register') }} ">
+												<span>S'inscrire</span>
+											</a>
+										</li>
+									</ul>
+								</li>
+
+							{% endif %}
+						</li>
                     </ul>
                 </nav>
-                <a href="#" class="primary-btn top-btn"><i class="fa fa-ticket"></i> Ticket</a>
+                <a href="#" class="primary-btn top-btn">
+                <i class="fa fa-ticket">
+                </i> Ticket</a>
             </div>
             <div id="mobile-menu-wrap"></div>
         </div>
     </header>
+    {% if app.user is not null %}
+
+						{% if not app.user.isVerified() %}
+							<br>
+							<div class="alert alert-danger text-center" role="alert">
+								Vous n'êtes pas vérifié. Veuillez vérifier votre compte pour accéder à toutes les fonctionnalités.
+							</div>
+						{% endif %}
+					{% endif %}<!-- Header End --><!-- Hero Section Begin --><section class="hero-section set-bg" data-setbg="img/hero.jpg">
+
     <!-- Header End -->
 {% block body %}
     <!-- Hero Section Begin -->
@@ -170,7 +232,7 @@
         <div class="member-item set-bg" data-setbg="img/team-member/member-1.jpg">
             <div class="mi-social">
                 <div class="mi-social-inner bg-gradient">
-                    <a href="#"><i class="fa fa-facebook"></i></a>
+                    <a href=""><i class="fa fa-facebook"></i></a>
                     <a href="#"><i class="fa fa-instagram"></i></a>
                     <a href="#"><i class="fa fa-twitter"></i></a>
                     <a href="#"><i class="fa fa-linkedin"></i></a>
@@ -1158,11 +1220,11 @@
   Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
                         <div class="ft-social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-linkedin"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-youtube-play"></i></a>
+                            <a href="https://www.facebook.com/?locale=fr_FR"><i class="fa fa-facebook"></i></a>
+                            <a href="https://twitter.com/?lang=fr"><i class="fa fa-twitter"></i></a>
+                            <a href="https://fr.linkedin.com"><i class="fa fa-linkedin"></i></a>
+                            <a href="https://www.instagram.com"><i class="fa fa-instagram"></i></a>
+                            <a href="https://www.youtube.com"><i class="fa fa-youtube-play"></i></a>
                         </div>
                     </div>
                 </div>
