@@ -64,16 +64,16 @@
 
     <h1>Votre Réservation a été effectuée avec succès </h1>
 
-    {% if evenement is not null %}
-        <h1 style="color: #8B0000;">{{ evenement.titreevt }}</h1>
-        <p>Description : {{ evenement.descevt }}</p>
-        <p>Nom de l'organisateur : {{ evenement.nomOrg }}</p>
-        <p>Date : {{ evenement.dateevt|date('Y-m-d') }}</p>
+    {% if evenements is not null %}
+        <h1 style="color: #8B0000;">{{ evenements.titreevt }}</h1>
+        <p>Description : {{ evenements.descevt }}</p>
+        <p>Nom de l'organisateur : {{ evenements.nomOrg }}</p>
+        <p>Date : {{ evenements.dateevt|date('Y-m-d') }}</p>
 
         <img src="{{ qrImageDataUri }}" alt="QR code">
 
-<form method="post" action="{{ path('generate_qr_page', {'idevt': evenement.idevt , 'idBillet': reservation.idBillet}) }}">
-    <button type="submit">Generate</button>
+<form method="post" action="{{ path('generate_qr_page', {'idevt': evenements.idevt , 'idBillet': reservation.idBillet}) }}">
+    <button type="submit"></button>
 </form>
     {% else %}
         <p>Event not found</p>

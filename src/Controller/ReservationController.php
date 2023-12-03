@@ -72,7 +72,7 @@ class ReservationController extends AbstractController
         return $this->render('reservation/frontres.html.twig', [
             'reservation1' => $reservation1,
             'form' => $form->createView(),
-            'evenement' => $evenement,
+            'evenements' => $evenement,
             'button_label' => 'Save',
         ]);
     }
@@ -234,12 +234,10 @@ public function ajouterReservation($idevt, ReservationRepository $reservationRep
 }
 
 
-#[Route('/{idevt}/del', name: 'app_reservationn_cancel', methods: ['POST'])]
-public function annulerReservation($idevt, ReservationRepository $reservationRepository,EmailSender $emailService,SessionInterface $session): Response
+#[Route('/{id}/{idevt}/del', name: 'app_reservationn_cancel', methods: ['POST'])]
+public function annulerReservation($id, $idevt, ReservationRepository $reservationRepository,SessionInterface $session): Response
 {
-    $userData = $session->get('user_data');
-
-    $id=$userData['id'];
+    $id=23;
 
     $evenementRepository = $this->getDoctrine()->getRepository(Evenement::class);
     $evenement = $evenementRepository->find($idevt);
@@ -248,15 +246,15 @@ public function annulerReservation($idevt, ReservationRepository $reservationRep
     $personne = $personneRepository->find($id);
 
     // Rechercher la participation de l'utilisateur à l'événement
-    $reservation = $reservationRepository->findOneBy([
+    $reservations = $reservationRepository->findOneBy([
         'id' => $personne,
         'idevt' => $evenement,
     ]);
 
-    if ($reservation) {
+    if ($reservations) {
         // Supprimer la participation
         $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($reservation);
+        $entityManager->remove($reservations);
         $entityManager->flush();
 
         $this->addFlash('success', 'Votre reservation a été annulée avec succès !');
@@ -268,14 +266,15 @@ public function annulerReservation($idevt, ReservationRepository $reservationRep
    $body = '
    Bonjour, malheuresement vous avez annulé votre reservation à l\'evenement '.$evenement->getTitreevt().' avec succes';
    $personne = $entityManager
-->getRepository(Personne::class)
-->find($id);
-$to = $personne->getEmail();
+    ->getRepository(Personne::class)
+    ->find($id);
+   // Rediriger l'utilisateur vers la page de l'événement
 
-$emailService->sendEmail($to,$subject,$body);
-
-    // Rediriger l'utilisateur vers la page de l'événement
-    return $this->redirectToRoute('app_evenement_indexCl', [], Response::HTTP_SEE_OTHER);
+   return $this->render('reservation/mesReservations.html.twig', [
+       'evenement' => $evenement,
+       'reservations' => $reservations,
+       'id' => $id,
+   ]);
 }
 
 

@@ -22,5 +22,9 @@ event_dislike:
     path: '/{idevt}/{id}/dislike'
     controller: 'App\Controller\EvenementController::dislike'
     methods: ['GET']
+app_reservationn_cancel:
+    path: '/{id}/{idevt}/del'
+    controller: 'App\Controller\ReservationController::annulerReservation'
+    methods: ['POST']
 
 

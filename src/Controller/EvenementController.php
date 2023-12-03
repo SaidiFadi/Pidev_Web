@@ -283,8 +283,6 @@ public function like(int $idevt, int $id, SessionInterface $session): Response
 #[Route('/{idevt}/{id}/dislike', name: 'event_dislike', methods: ['GET'])]
 public function dislike(int $idevt, int $id, SessionInterface $session): Response
 {
-    $id=23;
-
     $entityManager = $this->getDoctrine()->getManager();
     $reservationRepository = $entityManager->getRepository(Reservation::class);
     $evenementRepository = $entityManager->getRepository(Evenement::class);
@@ -301,7 +299,7 @@ public function dislike(int $idevt, int $id, SessionInterface $session): Respons
     } else {
         if ($evenement->getVote() == 1) {
             $evenement->setVote(2);
-            $this->addFlash('success', 'Merci d\'avoir changé votre vote et d\avoir désaimé cet événement');
+            $this->addFlash('success', 'Merci d\'avoir changé votre vote et d\'avoir désaimé cet événement');
         } else {
             $evenement->setVote(2);
             $this->addFlash('success', 'Merci d\'avoir désaimé cet événement');
@@ -311,4 +309,5 @@ public function dislike(int $idevt, int $id, SessionInterface $session): Respons
 
     return $this->redirectToRoute('app_evenement_showCl', ['idevt' => $idevt]);
 }
+
 }
