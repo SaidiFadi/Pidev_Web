@@ -1,73 +1,106 @@
 <?php
 
 namespace App\Entity;
-
-use Doctrine\ORM\Mapping as ORM;
-
 use App\Repository\ReservationRepository;
+use App\Entity\Evenement;
+use App\Entity\Personne;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+
+
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
 class Reservation
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
-    #[ORM\Column(name: "idBillet", type: "integer", nullable: false)]
-    private $idbillet;
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: "id_billet")]
+     private ?int $idBillet=null;
 
-    #[ORM\Column(name: "idEvt", type: "integer", nullable: false)]
-    private $idevt;
 
-    #[ORM\Column(name: "titreEvt", type: "string", length: 255, nullable: false)]
-    private $titreevt;
+    #[ORM\Column]
+    private ?string $titreevt;
 
-    #[ORM\Column(name: "prixBillet", type: "float", precision: 10, scale: 0, nullable: false)]
-    private $prixbillet;
+    #[ORM\Column(name: "prixBillet", type: "float", nullable: false)]
+    private ?float $prixbillet=0.0;
 
-    /**
-     * @var \Evenement
-     *
-     * @ORM\ManyToOne(targetEntity="Evenement")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="idEvt", referencedColumnName="idEvt")
-     * })
-     */
-    private $idevt;
+    #[ORM\Column(name:"imageRes", type:"string", length:255, nullable:false)]
+    private ?string $imageres='';
 
-    /**
-     * @var \Personne
-     *
-     * @ORM\ManyToOne(targetEntity="Personne")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: Personne::class, inversedBy: "reservations")]
+    #[ORM\JoinColumn(name: "id", referencedColumnName: "id")]
     private $id;
 
-    public function getIdbillet(): ?int
+    #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: "reservations")]
+    #[ORM\JoinColumn(name: "idevt", referencedColumnName: "idevt")]
+    private $idevt;
+    public function __construct()
+     {
+         $this->reservations = new ArrayCollection();
+         $this->prixbillet = 0.0;
+     }
+
+    public function getIdBillet(): ?int
     {
-        return $this->idbillet;
+        return $this->idBillet;
     }
 
     public function getTitreevt(): ?string
+{
+    // Access the titreevt from the associated Evenement
+    return $this->idevt ? $this->idevt->getTitreevt() : null;
+}
+
+public function setTitreevt(string $titreevt): static
+{
+    $this->titreevt = $titreevt;
+
+    return $this;
+}
+
+public function getPrixbillet(): ?float
+{
+    return $this->prixbillet;
+}
+
+public function setPrixbillet(float $prixbillet): static
+{   $this->prixbillet = $prixbillet;
+
+    return $this;   }
+
+    public function getImageres(): ?string
     {
-        return $this->titreevt;
+        return $this->imageres;
     }
 
-    public function setTitreevt(string $titreevt): static
+    public function setImageres(string $imageres): static
     {
-        $this->titreevt = $titreevt;
+        $this->imageres = $imageres;
 
         return $this;
     }
 
-    public function getPrixbillet(): ?float
+    public function getId(): ?Personne
     {
-        return $this->prixbillet;
+        return $this->id;
     }
 
-    public function setPrixbillet(float $prixbillet): static
+    public function setId(?Personne $id): static
     {
-        $this->prixbillet = $prixbillet;
+        $this->id = $id;
 
         return $this;
     }
+
+    public function getIdevt(): ?Evenement
+    {
+        return $this->idevt;
+    }
+
+    public function setIdevt(?Evenement $idevt): static
+    {
+        $this->idevt = $idevt;
+
+        return $this;
+    }
+
 }

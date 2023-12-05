@@ -1,0 +1,46 @@
+{%extends'client.html.twig'%}
+
+{% block title %}Liste des Evenements{% endblock %}
+
+{% block body %}
+    <h1>Evenements Disponibles</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Nom Organisateur</th>
+                <th>Description</th>
+                <th>Heure de début</th>
+                <th>Heure de la fin </th>
+                <th>Adresse</th>
+                <th>Date</th>
+                <th>Vote</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for evenement in evenements %}
+            <tr>
+                
+                <td>{{ evenement.titreevt|upper }}</td>
+                <td>{{ evenement.nomorg }}</td>
+                <td>{{ evenement.descevt }}</td>
+                <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : '' }}</td>
+                <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : '' }}</td>
+                <td>{{ evenement.adresseevt }}</td>
+                <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : '' }}</td>
+                <td>{{ evenement.vote }}</td> 
+                <td>{{ evenement.imageevt }}</td>
+                <td>
+                    <a href="{{ path('app_evenement_show', {'idevt': evenement.idevt}) }}">Détails</a>
+                    <a href="{{ path('app_evenement_edit', {'idevt': evenement.idevt}) }}">Réserver</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

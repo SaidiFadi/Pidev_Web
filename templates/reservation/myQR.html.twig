@@ -1,0 +1,84 @@
+{# templates/reservation/myQR.html.twig #}
+
+{% block styles %}
+    <style>
+        @font-face {
+            font-family: 'Pacifico';
+            src: url('{{ asset('fonts/Pacifico.ttf') }}');
+        }
+
+        body {
+            font-family: sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #8B0000; /* Dark red color */
+            font-family: 'Pacifico', cursive;
+        }
+
+        footer {
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            font-family: 'Pacifico', cursive;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+         button {
+        display: block;
+        margin: 0 auto;
+        padding: 10px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+        animation: colorChange 2s infinite;
+    }
+
+    @keyframes colorChange {
+        0% {
+            background-color: pink;
+        }
+        50% {
+            background-color: lightblue;
+        }
+        100% {
+            background-color: pink;
+        }
+    }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <h1>Votre Réservation a été effectuée avec succès </h1>
+
+    {% if evenements is not null %}
+        <h1 style="color: #8B0000;">{{ evenements.titreevt }}</h1>
+        <p>Description : {{ evenements.descevt }}</p>
+        <p>Nom de l'organisateur : {{ evenements.nomOrg }}</p>
+        <p>Date : {{ evenements.dateevt|date('Y-m-d') }}</p>
+
+        <img src="{{ qrImageDataUri }}" alt="QR code">
+
+<form method="post" action="{{ path('generate_qr_page', {'idevt': evenements.idevt , 'idBillet': reservation.idBillet}) }}">
+    <button type="submit"></button>
+</form>
+    {% else %}
+        <p>Event not found</p>
+    {% endif %}
+
+    <footer>Eventini</footer>
+
+{% endblock %}

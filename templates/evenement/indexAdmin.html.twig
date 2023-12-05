@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evenement index{% endblock %}
+
+{% block body %}
+    <div class="container mt-3">
+        <h1>Evenement Index</h1>
+
+        {# Search #}
+        <form method="GET" action="{{ path('app_evenement_indexAdmin') }}" class="mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" name="titreevt" class="form-control" placeholder="Search by titre">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="descevt" class="form-control" placeholder="Search by description">
+                </div>
+                <div class="col-md-4">
+                    <input type="text" name="adresse" class="form-control" placeholder="Search by adresse">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary mt-2">Search</button>
+        </form>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Identifiant</th>
+                    <th>Titre</th>
+                    <th>Nom de l'Organisateur</th>
+                    <th>Description</th>
+                    <th>Heure de début</th>
+                    <th>Heure de la fin</th>
+                    <th>Adresse</th>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Vote</th>
+                    <th>Image</th>
+                    <th>Video</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for evenement in evenements %}
+                <tr>
+                    <td>{{ evenement.idevt }}</td>
+                    <td>{{ evenement.titreevt }}</td>
+                    <td>{{ evenement.nomorg }}</td>
+                    <td>{{ evenement.descevt }}</td>
+                    <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : '' }}</td>
+                    <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : '' }}</td>
+                    <td>{{ evenement.adresseevt }}</td>
+                    <td>{{ evenement.typeevt }}</td>
+                    <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : '' }}</td>
+                    <td>{{ evenement.vote }}</td>
+                    <td>
+                        {% if evenement.imageevt %}
+                            <img src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.imageevt) }}" style="max-width: 100px; max-height: 75px;" class="img-fluid">
+                        {% else %}
+                            No Image Available
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if evenement.videoevt %}
+    <div class="video-container">
+        <video width="100%" height="auto" controls>
+            <source src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.videoevt) }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+{% else %}
+    <p>No Video Available</p>
+{% endif %}
+                    </td>
+                    <td>
+                        <a href="{{ path('app_evenement_show', {'idevt': evenement.idevt}) }}" class="btn btn-info">Détails</a>
+                        <a href="{{ path('app_evenement_edit', {'idevt': evenement.idevt}) }}" class="btn btn-warning">Modifier</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="13">No records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ path('app_evenement_new') }}" class="btn btn-success">Ajouter un nouveau évènement</a>
+    </div>
+{% endblock %}

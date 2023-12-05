@@ -1,0 +1,194 @@
+{% extends 'client.html.twig' %}
+
+
+{% block  titlefront %}Liste des Evenements{% endblock %}
+
+
+{% block  body %}
+
+    <h1>Liste des Evenements</h1>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#search').on('keyup', function(event) {
+        event.preventDefault();
+        var query = $(this).val();
+        if (query.length > 0) {
+            $.ajax({
+                url: "{{ path('evenement_filtre') }}",
+                type: "GET",
+                dataType: "json",
+                data: {query: query},
+                success: function(response) {
+                    $('#all').hide();
+                    $('#searchtab').empty();
+                    if (response.evenements.length > 0) {
+                        $.each(response.evenements, function(key, value) {
+                            var item = '<tr><td>' + value.titreevt + '</td><td>' + (value.hdEvt ? value.hdEvt : '') + '</td><td>' + (value.hfEvt ? value.hfEvt: '') + '</td><td>';
+                            $('#searchtab').append(item);
+                        });
+                    } else {
+                        var item = '<tr class="errorLi"><td colspan="8">Aucun résultat</td></tr>';
+                        $('#searchtab').append(item);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus, errorThrown);
+                }
+            });
+        } else {
+            $('#all').show();
+            $('#searchtab').empty();
+        }
+    });
+});
+</script>
+
+
+<form method="get" action="{{ path('evenement_filtre') }}">
+    <div class="form-group" style="display: flex; gap: 10px; align-items: center;">
+        <label for="hdEvt" style="color: pink;">Heure de début :</label>
+        <input type="time" id="hdEvt" name="heureDebut" style="color: pink;">
+        
+        <label for="hfEvt" style="color: pink;">Heure de fin :</label>
+        <input type="time" id="hfEvt" name="heurefin" style="color: pink;">
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="background-color: pink;">Rechercher</button>
+</form>
+
+
+
+    {# <table class="table" >
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Nom Organisateur</th>
+                <th>Description</th>
+                <th>Heure de début</th>
+                <th>Heure de la fin </th>
+                <th>Adresse</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Vote</th>
+         
+            </tr>
+        </thead>
+        <tbody id="all">
+        {% for evenement in evenements %}
+            <tr>
+                <td>{{ evenement.idevt }}</td>
+                <td>{{ evenement.titreevt }}</td>
+                <td>{{ evenement.nomorg }}</td>
+                <td>{{ evenement.descevt }}</td>
+                <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : '' }}</td>
+                <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : '' }}</td>
+                <td>{{ evenement.adresseevt }}</td>
+                <td>{{ evenement.typeevt }}</td>
+                <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : '' }}</td>
+                <td>{{ evenement.vote }}</td>
+                <td>
+                    <a href="{{ path('app_evenement_showCl', {'idevt': evenement.idevt}) }}">show</a>
+                    {#<a href="{{ path('app_evenement_edit', {'id_evenement': evenement.id_evenement}) }}">edit</a>#}
+                {# </td> #}
+                {#<td> 
+                    <a href="{{ path('app_evenement_participations', {'id': evenement.id_evenement}) }}">Liste des participants</a>
+                </td>#}
+                {# <td> 
+                    <a href="{{ path('app_reservation_new', {'idevt': evenement.idevt}) }}">Participer</a>
+                    {{ include('reservation/_form.html.twig') }}
+                </td> #}
+            {# </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tbody id="searchtab">
+        </tbody>
+    </table> #} 
+{# Cards #}
+<div class="row mt-3">
+    <input type="text" class="form-control mb-3" placeholder="Search" onkeyup="liveSearch(this.value)">
+    
+    {% if evenements is defined and evenements|length > 0 %}
+        <div class="row">
+            {% for evenement in evenements %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card border-primary"> <!-- Add border-primary for colored border -->
+            <img src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.imageevt) }}" class="img-fluid mx-auto d-block" style="max-width: 500px; max-height: 150px;" />
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">{{ evenement.titreevt }}</h5> <!-- Add text-primary for colored title -->
+                            <p class="card-text">{{ evenement.descevt }}</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item list-group-item-nomorg"><strong>Nom Org:</strong> {{ evenement.nomorg }}</li>
+                                <li class="list-group-item"><strong>Start Time:</strong> {{ evenement.hdEvt ? evenement.hdEvt.format('H:i') : 'N/A' }}</li>
+                                <li class="list-group-item"><strong>End Time:</strong> {{ evenement.hfEvt ? evenement.hfEvt.format('H:i') : 'N/A' }}</li>
+                                <li class="list-group-item"><strong>Adresse:</strong> {{ evenement.adresseevt }}</li>
+                                <li class="list-group-item"><strong>Date:</strong> {{ evenement.dateevt ? evenement.dateevt|date('d-m-Y') : 'N/A' }}</li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-primary"> <!-- Add bg-primary for colored footer -->
+                            <a href="{{ path('app_evenement_showCl', {'idevt': evenement.idevt}) }}" class="btn btn-light">Plus de détails</a>
+                            <a href="{{ path('app_reservation_add', {'idevt': evenement.idevt}) }}" class="btn btn-light">Réserver</a>
+                        </div>
+                    </div>
+                </div>
+        {% for reservation in reservations %}
+    {% if reservation.idevt == evenement %}
+        {# ... #}
+    {% endif %}
+{% endfor %}
+
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="col-12">
+            <p>No records found</p>
+        </div>
+    {% endif %}
+</div>
+
+<div id="livesearch"></div>
+
+<script>
+function liveSearch(str) {
+    if (str.length == 0) {
+        document.getElementById("livesearch").innerHTML = "";
+        return;
+    }
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            // Filter the cards based on the search results
+            filterCards(str);
+        }
+    };
+    xmlhttp.open("GET", "/live-search?q=" + str, true);
+    xmlhttp.send();
+}
+
+function filterCards(query) {
+    var cards = document.querySelectorAll('.card'); // Select all cards
+    cards.forEach(function (card) {
+        var title = card.querySelector('.card-title').innerText.toLowerCase();
+        var description = card.querySelector('.card-text').innerText.toLowerCase();
+        var organizer = card.querySelector('.list-group-item-nomorg').innerText.toLowerCase();
+
+        // Check if the title, description, or organizer contains the search query
+        if (title.includes(query.toLowerCase()) || description.includes(query.toLowerCase()) || organizer.includes(query.toLowerCase())) {
+            card.style.display = "block"; // Show the card
+        } else {
+            card.style.display = "none"; // Hide the card
+        }
+    });
+}
+</script>
+
+   {# <a href="{{ path('app_evenement_new') }}">Ajouter un Evenement</a>
+    <a href="{{ path('app_mesparticipations') }}">Mes participations</a>
+    <a href="{{ path('app_participation_index') }}">Toutes les Participations</a>#}
+{% endblock %}

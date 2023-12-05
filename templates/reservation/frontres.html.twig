@@ -1,0 +1,32 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}Event Reservation{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="display-4">Event Details</h1>
+        {% if evenement %}
+            <div class="event-details">
+                <h2>{{ evenement.titreevt }}</h2>
+                <p><strong>Description:</strong> {{ evenement.descevt }}</p>
+                <p><strong>Organizer:</strong> {{ evenement.nomOrg }}</p>
+                <p><strong>Date:</strong> {{ evenement.dateevt|date('Y-m-d') }}</p>
+                <p><strong>Prix:</strong> {{ reservation1.prixbillet }}</p>
+                <!-- Add other event details as needed -->
+
+                <form method="post" action="{{ path('app_reservation_add', {'idevt': evenement.idevt}) }}">
+                    <button type="submit" class="btn btn-success">Confirmer Reservation</button>
+                </form>
+                <form method="post" action="{{ path('app_mesparticipations', {'id': 23}) }}">
+                    <button type="submit" class="btn btn-primary">Mes réservations</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                No event details found.
+            </div>
+        {% endif %}
+
+        <a href="{{ path('app_evenement_indexCl') }}" class="btn btn-secondary mt-3">Retour à l'accueil</a>
+    </div>
+{% endblock %}

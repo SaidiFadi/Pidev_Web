@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evenement{% endblock %}
+
+{% block body %}
+
+    <h1>Evenement</h1>
+    <form id="searchForm" action="{{ path('evenement_search') }}">
+        <input type="text" id="searchInput" name="term" placeholder="Search by Adresse">
+        <div id="searchResults"></div>
+    </form>
+  <a href="{{ path('app_evenement_new') }}"  class="btn btn-primary">Ajouter Hebergement</a>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Nom org</th>
+                <th>Description</th>
+                <th>Heure debut</th>
+                <th>Heure fin</th>
+                <th>Adresse</th>
+                <th>Type</th>
+                <th>Date</th>
+                <th>Vote</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for logement in results %}
+                <tr>
+                    <td>{{ evenement.idevt }}</td>
+                <td>{{ evenement.titreevt }}</td>
+                <td>{{ evenement.nomorg }}</td>
+                <td>{{ evenement.descevt }}</td>
+                <td>{{ evenement.hdEvt ? evenement.hdEvt|date('H:i:s') : '' }}</td>
+                <td>{{ evenement.hfEvt ? evenement.hfEvt|date('H:i:s') : '' }}</td>
+                <td>{{ evenement.adresseevt }}</td>
+                <td>{{ evenement.typeevt }}</td>
+                <td>{{ evenement.dateevt ? evenement.dateevt|date('Y-m-d') : '' }}</td>
+                <td>{{ evenement.vote }}</td>
+               
+                <td><img src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.imageevt) }}" style="max-width: 200px; max-height: 150px;"/> </td>
+                        <a href="{{ path('app_evenement_show', {'idevt': evenement.idevt}) }}"  class="btn btn-primary">Show</a>
+                        <a href="{{ path('app_evenement_edit', {'idevt': evenement.idevt}) }}"  class="btn btn-primary">Edit</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="8">No records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var searchInput = $('#searchInput');
+            var searchResults = $('#searchResults');
+
+            searchInput.on('input', function () {
+                var term = searchInput.val();
+
+                $.get('{{ path('app_logement_search') }}', { term: term }, function (data) {
+                    // Update the results div with the suggestions
+                    searchResults.html('');
+
+                    data.forEach(function (result) {
+                        searchResults.append('<div>' + result.adrl + '</div>');
+                    });
+                });
+            });
+        });
+    </script>
+
+{% endblock %}

@@ -45,4 +45,51 @@ class ReservationRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
+
+// public function findReservationsByUserId($id)
+//     {
+//         return $this->createQueryBuilder('r')
+//             ->join('r.titreevt', 'n')
+//             ->where('r.id = :id')
+//             ->setParameter('id', $id)
+//             ->getQuery()
+//             ->getResult();
+//     }
+    // Dans ReservationRepository.php
+
+
+    public function countLikesAndDislikes(int $idevt): array
+{
+    $qb = $this->createQueryBuilder('r')
+        ->select('SUM(CASE WHEN e.vote = 1 THEN 1 ELSE 0 END) AS likes')
+        ->addSelect('SUM(CASE WHEN e.vote = 2 THEN 1 ELSE 0 END) AS dislikes')
+        ->leftJoin('r.idevt', 'e') // Assuming your relation is named "evenement"
+        ->where('e.idevt = :idevt')
+        ->setParameter('idevt', $idevt)
+        ->getQuery();
+
+    return $qb->getScalarResult()[0];
+}
+
+    
+public function findByUserId($id)
+{
+    return $this->createQueryBuilder('r')
+        ->andWhere('r.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getResult();
+}
+
+public function findEvenementsByUserId($id)
+{
+    return $this->createQueryBuilder('r')
+        ->join('r.idevt', 'e')
+        ->where('r.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getResult();
+}
+
 }
