@@ -22,21 +22,29 @@ class Reservation
     #[ORM\Column(name: "prixBillet", type: "float", precision: 10, scale: 0, nullable: false)]
     private $prixbillet;
 
+    /**
+     * @var \Evenement
+     *
+     * @ORM\ManyToOne(targetEntity="Evenement")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="idEvt", referencedColumnName="idEvt")
+     * })
+     */
+    private $idevt;
+
+    /**
+     * @var \Personne
+     *
+     * @ORM\ManyToOne(targetEntity="Personne")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id", referencedColumnName="id")
+     * })
+     */
+    private $id;
+
     public function getIdbillet(): ?int
     {
         return $this->idbillet;
-    }
-
-    public function getIdevt(): ?int
-    {
-        return $this->idevt;
-    }
-
-    public function setIdevt(int $idevt): static
-    {
-        $this->idevt = $idevt;
-
-        return $this;
     }
 
     public function getTitreevt(): ?string

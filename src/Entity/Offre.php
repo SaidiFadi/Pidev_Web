@@ -2,8 +2,11 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Mime\Message;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\OffreRepository;
 
 use App\Repository\OffreRepository;
 #[ORM\Entity(repositoryClass: OffreRepository::class)]

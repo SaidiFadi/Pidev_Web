@@ -1,0 +1,75 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}Affichage du Panier
+{% endblock %}
+
+{% block body %}
+	<h1>Affichage du Panier</h1>
+
+	{% if panierListe is not empty %}
+		<div class="person-table">
+			<h2>Informations de la Personne</h2>
+			<table class="person-info" border="1">
+				<thead>
+					<tr>
+						<th>Nom</th>
+						<th>Prénom</th>
+						<th>Email</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for panier in panierListe %}
+						{% if loop.first or panier.id.nom != panierListe[loop.index - 1].id.nom %}
+							<tr>
+								<td>{{ panier.id.nom }}</td>
+								<td>{{ panier.id.prenom }}</td>
+								<td>{{ panier.id.email }}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<div class="cart-container">
+			<h2>Informations du Panier</h2>
+			<table class="cart-table" border="1">
+				<thead>
+					<tr>
+						<th>Nom de l'Offre</th>
+						<th>Valeur de l'Offre</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% set total = 0 %}
+					{% for panier in panierListe %}
+						<tr>
+							<td>{{ panier.idOffre.nomOffre }}</td>
+							<td>{{ panier.idOffre.valeurOffre }}</td>
+							<td>
+								<form action="{{ path('supprimer_offre_panier', {'nomOffre': panier.idOffre.nomOffre}) }}" method="post">
+
+									<input type="submit" value="Supprimer">
+								</form>
+							</td>
+						</tr>
+						{% set total = total + panier.idOffre.valeurOffre %}
+					{% endfor %}
+					<tr>
+						<td colspan="1" class="total-label" style="font-weight: bold;">Total :</td>
+						<td class="total-value">{{ total }}</td>
+					</tr>
+
+				</tbody>
+			</table>
+			<form action="{{ path('confirmer_panier') }}" method="post">
+				<button type="submit">Confirmer le Panier</button>
+			</form>
+		</div>
+	{% else %}
+		<p>Aucun panier disponible.</p>
+	{% endif %}
+
+	
+{% endblock %}

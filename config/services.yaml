@@ -21,7 +21,15 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+    App\Service\EmailService:
+        arguments:
+            $mailer: '@mailer'
+    App\Controller\PanierController:
+        arguments:
+            $entityManager: '@doctrine.orm.entity_manager'
+        tags:
+            - { name: 'controller.service_arguments' }
+   
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -42,3 +50,4 @@ services:
     App\Controller\TestSmsController:
         autowire: true
         autoconfigure: true
+    

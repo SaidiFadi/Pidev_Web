@@ -1,0 +1,11 @@
+{% extends 'client.html.twig' %}
+
+{% block title %}New Panier{% endblock %}
+
+{% block body %}
+    <h1>Ajouter au panier</h1>
+
+    {{ include('panier/_form.html.twig') }}
+
+    <a href="{{ path('app_offre_index_client') }}">back to list</a>
+{% endblock %}

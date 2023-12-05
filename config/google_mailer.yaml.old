@@ -1,0 +1,4 @@
+google_mailer:
+    mailbox: 'ithmayni@gmail.com'
+    credentials_file: './cred.json'
+    token_file: '../var/token.json'

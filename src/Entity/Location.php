@@ -43,6 +43,16 @@ class Location
     
     private $logement;
 
+    /**
+     * @var \Personne
+     *
+     * @ORM\ManyToOne(targetEntity="Personne")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="personne", referencedColumnName="id")
+     * })
+     */
+    private $personne;
+
     public function getIdlocation(): ?int
     {
         return $this->idlocation;
@@ -77,18 +87,6 @@ class Location
     public function setTarif(int $tarif): static
     {
         $this->tarif = $tarif;
-
-        return $this;
-    }
-
-    public function getPersonne(): ?Personne
-    {
-        return $this->personne;
-    }
-
-    public function setPersonne(?Personne $personne): static
-    {
-        $this->personne = $personne;
 
         return $this;
     }

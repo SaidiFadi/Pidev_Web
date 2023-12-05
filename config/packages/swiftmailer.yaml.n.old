@@ -1,0 +1,4 @@
+swiftmailer:
+    transport: gmail
+    username:  'ithmayni@gmail.com'
+    password:  'ImeThm@1881'

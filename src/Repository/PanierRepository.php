@@ -21,28 +21,51 @@ class PanierRepository extends ServiceEntityRepository
         parent::__construct($registry, Panier::class);
     }
 
-//    /**
-//     * @return Panier[] Returns an array of Panier objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    //    /**
+    //     * @return Panier[] Returns an array of Panier objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('p.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
 
-//    public function findOneBySomeField($value): ?Panier
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    //    public function findOneBySomeField($value): ?Panier
+    //    {
+    //        return $this->createQueryBuilder('p')
+    //            ->andWhere('p.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
+
+    public function findByNomOffre(string $nomOffre): ?Panier
+    {
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.idOffre', 'o') // Adjust the association field name as per your actual entity
+            ->where('o.nomoffre = :nomOffre') // Change 'nomOffre' to 'nomoffre'
+            ->setParameter('nomOffre', $nomOffre)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function findOfferInPanierByPersonne($nomOffre, $personneId)
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.idOffre', 'o')
+            ->andWhere('o.nomoffre = :nomOffre')
+            ->andWhere('p.id = :personneId')
+            ->setParameters([
+                'nomOffre' => $nomOffre,
+                'personneId' => $personneId,
+            ])
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

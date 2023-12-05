@@ -4,40 +4,41 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-
 use App\Repository\PanierRepository;
+use App\Repository\OffreRepository;
+use App\Repository\PersonneRepository;
+
 #[ORM\Entity(repositoryClass: PanierRepository::class)]
 class Panier
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "IDENTITY")]
-    #[ORM\Column(name: "idPanier", type: "integer", nullable: false)]
-    private $idpanier;
+    #[ORM\GeneratedValue]
+    #[ORM\Column(name: 'idPanier')]
+    private ?int $idPanier = null;
 
-    #[ORM\Column(name: "total", type: "integer", nullable: false)]
-    private $total;
+    #[ORM\Column(name: 'datePanier', type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $datePanier = null;
 
-    #[ORM\Column(name: "datePanier", type: "date", nullable: false)]
-    private $datepanier;
+    #[ORM\Column]
+    private ?int $iduser = null;
 
-    #[ORM\Column(name: "iduser", type: "integer", nullable: true)]
-    private $iduser;
+    #[ORM\Column]
+    private ?int $total = 00;
 
-    #[ORM\ManyToOne(targetEntity: Personne::class)]
-    
-        #[ORM\JoinColumn(name: "id", referencedColumnName: "id")]
-   
-    private $id;
+    #[ORM\ManyToOne(targetEntity: Offre::class, inversedBy: 'Panier')]
+    #[ORM\JoinColumn(name: 'idOffre', referencedColumnName: 'idOffre')]
+    private ?Offre $idOffre = null;
 
-    #[ORM\ManyToOne(targetEntity: Offre::class)]
-  
-        #[ORM\JoinColumn(name: "idOffre", referencedColumnName: "idOffre")]
-    
-    private $idoffre;
+
+    #[ORM\ManyToOne(targetEntity: Personne::class, inversedBy: 'Panier')]
+    #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
+    private ?Personne $id = null;
+
+
 
     public function getIdpanier(): ?int
     {
-        return $this->idpanier;
+        return $this->idPanier;
     }
 
     public function getTotal(): ?int
@@ -54,12 +55,12 @@ class Panier
 
     public function getDatepanier(): ?\DateTimeInterface
     {
-        return $this->datepanier;
+        return $this->datePanier;
     }
 
     public function setDatepanier(\DateTimeInterface $datepanier): static
     {
-        $this->datepanier = $datepanier;
+        $this->datePanier = $datepanier;
 
         return $this;
     }
@@ -76,6 +77,18 @@ class Panier
         return $this;
     }
 
+    public function getIdoffre(): ?Offre
+    {
+        return $this->idOffre;
+    }
+
+    public function setIdoffre(?Offre $idoffre): static
+    {
+        $this->idOffre = $idoffre;
+
+        return $this;
+    }
+
     public function getId(): ?Personne
     {
         return $this->id;
@@ -84,18 +97,6 @@ class Panier
     public function setId(?Personne $id): static
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getIdoffre(): ?Offre
-    {
-        return $this->idoffre;
-    }
-
-    public function setIdoffre(?Offre $idoffre): static
-    {
-        $this->idoffre = $idoffre;
 
         return $this;
     }
