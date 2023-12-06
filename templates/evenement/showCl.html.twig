@@ -68,10 +68,10 @@
                 <!-- Cards for Likes and Dislikes remain unchanged -->
                 <div class="card bg-success mt-4">
                   {# Like button #}
-                <form method="get" action="{{ path('event_like', {'idevt': evenement.idevt, 'id': 23}) }}">
+                <form method="get" action="{{ path('event_like', {'idevt': evenement.idevt, 'id': }) }}">
                     <button type="submit" class="btn btn-success">Like</button>
                 </form>
-                <form method="get" action="{{ path('event_dislike', {'idevt': evenement.idevt, 'id': 23}) }}">
+                <form method="get" action="{{ path('event_dislike', {'idevt': evenement.idevt, 'id': 39}) }}">
                     <button type="submit" class="btn btn-success">Dislike</button>
                 </form>
 

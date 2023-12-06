@@ -70,6 +70,9 @@ class Evenement
     #[ORM\Column(name:"videoEvt", type:"string", length:255, nullable:false)]
     #[Assert\File(maxSize:"8024k",mimeTypes:"video/*",mimeTypesMessage:"Please upload a valid video file")]
      private ?string $videoevt;
+
+     #[ORM\Column(name: "prixBillet", type: "float", nullable: false)]
+    private ?float $prixbillet;
      #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: "idEvt")]
     private $reservations;
 
@@ -214,6 +217,15 @@ class Evenement
 
          return $this;
      }
+     public function getPrixbillet(): ?float
+{
+    return $this->prixbillet;
+}
+
+public function setPrixbillet(float $prixbillet): static
+{   $this->prixbillet = $prixbillet;
+
+    return $this;   }
 
      /**
       * @return Collection<int, Reservation>

@@ -5,20 +5,20 @@
 {% block body %}
     <div class="container mt-5">
         <h1 class="display-4">Event Details</h1>
-        {% if evenement %}
+        {% if evenements %}
             <div class="event-details">
-                <h2>{{ evenement.titreevt }}</h2>
-                <p><strong>Description:</strong> {{ evenement.descevt }}</p>
-                <p><strong>Organizer:</strong> {{ evenement.nomOrg }}</p>
-                <p><strong>Date:</strong> {{ evenement.dateevt|date('Y-m-d') }}</p>
-                <p><strong>Prix:</strong> {{ reservation1.prixbillet }}</p>
+                <h2>{{ evenements.titreevt }}</h2>
+                <p><strong>Description:</strong> {{ evenements.descevt }}</p>
+                <p><strong>Organizer:</strong> {{ evenements.nomOrg }}</p>
+                <p><strong>Date:</strong> {{ evenements.dateevt|date('Y-m-d') }}</p>
                 <!-- Add other event details as needed -->
 
-                <form method="post" action="{{ path('app_reservation_add', {'idevt': evenement.idevt}) }}">
-                    <button type="submit" class="btn btn-success">Confirmer Reservation</button>
-                </form>
-                <form method="post" action="{{ path('app_mesparticipations', {'id': 23}) }}">
+    
+                <form method="post" action="{{ path('app_mesparticipations', {'id': 39}) }}">
                     <button type="submit" class="btn btn-primary">Mes réservations</button>
+            </form>
+            <form method="post" action="{{ path('app_reservation_reserve', {'idevt': evenements.idevt , 'id': 39}) }}">
+                    <button type="submit" class="btn btn-success">Confirmer Reservation</button>
                 </form>
             </div>
         {% else %}

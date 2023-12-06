@@ -12,13 +12,15 @@
 {# templates/reservation/_form.html.twig #}
 
 {{ form_start(form) }}
-    {{ form_row(form.prixbillet) }}
-    {{ form_row(form.imageres) }}
 
     {# Ajoutez un champ pour sélectionner manuellement l'événement #}
     {{ form_label(form.idevt, 'Événement') }}
     {{ form_widget(form.idevt) }}
     {{ form_errors(form.idevt) }}
+    {{ form_row(form.prixbillet) }}
+    {{ form_row(form.imageres) }}
+    {{ form_row(form.titreevt) }}
+
 
     <div class="form-group">
         <button type="submit" class="btn btn-primary">{{ button_label }}</button>

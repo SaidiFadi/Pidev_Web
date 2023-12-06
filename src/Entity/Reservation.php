@@ -21,16 +21,16 @@ class Reservation
     private ?string $titreevt;
 
     #[ORM\Column(name: "prixBillet", type: "float", nullable: false)]
-    private ?float $prixbillet=0.0;
+    private ?float $prixbillet;
 
     #[ORM\Column(name:"imageRes", type:"string", length:255, nullable:false)]
     private ?string $imageres='';
 
-    #[ORM\ManyToOne(targetEntity: Personne::class, inversedBy: "reservations")]
+    #[ORM\ManyToOne(targetEntity: Personne::class)]
     #[ORM\JoinColumn(name: "id", referencedColumnName: "id")]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Evenement::class, inversedBy: "reservations")]
+    #[ORM\ManyToOne(targetEntity: Evenement::class)]
     #[ORM\JoinColumn(name: "idevt", referencedColumnName: "idevt")]
     private $idevt;
     public function __construct()

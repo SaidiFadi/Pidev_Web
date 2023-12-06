@@ -25,7 +25,7 @@ use Endroid\QrCode\Writer\PngWriter;
 
 
 
-#[Route('/reservation')]
+//#[Route('/reservation')]
 class ReservationController extends AbstractController
 {
 
@@ -33,72 +33,92 @@ class ReservationController extends AbstractController
     public function add(Request $request, EntityManagerInterface $entityManager, $idevt): Response
     {
         // Récupérer l'événement basé sur $idevt
-        $evenementRepository = $this->getDoctrine()->getRepository(Evenement::class);
-        $evenement = $evenementRepository->find($idevt);
+    $evenementRepository = $this->getDoctrine()->getRepository(Evenement::class);
+    $evenement = $evenementRepository->find($idevt);
+
+    // Vérifier si l'événement existe
+    if (!$evenement) {
+        throw $this->createNotFoundException('L"événement n"existe pas');
+    }
+
+    // Créer une nouvelle réservation
+    $reservation1 = new Reservation();
+    $reservation1->setTitreevt($evenement->getTitreevt());
+
+    // Créer le formulaire de réservation
+    $form = $this->createForm(ReservationType::class, $reservation1);
+    $form->handleRequest($request);
+
+    // Vérifier si le formulaire a été soumis et est valide
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Ajouter la réservation à la base de données
+        $reservation1->setIdevt($evenement); // Associer la réservation à l'événement
+        $entityManager->persist($reservation1);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Réservation ajoutée avec succès.');
+
+        // Rediriger vers la page de l'événement ou une autre page appropriée
+        return $this->redirectToRoute('app_evenement_showCl', ['idevt' => $idevt]);
+    }
+
+    // Afficher le formulaire de réservation
+    return $this->render('reservation/frontres.html.twig', [
+        'reservation1' => $reservation1,
+        'form' => $form->createView(),
+        'evenements' => $evenement,
+        'button_label' => 'Save',
+    ]);
+    }
     
-        // Vérifier si l'événement existe
-        if (!$evenement) {
-            throw $this->createNotFoundException('L\'événement n\'existe pas');
-        }
+
+
+#[Route('/reserve/{idevt}', name: 'app_reservation_reserve' , methods: ['GET', 'POST'])]
+public function reserver(EntityManagerInterface $entityManager, int $idevt ): Response
+{
+    $existingPersonne = $entityManager->getRepository(Personne::class)->find(39);
+
+    $selectedEvent = $entityManager->getRepository(Evenement::class)->find($idevt);
+    if(!$selectedEvent)
+    {
+//handle 
+    }
+   //$existingEvent= $entityManager->getRepository(Reservation::class)->find
+
+   $reservation=new Reservation();
+   $reservation->setId($existingPersonne);
+   $reservation->setIdevt($selectedEvent);
+   $reservation->setTitreevt($selectedEvent->getTitreevt());
+   $reservation->setPrixbillet(0);
+   $reservation->setImageres(0);
+   //$reservation->setTitreevt('titre');
+
+
+   $entityManager->persist($reservation);
+   $entityManager->flush();
+
+   return $this->redirectToRoute('app_evenement_showCl', ['idevt' => $idevt]);
+
+    }
+
+    #[Route("/generate_qr_page/{idevt}/{idBillet}", name: "generate_qr_page")]
+    public function generateQRPage(Request $request, Reservation $reservation, QrcodeService $qrcodeService, $idevt, $idBillet): Response
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $evenements = $entityManager->getRepository(Evenement::class)->find($idevt);
     
-        // Créer une nouvelle réservation
-        $reservation1 = new Reservation();
-        $reservation1->setTitreevt($evenement->getTitreevt());
+        // Assuming you have some data to generate the QR code
+        $data = $evenements->getTitreevt() . ' | Date: ' . $evenements->getDateevt()->format('d-m-Y') . ' | Adresse: ' . $evenements->getAdresseevt() . ' | ID Billet: ' . $reservation->getIdBillet();
+        $qrCodeDataUri = $qrcodeService->qrcode($evenements->getTitreevt());
     
-        // Créer le formulaire de réservation
-        $form = $this->createForm(ReservationType::class, $reservation1);
-        $form->handleRequest($request);
-    
-        // Vérifier si le formulaire a été soumis et est valide
-        if ($form->isSubmitted() && $form->isValid()) {
-            $confirme = $form->get('confirme')->getData();
-    
-            // Si oui est coché, ajouter la réservation à la base de données
-            if ($confirme) {
-                $reservation1->setIdevt($evenement); // Associer la réservation à l'événement
-                $entityManager->persist($reservation1);
-                $entityManager->flush();
-    
-                $this->addFlash('success', 'Réservation ajoutée avec succès.');
-            } else {
-                $this->addFlash('warning', 'La réservation n\'a pas été confirmée.');
-            }
-    
-            // Rediriger vers la page de l'événement ou une autre page appropriée
-            return $this->redirectToRoute('app_evenement_showCl', ['idevt' => $idevt]);
-        }
-    
-        // Afficher le formulaire de réservation
-        return $this->render('reservation/frontres.html.twig', [
-            'reservation1' => $reservation1,
-            'form' => $form->createView(),
-            'evenements' => $evenement,
-            'button_label' => 'Save',
+        // Render the template with data
+        return $this->render('reservation/myQR.html.twig', [
+            'evenements' => $evenements,
+            'qrImageDataUri' => $qrCodeDataUri,
+            'reservation' => $reservation,
         ]);
     }
     
-#[Route("/generate_qr_page/{idevt}/{idBillet}", name: "generate_qr_page")]
-public function generateQRPage(Request $request, QrcodeService $qrcodeService, $idevt, $idBillet): Response
-{
-
-    // Fetch the Evenement entity from the database based on $idevt
-    $entityManager = $this->getDoctrine()->getManager();
-    $evenements = $entityManager->getRepository(Evenement::class)->find($idevt);
-    $reservation = $entityManager->getRepository(Reservation::class)->find($idBillet);
-
-    // Assuming you have some data to generate the QR code, replace 'your_data' with the actual data
-    $data = $evenements->getTitreevt() . ' | Date: ' . $evenements->getDateevt()->format('d-m-Y') . ' | Adresse: ' . $evenements->getAdresseevt() . ' | ID Billet: ' . $reservation->getIdBillet();
-    // Get the data URI of the QR code from the QrcodeService
-    $qrCodeDataUri = $qrcodeService->qrcode($evenements->getTitreevt());
-    
-
-    // Render the template with data
-    return $this->render('reservation/myQR.html.twig', [
-        'evenements' => $evenements,
-        'qrImageDataUri' => $qrCodeDataUri,
-        'reservation' => $reservation,
-    ]);
-}
     #[Route('/', name: 'app_reservation_index', methods: ['GET'])]
     public function index(Request $request,ReservationRepository $reservationRepository): Response
     {  
@@ -159,27 +179,62 @@ public function show(Reservation $reservation): Response
     }
 
     #[Route('/{idBillet}', name: 'app_reservation_delete', methods: ['POST'])]
-    public function delete(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$reservation->getIdBillet(), $request->request->get('_token'))) {
-            $entityManager->remove($reservation);
-            $entityManager->flush();
-        }
+public function delete(Request $request, $idBillet, EntityManagerInterface $entityManager): Response
+{
+    $reservation = $entityManager->getRepository(Reservation::class)->find($idBillet);
 
-        return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
+    if (!$reservation) {
+        // Handle the case where the reservation is not found
+        throw $this->createNotFoundException('The reservation does not exist.');
     }
 
-
-#[Route('/frontres/{idEvt}', name: 'app_evenement_frontres', methods: ['GET'])]
-    public function front(ReservationRepository $reservationRepository, EvenementRepository $evenementRepository): Response
-    {
-        // return $this->render('reservation/frontres.html.twig', [
-        //     'reservation1' => $reservationRepository->findAll(),
-        //     'evenement'=> $evenementRepository->findAll(),
-        // ]);
-    
-        // return $this->redirectToRoute('app_reservation_new');
+    if ($this->isCsrfTokenValid('delete'.$reservation->getIdBillet(), $request->request->get('_token'))) {
+        $entityManager->remove($reservation);
+        $entityManager->flush();
     }
+
+    return $this->redirectToRoute('app_mesparticipations', [], Response::HTTP_SEE_OTHER);
+}
+
+#[Route('/{id}/{idevt}/del', name: 'app_reservationn_cancel', methods: ['GET', 'POST'])]
+public function annulerReservation($id, $idevt,EntityManagerInterface $entityManager, ReservationRepository $reservationRepository,SessionInterface $session): Response
+{
+    $evenementRepository = $this->getDoctrine()->getRepository(Evenement::class);
+    $evenement = $evenementRepository->find($idevt);
+
+    $personneRepository = $this->getDoctrine()->getRepository(Personne::class);
+    $id= $personneRepository->find($id);
+
+    // Rechercher la participation de l'utilisateur à l'événement
+    $reservation = $reservationRepository->findOneBy([
+        'id' => $id,
+        'idevt' => $evenement,
+    ]);
+
+    if ($reservation) {
+        // Supprimer la participation
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($reservation);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Votre reservation a été annulée avec succès !');
+    } else {
+        $this->addFlash('error', 'Vous ne réservez pas encore cet événement.');
+    }
+
+   $subject = 'Annulation de reservation est effectueé';
+   $body = 'Bonjour, malheuresement vous avez annulé votre reservation à l"evenement '.$evenement->getTitreevt().' avec succes';
+   $id = $entityManager
+    ->getRepository(Personne::class)
+    ->find($id);
+   // Rediriger l'utilisateur vers la page de l'événement
+
+   return $this->render('reservation/mesReservations.html.twig', [
+       'evenement' => $evenement,
+       'reservation' => $reservation,
+       'id' => $id,
+   ]);
+}
 
 
 #[Route('/{idevt}/reserve', name: 'app_reservation_reserve', methods: ['GET', 'POST'])]
@@ -234,64 +289,30 @@ public function ajouterReservation($idevt, ReservationRepository $reservationRep
 }
 
 
-#[Route('/{id}/{idevt}/del', name: 'app_reservationn_cancel', methods: ['POST'])]
-public function annulerReservation($id, $idevt, ReservationRepository $reservationRepository,SessionInterface $session): Response
-{
-    $id=23;
-
-    $evenementRepository = $this->getDoctrine()->getRepository(Evenement::class);
-    $evenement = $evenementRepository->find($idevt);
-
-    $personneRepository = $this->getDoctrine()->getRepository(Personne::class);
-    $personne = $personneRepository->find($id);
-
-    // Rechercher la participation de l'utilisateur à l'événement
-    $reservations = $reservationRepository->findOneBy([
-        'id' => $personne,
-        'idevt' => $evenement,
-    ]);
-
-    if ($reservations) {
-        // Supprimer la participation
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($reservations);
-        $entityManager->flush();
-
-        $this->addFlash('success', 'Votre reservation a été annulée avec succès !');
-    } else {
-        $this->addFlash('error', 'Vous ne réservez pas encore cet événement.');
-    }
-
-    $subject = 'Annulation de reservation est effectueé';
-   $body = '
-   Bonjour, malheuresement vous avez annulé votre reservation à l\'evenement '.$evenement->getTitreevt().' avec succes';
-   $personne = $entityManager
-    ->getRepository(Personne::class)
-    ->find($id);
-   // Rediriger l'utilisateur vers la page de l'événement
-
-   return $this->render('reservation/mesReservations.html.twig', [
-       'evenement' => $evenement,
-       'reservations' => $reservations,
-       'id' => $id,
-   ]);
-}
-
-
-   
-
 #[Route('/{id}/participations', name: 'app_mesparticipations', methods: ['GET', 'POST'])]
-public function mesParticipations($id,EvenementRepository $evenementRepository): Response
+public function mesParticipations($id,EvenementRepository $evenementRepository,ReservationRepository $reservationRepository): Response
 {
-    // Set a static user ID (e.g., 23)
-   $id=23;
+    // Set a static user ID (e.g., 23)s
     // Assuming you have a method to find evenements by user ID in your repository
-    $evenements = $evenementRepository->findEvenementsByUserId($id);
+    $evenement = $evenementRepository->findEvenementsByUserId($id);
+    $reservations = $reservationRepository->findEvenementsByUserId($id);
 
     return $this->render('reservation/mesReservations.html.twig', [
-        'evenements' => $evenements,
+        'evenement' => $evenement,
+        'reservations'=> $reservations,
         'id' => $id,
     ]);
+}
+
+#[Route('/{idevt}/front', name: 'app_reservation_showCl', methods: ['GET'])]
+public function showResClient(Evenement $evenement, ReservationRepository $reservationRepository,EntityManagerInterface $em, $idevt): Response
+{
+    $reservation = $em->getRepository(Reservation::class)->find($idevt);
+
+return $this->render('reservation/frontRes.html.twig', [
+    'evenements' => $evenement,
+    'reservation' => $reservation,
+]);
 }
 
 }

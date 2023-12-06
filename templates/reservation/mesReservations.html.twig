@@ -4,36 +4,38 @@
 {% block body %}
     <h1>Mes réservations</h1>
 
-    {% if evenements|length == 0 %}
+    {% if evenement|length == 0 %}
         <p>Vous n'avez réservé aucun événement pour le moment.</p>
     {% else %}
-         <table class="table">
+        <table class="table">
             <thead>
                 <tr>
                     <th>Événement</th>
                     <th>Date de déroulement</th>
                     <th>Description</th>
                     <th>Adresse</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
-                {% for evenement in evenements %}
+                {% for evt in evenement %}
                     <tr>
-                        <td>{{ evenement.titreevt }}</td>
-                        <td>{{ evenement.dateevt|date('d-m-Y')}}</td>
-                        <td>{{ evenement.descevt }}</td>
-                        <td>{{ evenement.adresseevt }}</td>
+                        <td>{{ evt.titreevt }}</td>
+                        <td>{{ evt.dateevt|date('d-m-Y') }}</td>
+                        <td>{{ evt.descevt }}</td>
+                        <td>{{ evt.adresseevt }}</td>
                         <td>
-                    <a href="{{ path('app_evenement_showCl', {'idevt': evenement.idevt}) }}">Details</a>
-                    </td>
-                    
+                            <a href="{{ path('app_reservationn_cancel', {'id' : '51','idevt': evt.idevt }) }}" class="btn btn-danger rounded">Annuler</a>
+                            <a href="{{ path('app_evenement_showCl', {'idevt': evt.idevt }) }}" class="btn btn-warning rounded">Détails</a>
+                        </td>
                     </tr>
-                    {% else %}
-            <tr>
-                <td colspan="10">no records found</td>
-            </tr>
-        {% endfor %}
-                
+                {% else %}
+                    <tr>
+                        <td colspan="5">Aucun enregistrement trouvé</td>
+                    </tr>
+                {% endfor %}
+                {# <a href="{{ path('generate_qr_page', {'idevt': evenement.idevt , 'idBillet': reservation.idBillet }) }}" class="btn btn-info rounded">Générer QR Code</a> #}
+
             </tbody>
         </table>
     {% endif %}

@@ -116,11 +116,11 @@ $(document).ready(function() {
     {% if evenements is defined and evenements|length > 0 %}
         <div class="row">
             {% for evenement in evenements %}
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card border-primary"> <!-- Add border-primary for colored border -->
-            <img src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.imageevt) }}" class="img-fluid mx-auto d-block" style="max-width: 500px; max-height: 150px;" />
+                <div class="col-md-4 col-lg-3 mb-4">
+                    <div class="card border-primary">
+                        <img src="{{ asset('assets/admin/src/assets/uploads/' ~ evenement.imageevt) }}" class="card-img-top" alt="{{ evenement.titreevt }}">
                         <div class="card-body">
-                            <h5 class="card-title text-primary">{{ evenement.titreevt }}</h5> <!-- Add text-primary for colored title -->
+                            <h5 class="card-title text-primary">{{ evenement.titreevt }}</h5>
                             <p class="card-text">{{ evenement.descevt }}</p>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item list-group-item-nomorg"><strong>Nom Org:</strong> {{ evenement.nomorg }}</li>
@@ -128,20 +128,15 @@ $(document).ready(function() {
                                 <li class="list-group-item"><strong>End Time:</strong> {{ evenement.hfEvt ? evenement.hfEvt.format('H:i') : 'N/A' }}</li>
                                 <li class="list-group-item"><strong>Adresse:</strong> {{ evenement.adresseevt }}</li>
                                 <li class="list-group-item"><strong>Date:</strong> {{ evenement.dateevt ? evenement.dateevt|date('d-m-Y') : 'N/A' }}</li>
+                                <li class="list-group-item text-danger"><strong>Prix:</strong> {{ evenement.prixbillet }}</li>
                             </ul>
                         </div>
-                        <div class="card-footer bg-primary"> <!-- Add bg-primary for colored footer -->
-                            <a href="{{ path('app_evenement_showCl', {'idevt': evenement.idevt}) }}" class="btn btn-light">Plus de détails</a>
-                            <a href="{{ path('app_reservation_add', {'idevt': evenement.idevt}) }}" class="btn btn-light">Réserver</a>
+                        <div class="card-footer bg-primary d-flex justify-content-between">
+                            <a href="{{ path('app_evenement_showCl', {'idevt': evenement.idevt}) }}" class="btn btn-light">Details</a>
+                            <a href="{{ path('app_reservation_showCl', {'idevt': evenement.idevt}) }}" class="btn btn-light">Réserver</a>
                         </div>
                     </div>
                 </div>
-        {% for reservation in reservations %}
-    {% if reservation.idevt == evenement %}
-        {# ... #}
-    {% endif %}
-{% endfor %}
-
             {% endfor %}
         </div>
     {% else %}
@@ -150,6 +145,7 @@ $(document).ready(function() {
         </div>
     {% endif %}
 </div>
+
 
 <div id="livesearch"></div>
 

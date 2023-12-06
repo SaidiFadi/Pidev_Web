@@ -250,7 +250,6 @@ public function liveSearch(Request $request): Response
 #[Route('/{idevt}/{id}/like', name: 'event_like', methods: ['GET'])]
 public function like(int $idevt, int $id, SessionInterface $session): Response
 {
-    $id=23;
 
     $entityManager = $this->getDoctrine()->getManager();
     $reservationRepository = $entityManager->getRepository(Reservation::class);
@@ -261,7 +260,7 @@ public function like(int $idevt, int $id, SessionInterface $session): Response
     $evenement = $evenementRepository->findOneBy(['idevt' => $idevt]);
         
     if (!$reservation) {
-        throw $this->createNotFoundException('Vous n\'avez pas encore participé ' . $idevt);
+        $this->addFlash('success', 'Merci d\'avoir aimé cet événement');
     }
         
     if ($evenement->getVote() == 1) {

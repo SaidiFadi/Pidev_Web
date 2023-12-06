@@ -78,6 +78,7 @@ class EvenementType extends AbstractType
                     ])
                 ],
             ])
+            ->add('prixBillet')
             // ...
         ;
     }

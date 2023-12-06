@@ -25,6 +25,9 @@ event_dislike:
 app_reservationn_cancel:
     path: '/{id}/{idevt}/del'
     controller: 'App\Controller\ReservationController::annulerReservation'
-    methods: ['POST']
-
+    methods: ['GET', 'POST']
+app_reservation_reserve:
+    path: '/reserve/{idevt}'
+    controller: 'App\Controller\ReservationController::reserver'
+    methods: ['GET' ,'POST']
 
